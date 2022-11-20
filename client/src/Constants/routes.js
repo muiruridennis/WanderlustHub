@@ -1,0 +1,17 @@
+export const ROUTES = {
+  main: "/admin/dashboard",
+  users: "/admin/users",
+  bookings: "/admin/bookings",
+  clients: "/admin/clients",
+  payments: "/admin/payments",
+  tours: "/admin/tours",
+  reports: "/admin/reports",
+  logout: "/admin/logout",
+  calendar: "/admin/calendar",
+  chat: "/admin/chat",
+  jira: "/admin/jira",
+  profile: "/admin/profile",
+  setting: "/admin/setting",
+  darkTheme: "/admin/darkTheme",
+  expenses: "/admin/expenses",
+};
