@@ -9,6 +9,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Typography from "@mui/material/Typography";
 import { useDrawerContext } from '../../contexts/drawer-context';
 import { useMediaQuery, useTheme } from "@mui/material";
+import { useLocation} from "react-router-dom"
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import InputBase from '@mui/material/InputBase';
@@ -26,7 +27,7 @@ import Avatar from '@mui/material/Avatar';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { useSelector, useDispatch } from "react-redux";
 import { fetchLoggedUser } from "../../Actions/auth"
-
+import Circularprogress from "../../Components/CircularProgress"
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -73,19 +74,19 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const Header = () => {
   const theme = useTheme();
+  const location = useLocation();
   const { isOpen, setIsOpen } = useDrawerContext();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const dispatch = useDispatch();
-  const { authData } = useSelector((state) => state.auth);
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   useEffect(() => {
     dispatch(fetchLoggedUser());
-  }, [dispatch]);
-  console.log("authData", authData)
+  }, [location]);
+
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -102,8 +103,10 @@ const Header = () => {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
- 
   const menuId = 'primary-search-account-menu';
+  const { user, isLoading } = useSelector((state) => state.auth);
+  console.log("response:", user, "isLoading:", isLoading)
+
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -182,6 +185,9 @@ const Header = () => {
       </MenuItem>
     </Menu>
   );
+  if (isLoading) {
+    return <Circularprogress />
+  }
   return (
     <Box >
       <AppBar
@@ -239,15 +245,9 @@ const Header = () => {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              {  authData === null || undefined ?
-                <AccountCircle sx={{
-                  width: "36px",
-                  height: "36px",
-                  mr: "35px",
-                  ml: "25px",
-                  borderRadius: "50%"
-                }} /> :
-                <Avatar alt={authData?.avatarId} src={authData?.firstName}
+              {user ? (
+                <Avatar
+                  alt={user?.avatarId} src={user?.name}
                   sx={{
                     bgcolor: "purple",
                     width: 40,
@@ -255,8 +255,18 @@ const Header = () => {
                     mr: "35px",
                     ml: "25px",
                   }}>
-                  {authData?.firstName.charAt(0)}
+                  {user?.name.charAt(0)}
                 </Avatar>
+              ) :
+                (
+                  <AccountCircle sx={{
+                    width: "36px",
+                    height: "36px",
+                    mr: "35px",
+                    ml: "25px",
+                    borderRadius: "50%"
+                  }} />
+                )
               }
             </IconButton>
           </Box>

@@ -1,9 +1,8 @@
 import axios from "axios";
-import {Navigate } from "react-router-dom";
 
 export const URL_USER_AUTHENTICATE = "/auth/login";
 export const URL_REFRESH_TOKEN = "/auth/refresh";
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = `${process.env.REACT_APP_API_URL}`;
 
 const API = axios.create({
     baseUrl: BASE_URL,
@@ -50,9 +49,13 @@ API.interceptors.response.use((response) => {
 //auth
 export const signUp = (formData) => API.post("/auth/register", formData);
 export const signIn = (formData) => API.post("/auth/login", formData);
+// export const googleOauth = () => API.post("google-authentication", );
 export const logOut = () => API.post("/auth/logout");
-export const fetchLoggedUser = () => API.get("/auth/loggeduser");
-export const fetchUsers = () => API.get("/auth/")
+export const fetchLoggedUser = () => API.get("/auth/currentuser");
+export const fetchUsers = () => API.get("/auth/users");
+export const recoverPassword = (email) => API.post("/auth/forgotPassword", email);
+export const resetPassword = (resetData) => API.patch("/auth/resetPassword", resetData);
+
 
 //clients
 export const createClient = (clientData) => API.post("/clients/create", clientData);

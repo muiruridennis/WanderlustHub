@@ -1,7 +1,11 @@
 // Auth
 export const AUTH = "AUTH";
+export const ERROR = "ERROR";
+export const ERROR_NULL = "ERROR_NULL";
 export const LOGOUT = "LOGOUT";
 export const LOGGED_USER = "LOGGED_USER";
+export const RECOVER_PASSWORD = "RECOVER_PASSWORD";
+export const RESET_PASSWORD = "RESET_PASSWORD";
 
 //Clients
 export const CREATE_CLIENT = "CREATE_CLIENT";
@@ -16,6 +20,8 @@ export const FETCH_CLIENTS_BY_SEARCH = 'FETCH_CLIENTS_BY_SEARCH';
 //loading
 export const START_LOADING = "START_LOADING";
 export const END_LOADING = "END_LOADING";
+export const IS_SUCCESS = "IS_SUCCESS";
+export const IS_FAILURE = "IS_FAILURE";
 
 //searching
 export const  START_SEARCHING = " START_SEARCHING";

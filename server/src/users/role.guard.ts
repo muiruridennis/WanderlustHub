@@ -1,4 +1,4 @@
-import { UserRole } from "./models/roles.interface";
+import { UserRole } from "./dto/roles.interface";
 import { CanActivate, ExecutionContext, mixin, Type } from '@nestjs/common';
 import RequestWithUser from "../auth/requestWithUser.interface";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";

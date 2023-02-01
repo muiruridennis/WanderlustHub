@@ -1,7 +1,9 @@
 import DashboardPage from "./Dashboard";
 import ClientsPage from "./clients/clients";
 import InventoryPage from "./Inventory";
-import LoginPage from "./login/login";
+import AuthPage from "./Auth/login";
+import RecoverPassword from "./Auth/RecoverPassword";
+import ResetPassword from "./Auth/ResetPassword";
 import BookingPage from "./Bookings";
 import CalendarApp from "./Calendar";
 import UsersPage from "./Users/Users";
@@ -14,6 +16,8 @@ import Activities from "./MiniPages/Activities";
 
 export {
     DashboardPage, ClientsPage, Personal, Transactions, Referrals, Activities,
-    InventoryPage, LoginPage, BookingPage,
+    InventoryPage, AuthPage, BookingPage,
+     RecoverPassword,
+    ResetPassword,
     UsersPage, CalendarApp, UserDetails
 };
