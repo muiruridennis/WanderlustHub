@@ -1,4 +1,5 @@
 import {PrimaryGeneratedColumn, Column, Entity, CreateDateColumn, OneToOne, ManyToOne} from "typeorm"
+import User from "../../users/entity/user.entity";
 import Client from "../../client/entity/client.entity";
 import Tour from "../../tour/entity/tour.entity";
 
@@ -19,11 +20,11 @@ class Payment {
     @CreateDateColumn()
     paymentDate: Date
 
-    @ManyToOne(() => Client, client => client.payments)
-    client: Client;
+    @ManyToOne(() => User, user => user.payments)
+    user: User;
 
-    // @ManyToOne(()=> Tour, tour => tour.payment)
-    // tour: Tour;
+    @ManyToOne(()=> Tour, tour => tour.payments)
+    tour: Tour;
 
 }
 export default Payment;

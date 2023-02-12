@@ -5,7 +5,7 @@ import { UsersService } from '../users/users.service';
 
 @Injectable()
 export default class SmsService {
-  private twilioClient: Twilio;
+  private twilioClient; // to add type later
 
   constructor(
     private readonly configService: ConfigService,

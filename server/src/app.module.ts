@@ -20,6 +20,7 @@ import { FeatureFlagsModule } from './feature-flags/feature-flags.module';
 import { SmsModule } from './sms/sms.module';
 import { GoogleAuthenticationModule } from './googleAuthentication/googleAuthentication.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { MpesaModule } from './mpesa/mpesa.module';
 import * as Joi from 'joi';
 
 @Module({
@@ -53,11 +54,19 @@ import * as Joi from 'joi';
         GOOGLE_AUTH_CLIENT_ID: Joi.string().required(),
         GOOGLE_AUTH_CLIENT_SECRET: Joi.string().required(),
         FRONTEND_URL: Joi.string().required(),
+        MPESA_PASS_KEY: Joi.string().required(),
+        MPESA_BUSINESS_SHORT_CODE: Joi.string().required(),
+        MPESA_CONSUMER_KEY: Joi.string().required(),
+        MPESA_CONSUMER_SECRET: Joi.string().required(),
+        MPESA_OAUTH_TOKEN_URL: Joi.string().required(),
+        C_TO_B_BUSINESS_CODE: Joi.string().required(),
+        MPESA_PHONE_NUM: Joi.string().required(),
       })
     }), 
-    ClientsModule, TourModule, PermissionsModule, PaymentModule, DirectorsModule, LocalFileModule, DestinationsModule, BookModule, 
-     EmailConfirmationModule, EmailSchedulingModule, FeatureFlagsModule, SmsModule, GoogleAuthenticationModule, ReviewsModule,
-
+    ClientsModule, TourModule, PermissionsModule, PaymentModule,
+     DirectorsModule, 
+     LocalFileModule, DestinationsModule, BookModule, 
+     EmailConfirmationModule, EmailSchedulingModule, FeatureFlagsModule, SmsModule, GoogleAuthenticationModule, ReviewsModule, MpesaModule, 
   ],
   controllers: [AppController],
   providers: [AppService],

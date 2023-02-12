@@ -7,6 +7,7 @@ import Tour from './entity/tour.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Tour])],
   controllers: [TourController],
-  providers: [TourService]
+  providers: [TourService],
+  exports: [TourService]
 })
 export class TourModule {}

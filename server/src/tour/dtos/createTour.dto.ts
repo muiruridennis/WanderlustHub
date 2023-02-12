@@ -1,15 +1,16 @@
-import { IsEnum, IsString, IsNumber, IsDate, IsDateString } from "class-validator";
-import { Difficulty } from '../Difficulty';
+import { IsEnum, IsString, IsNumber, IsNotEmpty, IsDateString } from "class-validator";
+import { Difficulty } from '../difficulty';
 
 export default class CreateTourDto {
     @IsString()
     name: string;
 
-    // @IsString()
-    // duration: string;
+    @IsString({ each: true })
+    @IsNotEmpty()
+    etinerary: string[];
 
     @IsEnum(Difficulty)
-    Difficulty: Difficulty;
+    difficulty: Difficulty;
 
     @IsNumber()
     price: number

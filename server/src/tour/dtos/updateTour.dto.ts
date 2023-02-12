@@ -1,5 +1,5 @@
 import { IsEnum, IsString, IsNumber, IsOptional, IsDateString } from "class-validator";
-import { Difficulty } from '../Difficulty';
+import { Difficulty } from '../difficulty';
 
 export default class updateTourDto {
     @IsNumber()

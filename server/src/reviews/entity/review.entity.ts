@@ -21,13 +21,14 @@ class Review {
     @CreateDateColumn({ type: 'timestamp' })
     createdAt: Date;
 
-    @ManyToOne(() => Tour, tour => tour.reviews)
+    @ManyToOne(
+        () => Tour,
+        tour => tour.reviews)
     tour: Tour;
-    
-    @Index('review_reviwerId_index')
+
     @ManyToOne(
         () => User,
-        (reviewer: User) => reviewer.reviews,
+        (reviewer: User) => reviewer.reviews
     )
     public reviewer: User;
 }

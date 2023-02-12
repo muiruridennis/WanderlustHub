@@ -3,6 +3,8 @@ import LocalFile from "../../local-file/entity/localFile.entity"
 import { Exclude } from "class-transformer";
 import { UserRole } from "../dto/roles.interface"
 import Review from "../../reviews/entity/review.entity";
+import Booking from "../../booking/entity/booking.entity"
+import Payment from "src/payment/entity/payment.entity";
 
 @Entity()
 class User {
@@ -57,7 +59,7 @@ class User {
   @Exclude()
   public currentHashedRefreshToken?: string;
 
-  @Column({ nullable: true})
+  @Column({ nullable: true })
   resetLink: string;
 
   @OneToMany(
@@ -65,6 +67,11 @@ class User {
     (review: Review) => review.reviewer,
   )
   public reviews?: Review[];
+
+  @OneToMany(() => Payment, payment => payment.user, {
+    cascade: true,
+  })
+  payments: Payment[];
 
 };
 export default User;

@@ -5,7 +5,7 @@ import { LoginDto } from "./dto/loginDto";
 import { ChangePasswordDto } from "./dto/changePassword.dto";
 import * as bcrypt from 'bcrypt';
 import { LocalFilesService } from "../local-file/local-file.service";
-import { DataSource, Repository } from 'typeorm';
+import {  Repository } from 'typeorm';
 import User from './entity/user.entity';
 
 
@@ -15,8 +15,7 @@ export class UsersService {
     constructor(
         @InjectRepository(User)
         private usersRepository: Repository<User>,
-        private localFilesService: LocalFilesService,
-        private dataSource: DataSource,
+        // private localFilesService: LocalFilesService,
     ) { }
 
     async findByLogin({ email, password }: LoginDto) {

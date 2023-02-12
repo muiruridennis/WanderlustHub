@@ -6,12 +6,12 @@ import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    bufferLogs: true,
+    bufferLogs: false,
   });
 
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
-    transform: true
+    transform: true 
   }));
   // global use of pipes
   // whitelist — removes any property of query, body, and a parameter that is not part of our DTO

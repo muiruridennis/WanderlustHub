@@ -11,13 +11,14 @@ export class TourService {
         @InjectRepository(Tour)
         private tourRepository: Repository<Tour>,
     ) { }
+    
     async getById(id: number) {
         const tour = await this.tourRepository.findOneBy({ id })
         if (tour) {
             return tour;
         }
         throw new HttpException(
-            'tour not found',
+            'Tour with this id does not exist',
             HttpStatus.NOT_FOUND
         );
     }
@@ -34,9 +35,9 @@ export class TourService {
     }
 
     async deleteTour(id: number) {
-        const deleteTour = this.getById(id)
+        const tour = this.getById(id)
         await this.tourRepository.delete(id)
-        return deleteTour
+        return tour
     }
 
     async getAllTours() {
@@ -45,13 +46,19 @@ export class TourService {
     }
 
     async topFive() {
-        const topFiveTour = await this.tourRepository.find(
+        const tours = await this.tourRepository.find(
             {
                 where: {
                     price: LessThan(5000)
                 },
             }
         )
-        return topFiveTour
+        if (tours) {
+            return tours;
+        }
+        throw new HttpException(
+            'tours not found',
+            HttpStatus.NOT_FOUND
+        );
     }
 }

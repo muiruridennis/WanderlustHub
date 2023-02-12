@@ -5,8 +5,8 @@ import {
 } from "typeorm";
 import Client from "../../client/entity/client.entity";
 import Tour from "../../tour/entity/tour.entity";
-import MoreInfo from "./moreInfo.entity"
-import {Status} from "../status"
+import {Status} from "../status";
+import User from "../../users/entity/user.entity"
 
 @Entity()
 class Booking {
@@ -18,6 +18,12 @@ class Booking {
 
     @Column({nullable: true})
     bookingPlatform: string;
+    
+    @CreateDateColumn()
+    bookedAtDate: Date;
+
+    @UpdateDateColumn()
+    updatedDate: Date;
 
     @Column()
     tourCost: number;
@@ -34,15 +40,11 @@ class Booking {
     @Column()
     sharingType: string;
 
-    @OneToOne(() => MoreInfo, moreInfo => moreInfo.booking)
-    @JoinColumn()
-    moreInfo: MoreInfo;
+    @ManyToOne(() => User, (user: User) => user.bookings)
+    public user: User;
 
-    @ManyToOne(() => Client, (client: Client) => client.bookings)
-    public client: Client;
-
-    // @ManyToOne(() => Tour, (tour: Tour) => tour.bookings)
-    // @JoinTable()
-    // public tour: Tour;
+    @ManyToOne(() => Tour, (tour: Tour) => tour.bookings)
+    @JoinTable()
+    public tour: Tour;
 }
 export default Booking;

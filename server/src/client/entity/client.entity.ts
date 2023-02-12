@@ -55,10 +55,10 @@ class Client {
     @JoinTable()
     payments: Payment[];
 
-    @OneToMany(() => Booking, booking => booking.client, {
-        cascade: true,
-    })
-    bookings: Booking[];
+    // @OneToMany(() => Booking, booking => booking.client, {
+    //     cascade: true,
+    // })
+    // bookings: Booking[];
 
 }
 export default Client;
