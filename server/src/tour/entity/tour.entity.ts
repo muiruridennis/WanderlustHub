@@ -3,7 +3,6 @@ import { Column, Entity, OneToOne, PrimaryGeneratedColumn, CreateDateColumn } fr
 import { Difficulty } from '../difficulty';
 import Review from '../../reviews/entity/review.entity';
 import Booking from "../../booking/entity/booking.entity"
-import Payment from "../../payment/entity/payment.entity";
 
 
 @Entity()
@@ -38,11 +37,11 @@ class Tour {
     })
     reviews: Review[];
 
-    @OneToMany(() => Payment, payment => payment.tour, {
+    @OneToMany(() => Booking, booking => booking.tour, {
         eager: true,
         cascade: true,
     })
-    payments: Payment[];
+    bookings: Booking[];
 
     @Column('text', { array: true, nullable: true })
     public etinerary: string[];

@@ -36,5 +36,10 @@ export class MpesaController {
         const { token } = request
         return await this.mpesaService.businessToBusiness(token)
     }
+    @Post('transactionStatus')
+    async transactionStatus(@Req() request: RequestWithToken) {
+        const { token } = request
+        return await this.mpesaService.transactionStatus(token)
+    }
 
 }

@@ -123,7 +123,8 @@ function Auth() {
               }
               if (isSuccess) {
                 notifySuccess()
-              } else {
+              } 
+              else {
                 notifyError()
               }
             }}

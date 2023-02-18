@@ -4,11 +4,13 @@ import * as moment from 'moment';
 import axios from 'axios';
 import { response } from 'express';
 import StkPush from './dto/stkPush.dto';
+import { BookingService } from './../booking/booking.service';
 
 @Injectable()
 export class MpesaService {
     constructor(
-        private configService: ConfigService
+        private configService: ConfigService,
+        private bookingService: BookingService
     ) {
 
     }
@@ -18,8 +20,8 @@ export class MpesaService {
         return auth
 
     }
-    async lipaNaMpesaStkPush(token: string, stkPush: StkPush) {
-        const { amount, phoneNumber } = stkPush
+    async lipaNaMpesaStkPush(token: string, stkPushData: StkPush) {
+        const { amount, phoneNumber } = stkPushData
         const auth = `Bearer ${token}`;
         const timeStamp = moment().format("YYYYMMDDHHmmss");
         const businessShortCode = this.configService.get('MPESA_BUSINESS_SHORT_CODE');
@@ -39,7 +41,7 @@ export class MpesaService {
                     PartyA: phoneNumber, //+2547220....,
                     PartyB: businessShortCode,
                     PhoneNumber: phoneNumber, //+2547220....,
-                    CallBackURL: 'https://90d2-102-219-210-194.ngrok.io/mpesa/stkpush',
+                    CallBackURL: 'https://e1fc-102-219-210-194.ngrok.io/mpesa/stkpush',
                     AccountReference: "Take-us Safaris",
                     TransactionDesc: "Payment of tour booking "
                 },
@@ -49,14 +51,14 @@ export class MpesaService {
             if (data.ResponseCode === "0") {
                 //save the data to the database
                 //data to save should have id of the item the payment is made for
-                const{MerchantRequestID, CheckoutRequestID, ResponseDescription}= data;
-                
-                // this.paymentService.createPayment({
-                //     itemId://tourId
-                //     MerchantRequestID, 
-                //     CheckoutRequestID, 
-                //     ResponseDescription
-                // })
+                const { MerchantRequestID, CheckoutRequestID, ResponseDescription } = data;
+
+               await this.bookingService.createBooking({
+                    ...bookingData,
+                    merchantRequestID: MerchantRequestID, 
+                    checkoutRequestID: CheckoutRequestID, 
+                    responseDescription: ResponseDescription
+                })
 
                 return (
                     {
@@ -120,4 +122,35 @@ export class MpesaService {
         }
 
     }
+    async transactionStatus(token: string) {
+        const auth = `Bearer ${token}`;
+        let headers = { Authorization: auth }
+        const url = 'https://sandbox.safaricom.co.ke/mpesa/transactionstatus/v1/query';
+        const queueTimeOutURL = "https://mydomain.com/TransactionStatus/queue/";
+
+
+        try {
+            const { data } = await axios.post(url,
+                {
+                    Initiator: "testapi",
+                    SecurityCredential: "ZqLurgcZyd4MSxmvppVkRIP7FU6ONokQgqft5J8aCVWTBfmxXjKQb9iwnHbCzQb5sMhHwEg1ZMX/Nb2DsIbJYL2wYW7wN1Fn9AFgjbdjPPgGQ3av8KYFLl+FTrsk6cZ2SwodJF4Ci6vb7eB1yrYUimrXMnCiEVjM/gKLngLxycc51r8DdzxzwTQZQvmB2uxTxRLHGXLJ44ccNpIiQfkkhls9THj0g5kXdTj9CXcBe5OMdDTpRM8Gt8xtzDJw9+Vox2txl2NctdcXinwZsLvvsok29J3xGfjIEoofNSy5uWU1YYJuBa1IQOpcX4G1AqsXNpWyk/k9M8mgUyYasyOAXQ==",
+                    CommandID: "TransactionStatusQuery",
+                    TransactionID: "OEI2AK4Q16",
+                    PartyA: 600981,
+                    IdentifierType: "1",
+                    ResultURL: "https://mydomain.com/TransactionStatus/result/",
+                    QueueTimeOutURL: queueTimeOutURL,
+                    Remarks: "",
+                    Occassion: "",
+                },
+                {
+                    headers
+                })
+            
+
+            } catch (error) {
+                console.log(error)
+            }
+
+        }
 }

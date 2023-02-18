@@ -14,9 +14,10 @@ export class BookingService {
         return this.bookingRepository.find()
     }
 
-    async  createBooking( ) {
-
-
+    async createBooking(bookingData: CreateBookingDto) {
+        const book = await this.bookingRepository.create(bookingData)
+        await this.bookingRepository.save(book)
+        return book
     }
     async updateBooking() {
 

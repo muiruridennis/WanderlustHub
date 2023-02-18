@@ -68,10 +68,10 @@ class User {
   )
   public reviews?: Review[];
 
-  @OneToMany(() => Payment, payment => payment.user, {
+  @OneToMany(() => Booking, booking => booking.user, {
     cascade: true,
   })
-  payments: Payment[];
+  bookings: Booking[];
 
 };
 export default User;

@@ -14,7 +14,10 @@ class Payment {
     @Column()
     referenceNumber: string;
 
-    @Column({default: false,})
+    @Column({default: false})
+    paymentSuccess: boolean;
+
+    @Column({default: false})
     approved: boolean;
 
     @CreateDateColumn()

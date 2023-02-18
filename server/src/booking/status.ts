@@ -1,5 +1,7 @@
+import { ScheduleModule } from '@nestjs/schedule';
 export enum Status {
-    COMPLETED = "Completed",
     PENDING = "Pending",
+    SUCCESS = "Success",
+    FAILURE = "Failure"
 
 }

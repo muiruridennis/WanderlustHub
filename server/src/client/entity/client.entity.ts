@@ -49,11 +49,11 @@ class Client {
     @CreateDateColumn()
     clientFrom: Date;
 
-    @OneToMany(() => Payment, payment => payment.client, {
-        cascade: true,
-    })
-    @JoinTable()
-    payments: Payment[];
+    // @OneToMany(() => Payment, payment => payment.client, {
+    //     cascade: true,
+    // })
+    // @JoinTable()
+    // payments: Payment[];
 
     // @OneToMany(() => Booking, booking => booking.client, {
     //     cascade: true,

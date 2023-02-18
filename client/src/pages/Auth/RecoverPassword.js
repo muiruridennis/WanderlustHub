@@ -94,7 +94,8 @@ function RecoverPassword() {
                       </div>
                       <Typography variant="h6" align="center">Reset your password</Typography>
                       <Typography sx={{ mb: 2 }}>
-                        We emailed you a link to reset your password. Please check The Email and follow the instructions.
+                        {/* We emailed you a link to reset your password. Please check The Email and follow the instructions. */}
+                        Your request for a password reset has been received. Kindly check your email for further instructions.
                       </Typography>
                       <Link to="/">
                         <div

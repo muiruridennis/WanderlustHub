@@ -13,11 +13,11 @@ class Booking {
     @PrimaryGeneratedColumn()
     id?: number;
 
-    @Column({ type: 'enum', enum: Status, default: Status.COMPLETED })
+    @Column({ type: 'enum', enum: Status, default: Status.PENDING })
     status: Status;
 
     @Column({nullable: true})
-    bookingPlatform: string;
+    phoneNumber: string;
     
     @CreateDateColumn()
     bookedAtDate: Date;
@@ -26,19 +26,16 @@ class Booking {
     updatedDate: Date;
 
     @Column()
-    tourCost: number;
+    amountPaid: number;
 
-    @Column()
-    tourDepositAmount: number;
+    @Column({nullable: true})
+    merchantRequestID: string;
 
-    @Column()
-    totalAmountPaid: number;
+    @Column({nullable: true})
+    checkoutRequestID: string;
 
-    @Column()
-    discountAmount: number;
-
-    @Column()
-    sharingType: string;
+    @Column({nullable: true})
+    responseDescription: string;
 
     @ManyToOne(() => User, (user: User) => user.bookings)
     public user: User;
