@@ -23,11 +23,11 @@ class Payment {
     @CreateDateColumn()
     paymentDate: Date
 
-    @ManyToOne(() => User, user => user.payments)
-    user: User;
+    // @ManyToOne(() => User, user => user.payments)
+    // user: User;
 
-    @ManyToOne(()=> Tour, tour => tour.payments)
-    tour: Tour;
+    // @ManyToOne(()=> Tour, tour => tour.payments)
+    // tour: Tour;
 
 }
 export default Payment;

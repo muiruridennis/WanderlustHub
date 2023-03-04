@@ -34,8 +34,8 @@ export class EmailConfirmationService {
     });
 
     const url = `${this.configService.get(
-      'EMAIL_CONFIRMATION_URL',
-    )}?token=${token}`;
+      'FRONTEND_URL',
+    )}/auth/confirmEmail/${token}`;
 
     const text = `Welcome to the application. To confirm the email address, click here: ${url}`;
 
@@ -48,7 +48,7 @@ export class EmailConfirmationService {
 
   public async resendConfirmationLink(userId: number) {
     if (!(await this.isEnabled())) {
-      return;
+      return "Can not confirm Email. Feature flag is disabled.";
     }
     const user = await this.usersService.getById(userId);
     if (user.isEmailConfirmed) {

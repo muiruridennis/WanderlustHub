@@ -22,7 +22,7 @@ export class TourController {
 
     @Post("create")
     async createTour(@Body() create: CreateTourDto) {
-        await this.tourService.createTour(create);
+        return await this.tourService.createTour(create);
     }
 
     @Delete("delete/:id")

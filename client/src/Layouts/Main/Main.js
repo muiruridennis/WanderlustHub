@@ -13,7 +13,7 @@ function Main() {
   const drawerWidth = 190;
 
   return (
-    <Box component="main" sx={{ mt: 2 }}>
+    <div component="main" style={{ marginTop: 0 }}>
       <Routes>
         {mainRoutes.map((route, idx) => {
           return (
@@ -30,7 +30,7 @@ function Main() {
         })}
         <Route path="/" element={<Navigate to="dashboard" replace />} />
       </Routes>
-    </Box>
+    </div>
   )
 }
 

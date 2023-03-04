@@ -30,7 +30,7 @@ function Layout() {
             flex: 1,
           }}
         >
-          <Drawer notify={notify}  setNotify={setNotify} />
+          <Drawer notify={notify} setNotify={setNotify} />
           <Main style={{ flex: 1 }} />
         </Box>
         <Footer />

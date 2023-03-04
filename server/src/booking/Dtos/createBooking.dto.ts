@@ -1,13 +1,15 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, Matches, IsNumber } from 'class-validator';
 
 export class CreateBookingDto {
   @IsString()
   @IsNotEmpty()
-  status: string;
+  @Matches(/^\+[1-9]\d{1,14}$/)
+  phoneNumber: string;
 
-  @IsString()
-  @IsNotEmpty()
-  bookingPlatform: string;
+  // @IsNumber()
+  // @IsNotEmpty()
+  // tourId: number;
+
 }
 
 export default CreateBookingDto;

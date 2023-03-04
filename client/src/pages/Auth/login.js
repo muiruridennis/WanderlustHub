@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Avatar, Paper, Typography, Grid, Button, Container, Box } from "@mui/material";
 import LockOutlined from "@mui/icons-material/LockOutlined";
 import { Formik, Form, ErrorMessage } from 'formik';
+import Circularprogress from "../../Components/CircularProgress"
 
 import BackgroundImage from '../../Images/login.jpg';
 import google from '../../Images/google.png';
@@ -22,6 +23,7 @@ function Auth() {
     email: "",
     password: "",
     confirmPassword: "",
+    phoneNumber: "",
   };
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -29,7 +31,7 @@ function Auth() {
 
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { error, isSuccess } = useSelector((state) => state.auth);
+  const { error, isLoading } = useSelector((state) => state.auth);
   const validate = (values) => {
     const errors = {};
     if (values.firstName === "" && isSignup) errors.firstName = " first name is required";
@@ -60,10 +62,12 @@ function Auth() {
   }
   const notifyError = () => toast.error(`${error}`);
   const notifySuccess = () => toast.info(" logging...");
-  useEffect(() => {
-    console.log("error: ", error, "isSuccess:", isSuccess);
-  }, [dispatch])
-  
+  if (isLoading) {
+    return <Circularprogress />;
+  }
+  if (error) {
+    notifyError()
+  }
 
   return (
     <Box sx={backgroundStyles} >
@@ -121,9 +125,9 @@ function Auth() {
               } else {
                 dispatch(signin(values, navigate));
               }
-              if (isSuccess) {
+              if (error) {
                 notifySuccess()
-              } 
+              }
               else {
                 notifyError()
               }
@@ -146,6 +150,8 @@ function Auth() {
                             <ErrorMessage style={validationErrors} component="span" name="firstName" />
                             <Input name="lastName" label="Last Name" handleChange={formik.handleChange} half required={true} />
                             <ErrorMessage style={validationErrors} component="span" name="lastName" />
+                            <Input name="phoneNumber" label="Phone Number" handleChange={formik.handleChange}  required={true} />
+                            <ErrorMessage style={validationErrors} component="span" name="phoneNumber" />
                           </>
                         )
                       }

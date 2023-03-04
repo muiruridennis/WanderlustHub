@@ -6,6 +6,10 @@ export const LOGOUT = "LOGOUT";
 export const LOGGED_USER = "LOGGED_USER";
 export const RECOVER_PASSWORD = "RECOVER_PASSWORD";
 export const RESET_PASSWORD = "RESET_PASSWORD";
+export const RESEND_CONFIRM_EMAIL = "RESEND_CONFIRM_EMAIL";
+
+//email-confirmation
+export const CONFIRM_EMAIL= "CONFIRM_EMAIL";
 
 //Clients
 export const CREATE_CLIENT = "CREATE_CLIENT";
@@ -52,4 +56,7 @@ export const SEARCH_DIRECTOR = "SEARCH_DIRECTOR";
 export const FETCH_USERS = "FETCH_USERS";
 
 // Avatar
-export const FETCH_AVATAR = "FETCH_AVATAR"
+export const FETCH_AVATAR = "FETCH_AVATAR";
+
+//mpesa
+export const STK_PUSH = "STK_PUSH";

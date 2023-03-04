@@ -48,4 +48,4 @@ class Tour {
 
 }
 
-export default Tour;
+export default Tour; 

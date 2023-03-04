@@ -3,10 +3,10 @@ import {
     ManyToMany, JoinTable, CreateDateColumn, OneToOne, JoinColumn,
     Column, ManyToOne, UpdateDateColumn
 } from "typeorm";
-import Client from "../../client/entity/client.entity";
 import Tour from "../../tour/entity/tour.entity";
-import {Status} from "../status";
+import { Status } from "../status";
 import User from "../../users/entity/user.entity"
+import Mpesa from "../../mpesa/entity/mpesa.entity";
 
 @Entity()
 class Booking {
@@ -16,26 +16,24 @@ class Booking {
     @Column({ type: 'enum', enum: Status, default: Status.PENDING })
     status: Status;
 
-    @Column({nullable: true})
-    phoneNumber: string;
-    
+    // @Column({ nullable: true })
+    // phoneNumber: string;
+
     @CreateDateColumn()
     bookedAtDate: Date;
 
     @UpdateDateColumn()
     updatedDate: Date;
 
-    @Column()
-    amountPaid: number;
-
-    @Column({nullable: true})
-    merchantRequestID: string;
-
-    @Column({nullable: true})
-    checkoutRequestID: string;
-
-    @Column({nullable: true})
-    responseDescription: string;
+    @OneToOne(() => Mpesa,
+        {
+            nullable: true,
+            eager: true,
+            cascade: true,
+        }
+    )
+    @JoinColumn()
+    payment: Mpesa
 
     @ManyToOne(() => User, (user: User) => user.bookings)
     public user: User;

@@ -2,7 +2,7 @@ import { Controller, Post, Req, Body, Delete, Param, Patch, Get, UseGuards, Quer
 
 
 import { BookingService } from './booking.service';
-import CreateBookingDto from "./Dtos/createBooking.dto";
+import CreateBookingDto from "./dtos/createBooking.dto";
 
 @Controller('bookings')
 export class BookingController {

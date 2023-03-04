@@ -15,7 +15,7 @@ const passwordResetSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email address').required('Required'),
 });
 const backgroundStyles = {
-  backgroundColor: "#1EAE98",
+  backgroundColor: "#7DB9B6",
   backgroundSize: "cover",
   backgroundRepeat: "no-repeat",
   minHeight: "100vh",
@@ -29,12 +29,8 @@ const validationErrors = {
   marginTop: "30px",
 };
 
-
-
 function RecoverPassword() {
-  var { error, isLoading } = useSelector((state) => state.auth);
-
-
+  let { error, isLoading } = useSelector((state) => state.auth);
   const dispatch = useDispatch()
   const [submitted, setSubmitted] = useState(false);
   const initialValues = {
@@ -42,7 +38,7 @@ function RecoverPassword() {
   };
 
   if (isLoading) {
-    <h4>Sending....</h4>
+    return <Circularprogress />;
   }
   return (
     <Box sx={backgroundStyles} >

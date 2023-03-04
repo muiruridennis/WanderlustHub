@@ -35,4 +35,5 @@ export class EmailConfirmationController {
   async resendConfirmationLink(@Req() request: RequestWithUser) {
     await this.emailConfirmationService.resendConfirmationLink(request.user.id);
   }
+  
 }

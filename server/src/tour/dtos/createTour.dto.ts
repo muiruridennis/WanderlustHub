@@ -6,7 +6,7 @@ export default class CreateTourDto {
     name: string;
 
     @IsString({ each: true })
-    @IsNotEmpty()
+    // @IsNotEmpty()
     etinerary: string[];
 
     @IsEnum(Difficulty)

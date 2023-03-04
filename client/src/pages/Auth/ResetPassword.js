@@ -23,7 +23,7 @@ const passwordResetSchema = Yup.object().shape({
         .oneOf([Yup.ref('password'), null], 'Passwords must match')
 });
 const backgroundStyles = {
-    backgroundColor: "#1EAE98",
+    backgroundColor: "#7DB9B6",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     minHeight: "100vh",
@@ -41,11 +41,15 @@ function ResetPassword() {
 
     const { resetLink } = useParams();
     const dispatch = useDispatch()
-    const { authData, error } = useSelector((state) => state.auth);
+    const { authData, error, isLoading } = useSelector((state) => state.auth);
     const initialValues = {
         password: "",
         confirmPassword: ""
     };
+
+    if (isLoading) {
+        return <Circularprogress />;
+    }
     return (
         <Box sx={backgroundStyles} >
             <Container maxWidth="sm" justify="center" >
@@ -97,9 +101,9 @@ function ResetPassword() {
                                                     {error !== null || undefined ? `${error}` : "Sorry! An error occured while reseting your password. Please try again later."}
 
                                                 </Typography>
-                                                 <Link to="/auth/recoverPassword">
+                                                <Link to="/auth/recoverPassword">
                                                     <Button color="error" fullWidth
-                                                    variant="contained"
+                                                        variant="contained"
                                                         sx={{ fontSize: "16px", textTransform: "none" }}
                                                     > Try again </Button>
                                                 </Link>
@@ -141,7 +145,7 @@ function ResetPassword() {
                                         formik => {
                                             const { isSubmitting } = formik;
                                             return (
-                                                isSubmitting ? <Circularprogress /> :
+                                                isSubmitting ? <div>Submitting...</div> :
                                                     <Form onSubmit={formik.handleSubmit}>
                                                         <div>
                                                             <TextField

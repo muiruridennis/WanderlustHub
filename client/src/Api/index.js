@@ -37,10 +37,10 @@ API.interceptors.response.use((response) => {
                         // Return the original request. ie. retry
                         return axios(originalReq);
                     }
-                }).catch((error) => { window.location.href = "/"});
+                }).catch((error) => { window.location.href = "/" });
         }
         // Log
-        console.log("Rest promise error",  error.response.data);
+        console.log("Rest promise error", error.response.data);
 
         // If not matched , then return the error
         return Promise.reject(error);
@@ -55,6 +55,18 @@ export const fetchLoggedUser = () => API.get("/auth/currentuser");
 export const fetchUsers = () => API.get("/auth/users");
 export const recoverPassword = (email) => API.post("/auth/forgotPassword", email);
 export const resetPassword = (resetData) => API.patch("/auth/resetPassword", resetData);
+
+// email-confirmation
+export const confirmEmail = (token) => API.post("/email-confirmation/confirm", token);
+export const resendConfirmEmail = () => API.post("/email-confirmation/resend-confirmation-link");
+
+//mpesa
+export const stkPush = (stkPushData) => API.post("/mpesa/create", stkPushData);
+export const fetchMpesas = () => API.get("/mpesa/all");
+export const updateMpesa = (id, mpesa) => API.patch(`${"/mpesa/update"}/${id}`, mpesa);
+export const deleteMpesa = (id) => API.delete(`${"/mpesa/delete"}/${id}`);
+export const fetchMpesa = (id) => API.get(`${"/mpesa/mpesa"}/${id}`);
+export const fetchMpesaBySearch = (searchQuery) => API.get(`/mpesa/search?group=${searchQuery}`);
 
 
 //clients

@@ -10,6 +10,7 @@ import {
   Transactions,
   Referrals,
   Activities,
+  Mpesa
 } from "../pages";
 
 export const mainRoutes = [
@@ -18,6 +19,7 @@ export const mainRoutes = [
   { path: 'inventory', name: 'Inventory', element: InventoryPage },
   { path: 'bookings', name: 'Bookings', element: BookingPage },
   { path: 'users', name: 'Users', element: UsersPage },
+  { path: 'mpesaTransaction', name: 'Mpesa', element: Mpesa },
   { path: 'calendar', name: 'Calendar', element: CalendarApp },
   { path: 'users/:clientId/*', name: 'Users', element: UserDetails },
 ]
