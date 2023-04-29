@@ -42,6 +42,7 @@ export const DELETE_FROM_LIST = "DELETE_FROM_LIST";
 export const CREATE_TOUR = "CREATE_TOUR";
 export const UPDATE_TOUR = "UPDATE_TOUR";
 export const DELETE_TOUR = "DELETE_TOUR";
+export const FETCH_TOUR = "FETCH_TOUR";
 export const FETCH_TOURS = "FETCH_TOURS";
 
 //users
@@ -60,3 +61,23 @@ export const FETCH_AVATAR = "FETCH_AVATAR";
 
 //mpesa
 export const STK_PUSH = "STK_PUSH";
+
+// kanban
+export const SELECT = "SELECT";
+export const CREATE_TASK = "CREATE_TASK";
+export const GET_ALL_TASKS = "GET_ALL_TASKS";
+export const FETCH_TASK = "FETCH_TASK";
+export const UPDATE_TASK = "UPDATE_TASK";
+export const CREATE_TASK_COMMENT = "CREATE_TASK_COMMENT";
+export const DELETE_TASK_COMMENT = "DELETE_TASK_COMMENT";
+export const GET_ALL_TASKS_COMMENTS = "GET_ALL_TASKS_COMMENTS";
+export const CREATE_TASK_CHECKLIST = "CREATE_TASK_CHECKLIST";
+export const DELETE_TASK_CHECKLIST = "DELETE_TASK_CHECKLIST";
+export const UPDATE_TASK_CHECKLIST = "UPDATE_TASK_CHECKLIST";
+export const GET_ALL_TASKS_CHECKLISTS = "GET_ALL_TASKS_CHECKLISTS";
+export const WHO_OPEN = "WHO_OPEN";
+export const BOARD_OPEN = "BOARD_OPEN";
+export const DELETE_TASK = "DELETE_TASK";
+export const DRAG_AND_DROP = "DRAG_AND_DROP";
+export const TARGET_DROP_ZONE = "TARGET_DROP_ZONE";
+export const TARGET_LEFT = "TARGET_LEFT";

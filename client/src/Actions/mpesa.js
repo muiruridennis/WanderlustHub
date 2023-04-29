@@ -1,6 +1,6 @@
 import {
     START_LOADING, END_LOADING, STK_PUSH,
-    ERROR, END_SEARCHING
+    ERROR, 
 } from "../Constants/actionTypes";
 import * as api from '../Api/index.js';
 

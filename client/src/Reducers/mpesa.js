@@ -3,17 +3,17 @@ import {
     ERROR, END_SEARCHING
 } from "../Constants/actionTypes";
 
-const initialStates = { mpesa: [], isLoading: true, error: null };
+const initialStates = { mpesa: [], isTransacting: true, mpesaError: null };
 
 const AuthReducer = (state = initialStates, action) => {
 
     switch (action.type) {
         case END_LOADING:
-            return { ...state, isLoading: false };
+            return { ...state, isTransacting: false };
         case START_LOADING:
-            return { ...state, isLoading: true };
+            return { ...state, isTransacting: true };
         case ERROR:
-            return { ...state, error: action.payload };;
+            return { ...state, mpesaError: action.payload };
         case STK_PUSH:
             return { ...state, authData: action?.data };
         

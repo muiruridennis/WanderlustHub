@@ -61,7 +61,7 @@ export const confirmEmail = (token) => API.post("/email-confirmation/confirm", t
 export const resendConfirmEmail = () => API.post("/email-confirmation/resend-confirmation-link");
 
 //mpesa
-export const stkPush = (stkPushData) => API.post("/mpesa/create", stkPushData);
+export const stkPush = (stkPushData) => API.post("/mpesa/stkpush", stkPushData);
 export const fetchMpesas = () => API.get("/mpesa/all");
 export const updateMpesa = (id, mpesa) => API.patch(`${"/mpesa/update"}/${id}`, mpesa);
 export const deleteMpesa = (id) => API.delete(`${"/mpesa/delete"}/${id}`);
@@ -79,7 +79,8 @@ export const fetchClientsBySearch = (searchQuery) => API.get(`/clients/search?gr
 
 //Tours
 export const createTour = (tourData) => API.post("destinations/create", tourData);
-export const fetchTours = () => API.get("/destinations/alldestinations");
+export const fetchTours = () => API.get("/tours/all");
+export const fetchTour = (id) => API.get(`/tours/tour/${id}`)
 
 //Directors
 export const createDirectors = (directorsData) => API.post("/directors/create", directorsData);
@@ -89,3 +90,19 @@ export const fetchAllUsers = () => API.get("/users/all");
 
 // Avatar
 export const fetchUserAvatar = (id) => API.get(`/localfile/${id}`)
+
+// Kanban
+export const createTask = (taskData) => API.post("/tasks/create", taskData);
+export const fetchAllTasks = () => API.get("/tasks");
+export const deleteTask = (id) => API.delete(`${"/tasks"}/${id}`);
+export const getTask = (id) => API.get(`${"/tasks"}/${id}`);
+export const updateTask = (id, task) => API.patch(`${"/tasks/update"}/${id}`, task);
+
+export const createTaskComment = (comment) => API.post("/tasks/task/comment", comment);
+export  const deleteTaskComment= (id) => API.delete(`${"/tasks/task/comment"}/${id}`);
+export const fetchAllTaskComments= () => API.get("/tasks/task/comment");
+
+export const createTaskChecklist = (checklist) => API.post("/tasks/task/checklist", checklist);
+export  const deleteTaskChecklist= (id) => API.delete(`${"/tasks/task/checklist"}/${id}`);
+export const fetchAllTaskChecklists= () => API.get("/tasks/task/checklist");
+export const updateTaskChecklist = (id, checklist) => API.patch(`${"/tasks/task/update"}/${id}`, checklist);

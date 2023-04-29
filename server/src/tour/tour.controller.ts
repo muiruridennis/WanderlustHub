@@ -13,6 +13,11 @@ export class TourController {
         const allTours = await this.tourService.getAllTours();
         return allTours
     }
+    @Get("tour/:id")
+    async tour(@Param("id") id: number) {
+        const tour = await this.tourService.getById(id);
+        return tour
+    }
 
     @Patch("update/:id")
     async updateTour(@Body() update: UpdateTourDto, @Param("id") id: number) {
@@ -21,8 +26,8 @@ export class TourController {
     }
 
     @Post("create")
-    async createTour(@Body() create: CreateTourDto) {
-        return await this.tourService.createTour(create);
+    async createTour(@Body() tour: CreateTourDto) {
+        return await this.tourService.createTour(tour);
     }
 
     @Delete("delete/:id")

@@ -156,7 +156,7 @@ export const userRows = [
     transaction: "$120.00",
   },
 ];
-export  const headCells = [
+export const headCells = [
   {
     id: 'profileImage',
     numeric: false,
@@ -398,161 +398,561 @@ export const activities = [
 export const bookings = [
   {
     id: 1,
-  eventsName: "bookings",
-  clientsName: "Elisha Ney",
-  paymentMode: "Cash",
-  isComplete: true,
-  bookedAtDate: "2017-3-344",
-  isApproved: true,
-  amount: 8500
+    eventsName: "bookings",
+    clientsName: "Elisha Ney",
+    paymentMode: "Cash",
+    isComplete: true,
+    bookedAtDate: "2017-3-344",
+    isApproved: true,
+    amount: 8500
   },
   {
     id: 2,
-  eventsName: "bookings",
-  clientsName: "Elisha Ney",
-  paymentMode: "Cash",
-  isComplete: false,
-  bookedAtDate: "2017-3-344",
-  isApproved: true,
-  amount: 8500
+    eventsName: "bookings",
+    clientsName: "Elisha Ney",
+    paymentMode: "Cash",
+    isComplete: false,
+    bookedAtDate: "2017-3-344",
+    isApproved: true,
+    amount: 8500
   },
   {
     id: 3,
-  eventsName: "bookings",
-  clientsName: "Elisha Ney",
-  paymentMode: "Cash",
-  isComplete: true,
-  bookedAtDate: "2017-3-344",
-  isApproved: true,
-  amount: 8500
+    eventsName: "bookings",
+    clientsName: "Elisha Ney",
+    paymentMode: "Cash",
+    isComplete: true,
+    bookedAtDate: "2017-3-344",
+    isApproved: true,
+    amount: 8500
   },
   {
     id: 4,
-  eventsName: "bookings",
-  clientsName: "Elisha Ney",
-  paymentMode: "Cash",
-  isComplete: true,
-  bookedAtDate: "2017-3-344",
-  isApproved: true,
-  amount: 8500
+    eventsName: "bookings",
+    clientsName: "Elisha Ney",
+    paymentMode: "Cash",
+    isComplete: true,
+    bookedAtDate: "2017-3-344",
+    isApproved: true,
+    amount: 8500
   },
   {
     id: 5,
-  eventsName: "bookings",
-  clientsName: "Elisha Ney",
-  paymentMode: "Cash",
-  isComplete: true,
-  bookedAtDate: "2017-3-344",
-  isApproved: true,
-  amount: 8500
+    eventsName: "bookings",
+    clientsName: "Elisha Ney",
+    paymentMode: "Cash",
+    isComplete: true,
+    bookedAtDate: "2017-3-344",
+    isApproved: true,
+    amount: 8500
   },
   {
     id: 6,
-  eventsName: "bookings",
-  clientsName: "Elisha Ney",
-  paymentMode: "Cash",
-  isComplete: true,
-  bookedAtDate: "2017-3-344",
-  isApproved: true,
-  amount: 8500
+    eventsName: "bookings",
+    clientsName: "Elisha Ney",
+    paymentMode: "Cash",
+    isComplete: true,
+    bookedAtDate: "2017-3-344",
+    isApproved: true,
+    amount: 8500
   },
   {
     id: 78,
-  eventsName: "bookings",
-  clientsName: "Elisha Ney",
-  paymentMode: "Cash",
-  isComplete: true,
-  bookedAtDate: "2017-3-344",
-  isApproved: true,
-  amount: 8500
+    eventsName: "bookings",
+    clientsName: "Elisha Ney",
+    paymentMode: "Cash",
+    isComplete: true,
+    bookedAtDate: "2017-3-344",
+    isApproved: true,
+    amount: 8500
   },
   {
     id: 445,
-  eventsName: "bookings",
-  clientsName: "Elisha Ney",
-  paymentMode: "Cash",
-  isComplete: true,
-  bookedAtDate: "2017-3-344",
-  isApproved: true,
-  amount: 8500
+    eventsName: "bookings",
+    clientsName: "Elisha Ney",
+    paymentMode: "Cash",
+    isComplete: true,
+    bookedAtDate: "2017-3-344",
+    isApproved: true,
+    amount: 8500
   },
   {
     id: 677,
-  eventsName: "bookings",
-  clientsName: "Elisha Ney",
-  paymentMode: "Cash",
-  isComplete: false,
-  bookedAtDate: "2017-3-344",
-  isApproved: true,
-  amount: 8500
+    eventsName: "bookings",
+    clientsName: "Elisha Ney",
+    paymentMode: "Cash",
+    isComplete: false,
+    bookedAtDate: "2017-3-344",
+    isApproved: true,
+    amount: 8500
   },
   {
     id: 12,
-  eventsName: "bookings",
-  clientsName: "Elisha Ney",
-  paymentMode: "Cash",
-  isComplete: true,
-  bookedAtDate: "2017-3-344",
-  isApproved: true,
-  amount: 8500
+    eventsName: "bookings",
+    clientsName: "Elisha Ney",
+    paymentMode: "Cash",
+    isComplete: true,
+    bookedAtDate: "2017-3-344",
+    isApproved: true,
+    amount: 8500
   },
   {
     id: 56,
-  eventsName: "bookings",
-  clientsName: "Elisha Ney",
-  paymentMode: "Cash",
-  isComplete: true,
-  bookedAtDate: "2017-3-344",
-  isApproved: false,
+    eventsName: "bookings",
+    clientsName: "Elisha Ney",
+    paymentMode: "Cash",
+    isComplete: true,
+    bookedAtDate: "2017-3-344",
+    isApproved: false,
   },
   {
     id: 34,
-  eventsName: "bookings",
-  clientsName: "Elisha Ney",
-  paymentMode: "Cash",
-  isComplete: true,
-  bookedAtDate: "2017-3-344",
-  isApproved: true,
-  amount: 8500
+    eventsName: "bookings",
+    clientsName: "Elisha Ney",
+    paymentMode: "Cash",
+    isComplete: true,
+    bookedAtDate: "2017-3-344",
+    isApproved: true,
+    amount: 8500
   },
   {
     id: 17,
-  eventsName: "bookings",
-  clientsName: "Elisha Ney",
-  paymentMode: "Cash",
-  isComplete: true,
-  bookedAtDate: "2017-3-344",
-  isApproved: true,
-  amount: 8500
+    eventsName: "bookings",
+    clientsName: "Elisha Ney",
+    paymentMode: "Cash",
+    isComplete: true,
+    bookedAtDate: "2017-3-344",
+    isApproved: true,
+    amount: 8500
   },
   {
     id: 90,
-  eventsName: "bookings",
-  clientsName: "Elisha Ney",
-  paymentMode: "Cash",
-  isComplete: true,
-  bookedAtDate: "2017-3-344",
-  isApproved: true,
-  amount: 8500
+    eventsName: "bookings",
+    clientsName: "Elisha Ney",
+    paymentMode: "Cash",
+    isComplete: true,
+    bookedAtDate: "2017-3-344",
+    isApproved: true,
+    amount: 8500
   },
   {
     id: 32,
-  eventsName: "bookings",
-  clientsName: "Elisha Ney",
-  paymentMode: "Cash",
-  isComplete: true,
-  bookedAtDate: "2017-3-344",
-  Approved: true,
-  amount: 8500
+    eventsName: "bookings",
+    clientsName: "Elisha Ney",
+    paymentMode: "Cash",
+    isComplete: true,
+    bookedAtDate: "2017-3-344",
+    Approved: true,
+    amount: 8500
   },
   {
     id: 97,
-  eventsName: "bookings",
-  clientsName: "Elisha Ney",
-  paymentMode: "Cash",
-  isComplete: true,
-  bookedAtDate: "2017-3-344",
-  Approved: true,
-  amount: 8500
+    eventsName: "bookings",
+    clientsName: "Elisha Ney",
+    paymentMode: "Cash",
+    isComplete: true,
+    bookedAtDate: "2017-3-344",
+    Approved: true,
+    amount: 8500
   },
 ]
+
+export const normalizedTasks = [
+  {
+    id: "a1lgjfek",
+    type: "backlog",
+    priority: "Low Priority",
+    user: "C. Guvert",
+    description: "Company website redesign",
+    avatar: "./3bc84a401a51991f895ac6f6f40b7010.jpg",
+    comments: [
+      {
+        id: 1,
+        comment: "this should be done by June",
+        author: "Dennis"
+      },
+      {
+        id: 2,
+        comment: "Job well done",
+        author: "Karuga"
+      },
+      {
+        id: 3,
+        comment: "Almost there forks",
+        author: "Jabz"
+      },
+    ], attach: "2",
+    style: "card-color-low"
+  },
+  {
+    id: "b2lgjfek",
+    type: "backlog",
+    priority: "Med Priority",
+    user: "A. Nilson",
+    description: "Mobile app login process prototype",
+    avatar: "./615f6d8539dbe37bc2c8f3d7d749182c.jpg",
+    comments: [
+      {
+        id: 1,
+        comment: "this should be done by June",
+        author: "Dennis"
+      },
+      {
+        id: 2,
+        comment: "Job well done",
+        author: "Karuga"
+      },
+      {
+        id: 3,
+        comment: "Almost there forks",
+        author: "Jabz"
+      },
+    ], attach: "3",
+    style: "card-color-med"
+  },
+  {
+    id: "c3lgjfek",
+    type: "backlog",
+    priority: "High Priority",
+    user: "M. Thompson",
+    description: "Onboarding designs",
+    avatar: "./41aad055f35eb28f42b84ca1b4cf5d53.jpg",
+    comments: [
+      {
+        id: 1,
+        comment: "this should be done by June",
+        author: "Dennis"
+      },
+      {
+        id: 2,
+        comment: "Job well done",
+        author: "Karuga"
+      },
+      {
+        id: 3,
+        comment: "Almost there forks",
+        author: "Jabz"
+      },
+    ], attach: "2",
+    style: "card-color-high"
+  },
+  {
+    id: "d4lgjfek",
+    type: "progress",
+    priority: "High Priority",
+    user: "V. Cobain",
+    description: "Research and strategy for upcoming projects",
+    avatar: "./0cafaf103d2eef926eebb15b20651c88.jpg",
+    comments: [
+      {
+        id: 1,
+        comment: "this should be done by June",
+        author: "Dennis"
+      },
+      {
+        id: 2,
+        comment: "Job well done",
+        author: "Karuga"
+      },
+      {
+        id: 3,
+        comment: "Almost there forks",
+        author: "Jabz"
+      },
+    ], attach: "3",
+    style: "card-color-high"
+  },
+  {
+    id: "e5lgjfek",
+    type: "review",
+    priority: "Low Priority",
+    user: "M. Thompson",
+    description: "Dashboard layout design",
+    avatar: "./41aad055f35eb28f42b84ca1b4cf5d53.jpg",
+    comments: [
+      {
+        id: 1,
+        comment: "this should be done by June",
+        author: "Dennis"
+      },
+      {
+        id: 2,
+        comment: "Job well done",
+        author: "Karuga"
+      },
+      {
+        id: 3,
+        comment: "Almost there forks",
+        author: "Jabz"
+      },
+    ], attach: "2",
+    style: "card-color-low"
+  },
+  {
+    id: "f6lgjfek",
+    type: "complete",
+    priority: "Low Priority",
+    user: "A. Nilson",
+    description: "Rewiew client spec document and give feedback",
+    avatar: "./615f6d8539dbe37bc2c8f3d7d749182c.jpg",
+    comments: [
+      {
+        id: 1,
+        comment: "this should be done by June",
+        author: "Dennis"
+      },
+      {
+        id: 2,
+        comment: "Job well done",
+        author: "Karuga"
+      },
+      {
+        id: 3,
+        comment: "Almost there forks",
+        author: "Jabz"
+      },
+    ], attach: "3",
+    style: "card-color-low"
+  },
+  {
+    id: "f77gjfek",
+    type: "progress",
+    priority: "Med Priority",
+    user: "C. Guvert",
+    description: "Account profile flow diagrams",
+    avatar: "./3bc84a401a51991f895ac6f6f40b7010.jpg",
+    comments: [
+      {
+        id: 1,
+        comment: "this should be done by June",
+        author: "Dennis"
+      },
+      {
+        id: 2,
+        comment: "Job well done",
+        author: "Karuga"
+      },
+      {
+        id: 3,
+        comment: "Almost there forks",
+        author: "Jabz"
+      },
+    ],
+    attach: "2",
+    style: "card-color-med"
+  },
+  {
+    id: "f88gjfek",
+    type: "progress",
+    priority: "Low Priority",
+    user: "A. Nilson",
+    description: "Slide templates for client pitch project",
+    avatar: "./615f6d8539dbe37bc2c8f3d7d749182c.jpg",
+    comments: [
+      {
+        id: 1,
+        comment: "this should be done by June",
+        author: "Dennis"
+      },
+      {
+        id: 2,
+        comment: "Job well done",
+        author: "Karuga"
+      },
+      {
+        id: 3,
+        comment: "Almost there forks",
+        author: "Jabz"
+      },
+    ],
+    attach: "3",
+    style: "card-color-low"
+  },
+  {
+    id: "f99gjfek",
+    type: "progress",
+    priority: "Low Priority",
+    user: "M. Thompson",
+    description: "Review administrator console designs",
+    avatar: "./41aad055f35eb28f42b84ca1b4cf5d53.jpg",
+    comments: [
+      {
+        id: 1,
+        comment: "this should be done by June",
+        author: "Dennis"
+      },
+      {
+        id: 2,
+        comment: "Job well done",
+        author: "Karuga"
+      },
+      {
+        id: 3,
+        comment: "Almost there forks",
+        author: "Jabz"
+      },
+    ],
+    attach: "3",
+    style: "card-color-low"
+  },
+  {
+    id: "fuugjfek",
+    type: "review",
+    priority: "High Priority",
+    user: "A. Nilson",
+    description: "Social media posts",
+    avatar: "./615f6d8539dbe37bc2c8f3d7d749182c.jpg",
+    comments: [
+      {
+        id: 1,
+        comment: "this should be done by June",
+        author: "Dennis"
+      },
+      {
+        id: 2,
+        comment: "Job well done",
+        author: "Karuga"
+      },
+      {
+        id: 3,
+        comment: "Almost there forks",
+        author: "Jabz"
+      },
+    ],
+    attach: "2",
+    style: "card-color-high"
+  },
+  {
+    id: "d4lgj5ek",
+    type: "review",
+    priority: "Low Priority",
+    user: "V. Cobain",
+    description: "Shopping cart and product catalog wireframes",
+    avatar: "./0cafaf103d2eef926eebb15b20651c88.jpg",
+    comments: [
+      {
+        id: 1,
+        comment: "this should be done by June",
+        author: "Dennis"
+      },
+      {
+        id: 2,
+        comment: "Job well done",
+        author: "Karuga"
+      },
+      {
+        id: 3,
+        comment: "Almost there forks",
+        author: "Jabz"
+      },
+    ], attach: "3",
+    style: "card-color-low"
+  },
+  {
+    id: "f77gjf6k",
+    type: "review",
+    priority: "Med Priority",
+    user: "C. Guvert",
+    description: "End user flow charts",
+    avatar: "./3bc84a401a51991f895ac6f6f40b7010.jpg",
+    comments: [
+      {
+        id: 1,
+        comment: "this should be done by June",
+        author: "Dennis"
+      },
+      {
+        id: 2,
+        comment: "Job well done",
+        author: "Karuga"
+      },
+      {
+        id: 3,
+        comment: "Almost there forks",
+        author: "Jabz"
+      },
+    ],
+    attach: "2",
+    style: "card-color-med"
+  },
+  {
+    id: "f9gjfek3",
+    type: "complete",
+    priority: "Med Priority",
+    user: "M. Thompson",
+    description: "Navigation designs",
+    avatar: "./41aad055f35eb28f42b84ca1b4cf5d53.jpg",
+    comments: [
+      {
+        id: 1,
+        comment: "this should be done by June",
+        author: "Dennis"
+      },
+      {
+        id: 2,
+        comment: "Job well done",
+        author: "Karuga"
+      },
+      {
+        id: 3,
+        comment: "Almost there forks",
+        author: "Jabz"
+      },
+    ], attach: "3",
+    style: "card-color-med"
+  },
+  {
+    id: "f47gjf6k",
+    type: "complete",
+    priority: "Low Priority",
+    user: "C. Guvert",
+    description: "User profile prototypes",
+    avatar: "./3bc84a401a51991f895ac6f6f40b7010.jpg",
+    comments: [
+      {
+        id: 1,
+        comment: "this should be done by June",
+        author: "Dennis"
+      },
+      {
+        id: 2,
+        comment: "Job well done",
+        author: "Karuga"
+      },
+      {
+        id: 3,
+        comment: "Almost there forks",
+        author: "Jabz"
+      },
+    ],
+    attach: "2",
+    style: "card-color-low"
+  },
+  {
+    id: "d4lg23ek",
+    type: "complete",
+    priority: "High Priority",
+    user: "V. Cobain",
+    description: "Create style guide based on previous feedback",
+    avatar: "./0cafaf103d2eef926eebb15b20651c88.jpg",
+    comments: [
+      {
+        id: 1,
+        comment: "this should be done by June",
+        author: "Dennis"
+      },
+      {
+        id: 2,
+        comment: "Job well done",
+        author: "Karuga"
+      },
+      {
+        id: 3,
+        comment: "Almost there forks",
+        author: "Jabz"
+      },
+    ],
+    attach: "3",
+    style: "card-color-high"
+  }
+];

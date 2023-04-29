@@ -21,6 +21,7 @@ import { SmsModule } from './sms/sms.module';
 import { GoogleAuthenticationModule } from './googleAuthentication/googleAuthentication.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { MpesaModule } from './mpesa/mpesa.module';
+import { KanbanModule } from './kanban/kanban.module';
 import * as Joi from 'joi';
 
 @Module({
@@ -65,7 +66,7 @@ import * as Joi from 'joi';
     ClientsModule, TourModule, PermissionsModule, PaymentModule,
      DirectorsModule, 
      LocalFileModule, DestinationsModule, BookModule, 
-     EmailConfirmationModule, EmailSchedulingModule, FeatureFlagsModule, SmsModule, GoogleAuthenticationModule, ReviewsModule, MpesaModule, 
+     EmailConfirmationModule, EmailSchedulingModule, FeatureFlagsModule, SmsModule, GoogleAuthenticationModule, ReviewsModule, MpesaModule, KanbanModule, 
   ],
   controllers: [AppController],
   providers: [AppService],

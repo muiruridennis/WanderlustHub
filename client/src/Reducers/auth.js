@@ -12,7 +12,7 @@ const AuthReducer = (state = initialStates, action) => {
         case START_LOADING:
             return { ...state, isLoading: true };
         case ERROR:
-            return { ...state, error: action.payload };;
+            return { ...state, error: action.payload };
         case AUTH:
             return { ...state, authData: action?.data };
         case RECOVER_PASSWORD:

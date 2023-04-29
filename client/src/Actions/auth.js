@@ -73,7 +73,6 @@ export const resendConfirmEmail = async (dispatch) => {
         dispatch({ type: RESEND_CONFIRM_EMAIL, data });
         dispatch({ type: END_LOADING })
     } catch (error) {
-        dispatch({ type: IS_FAILURE });
         dispatch({ type: ERROR, payload: error.response.data.message })
         dispatch({ type: END_LOADING })
     }
@@ -95,6 +94,8 @@ export const fetchLoggedUser = () => async (dispatch) => {
         dispatch({ type: LOGGED_USER, payload: data });
         dispatch({ type: END_LOADING });
     } catch (error) {
+        dispatch({ type: START_LOADING })
         dispatch({ type: ERROR, payload: error.response.data.message })
+        dispatch({ type: END_LOADING })
     }
 }

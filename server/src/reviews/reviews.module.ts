@@ -10,7 +10,9 @@ import Tour from "../tour/entity/tour.entity";
 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Review, Tour]), UsersModule, TourModule],
+  imports: [TypeOrmModule.forFeature([Review, Tour]), 
+  // UsersModule, 
+  TourModule],
   controllers: [ReviewsController],
   providers: [ReviewsService, TourService]
 })

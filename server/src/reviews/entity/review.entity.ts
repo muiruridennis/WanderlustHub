@@ -1,7 +1,7 @@
 import {
     Column, PrimaryGeneratedColumn, Entity,
     ManyToMany, JoinTable, CreateDateColumn,
-    OneToOne, JoinColumn, OneToMany, ManyToOne, Index
+    OneToMany, ManyToOne, 
 } from "typeorm";
 import User from "../../users/entity/user.entity";
 import Tour from "../../tour/entity/tour.entity";

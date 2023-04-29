@@ -43,12 +43,13 @@ function ConfirmDialog(props) {
             </DialogContent>
             <DialogActions sx={{ justifyContent: 'space-around' }}>
                 <Button
-                    variant="contained"
-                    onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })} >No</Button>
+                color='inherit'
+                    variant="outlined"
+                    onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })} >CANCEL</Button>
                 <Button
                     variant="contained"
                     color="error"
-                    onClick={confirmDialog.onConfirm} >Yes</Button>
+                    onClick={confirmDialog.onConfirm} >Yes Delete</Button>
             </DialogActions>
         </Dialog>)
 }

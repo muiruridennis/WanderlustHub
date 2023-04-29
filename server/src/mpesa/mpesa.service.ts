@@ -67,9 +67,9 @@ export class MpesaService {
                     Timestamp: timeStamp,
                     TransactionType: "CustomerPayBillOnline",
                     Amount: amount,//amountPaid,
-                    PartyA: `254${phoneNumber}`,  //+2547220....,
+                    PartyA: phoneNumber,  //+2547220....,
                     PartyB: businessShortCode,
-                    PhoneNumber: `254${phoneNumber}`, //+2547220....,
+                    PhoneNumber: phoneNumber, //+2547220....,
                     CallBackURL: 'https://257f-102-219-210-194.ngrok.io/mpesa/callback',
                     AccountReference: "Take-us Safaris",
                     TransactionDesc: "Payment of tour booking "
@@ -80,19 +80,19 @@ export class MpesaService {
             if (data.ResponseCode === "0") {
                 //save the data to the database
                 //data to save should have id of the item the payment is made for
-                const payment = await this.mpesaRepository.create({
-                    checkoutRequestID: data.CheckoutRequestID,
-                    merchantRequestID: data.MerchantRequestID,
-                    amountPaid: amount,
-                    payingPhoneNumber: `254${phoneNumber}`,
-                })
-                await this.mpesaRepository.save(payment)
+                // const payment = await this.mpesaRepository.create({
+                //     checkoutRequestID: data.CheckoutRequestID,
+                //     merchantRequestID: data.MerchantRequestID,
+                //     amountPaid: amount,
+                //     payingPhoneNumber: phoneNumber,
+                // })
+                // await this.mpesaRepository.save(payment)
 
-                await this.bookingService.createBooking(
-                    user,
-                    tourId,
-                    payment
-                )
+                // await this.bookingService.createBooking(
+                //     user,
+                //     tourId,
+                //     payment
+                // )
 
                 return (
                     {

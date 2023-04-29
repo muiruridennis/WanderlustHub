@@ -1,4 +1,4 @@
-import {  START_LOADING, END_LOADING, DELETE_TOUR, UPDATE_TOUR, CREATE_TOUR, FETCH_TOURS } from "../Constants/actionTypes";
+import {  START_LOADING, END_LOADING, DELETE_TOUR, UPDATE_TOUR, CREATE_TOUR, FETCH_TOURS, ERROR, FETCH_TOUR } from "../Constants/actionTypes";
 import * as api from '../Api/index.js';
 
 export const createTour = (tourData) => async (dispatch) => {
@@ -19,6 +19,20 @@ export const fetchTours = () => async (dispatch) => {
         dispatch({ type: FETCH_TOURS, payload: data });
         dispatch({ type: END_LOADING });
     } catch (error) {
-        console.log(error)
+        dispatch({ type: START_LOADING })
+        dispatch({ type: ERROR, payload: error.response.data.message })
+        dispatch({ type: END_LOADING })
+    }
+};
+export const getTour = (id) => async (dispatch) => {
+    try {
+        dispatch({ type: START_LOADING });
+        const{ data} = await api.fetchTour(id);
+        dispatch({ type: FETCH_TOUR, payload: data });
+        dispatch({ type: END_LOADING });
+    } catch (error) {
+        dispatch({ type: START_LOADING })
+        dispatch({ type: ERROR, payload: error.response.data.message })
+        dispatch({ type: END_LOADING })
     }
 };

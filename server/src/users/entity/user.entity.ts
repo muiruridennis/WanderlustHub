@@ -4,7 +4,8 @@ import { Exclude } from "class-transformer";
 import { UserRole } from "../dto/roles.interface"
 import Review from "../../reviews/entity/review.entity";
 import Booking from "../../booking/entity/booking.entity"
-import Payment from "src/payment/entity/payment.entity";
+import Comment from "../..//kanban/entity/comment.entity";
+import Task from "../..//kanban/entity/task.entity";
 
 @Entity()
 class User {
@@ -67,6 +68,18 @@ class User {
     (review: Review) => review.reviewer,
   )
   public reviews?: Review[];
+
+  @OneToMany(
+    () => Comment,
+    (comment: Comment) => comment.author,
+  )
+  public comments?: Comment[];
+
+  @OneToMany(
+    () => Task,
+    (task: Task) => task.author,
+  )
+  public kanbanTask?: Task[];
 
   @OneToMany(() => Booking, booking => booking.user, {
     cascade: true,
