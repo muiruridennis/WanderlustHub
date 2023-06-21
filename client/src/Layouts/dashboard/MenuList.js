@@ -1,3 +1,4 @@
+import React, {useEffect}  from 'react';
 import List from "@mui/material/List";
 import Grid from "@mui/material/Grid";
 import { Button, Divider } from "@mui/material";
@@ -17,6 +18,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useDrawerContext } from "../../contexts/drawer-context";
 import { logOut } from "../../Actions/auth"
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export const MenuItemsList = () => {
   const { pathname } = useLocation();
@@ -38,21 +41,27 @@ export const MenuItemsList = () => {
     </Grid>
   );
 };
-export const AppEssentials = (props) => {
-  const { notify, setNotify } = props
-  const { authData } = useSelector((state) => state.auth);
+export const AppEssentials = () => {
+  const { displayMessage } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isOpen } = useDrawerContext();
-  const handleLogut = () => {
-    dispatch(logOut);
-    setNotify({
-      isOpen: true,
-      message: 'logged out Successfully',
-      type: 'success'
-    })
-    navigate('/')
-  }
+
+  const notifySuccess = () => {
+    if (displayMessage) {
+      toast.success(displayMessage);
+    }
+  };
+
+  const handleLogout = async () => {
+    dispatch(logOut());
+    notifySuccess();
+    await new Promise(resolve => setTimeout(resolve, 3000)); // Wait for 3 seconds
+    navigate('/auth');
+  };
+  useEffect(() => {
+    notifySuccess();
+  }, [displayMessage]);
 
   return (
     <>
@@ -78,18 +87,13 @@ export const AppEssentials = (props) => {
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
-                <ListItemButton>
+                <ListItemButton
+                  onClick={handleLogout}
+                >
                   <ListItemIcon>
-                    {/* <Button
-                      size="small"
-                      onClick={handleLogut}
-                      variant="text"
-                      color="error"
-                      sx={{ borderRadius: "15px", textTransform: "none" }} > */}
-                    <LogoutIcon fontSize="medium" color="warning" />
+                    <LogoutIcon fontSize="medium" color="error" />
                   </ListItemIcon>
                   <ListItemText primary="Logout" sx={{ ml: -2 }} />
-                  {/* </Button> */}
                 </ListItemButton>
               </ListItem>
             </List>
@@ -97,7 +101,11 @@ export const AppEssentials = (props) => {
         </Box>
         <Divider light sx={{ bgcolor: "#FA2FB5" }} />
       </Grid>
+      <ToastContainer
+      position="bottom-center"
+        autoClose={2000}
+        theme="colored"
+      />
     </>
   );
 };
-

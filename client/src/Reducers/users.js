@@ -1,6 +1,6 @@
 import {START_LOADING, END_LOADING, FETCH_USERS} from "../Constants/actionTypes";
 
-const initialState = { users: [], isLoading: true }
+const initialState = { users: [], isLoading: false }
 
 export default function (state = initialState, action) {
     switch (action.type) {

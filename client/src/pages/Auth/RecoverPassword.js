@@ -72,7 +72,7 @@ function RecoverPassword() {
                         The Email isn't recognized. Please try again later or register for a new account.
                       </Typography>
 
-                      <Link to="/">
+                      <Link to="/auth">
                         <Button color="error" fullWidth
                           sx={{ fontSize: "16px", textTransform: "none" }}
                         > Try again </Button>

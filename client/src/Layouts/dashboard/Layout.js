@@ -8,7 +8,7 @@ import Notification from "../../Components/Notification"
 import { DrawerContextProvider } from "../../contexts/drawer-context";
 import { Box } from '@mui/material';
 
-function Layout({ children }) {
+function Layout() {
   const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' });
 
   // return (
@@ -31,7 +31,7 @@ function Layout({ children }) {
             flex: 1,
           }}
         >
-          <Drawer />
+          <Drawer notify={notify} setNotify={setNotify} />
           <Main />
         </Box>
         {/* <Footer /> */}

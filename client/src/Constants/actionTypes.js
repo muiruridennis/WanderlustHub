@@ -81,3 +81,14 @@ export const DELETE_TASK = "DELETE_TASK";
 export const DRAG_AND_DROP = "DRAG_AND_DROP";
 export const TARGET_DROP_ZONE = "TARGET_DROP_ZONE";
 export const TARGET_LEFT = "TARGET_LEFT";
+export const DRAGGED= "DRAGGED";
+export const DRAG= "DRAG";
+export const CHECK="CHECK";
+export const MESSAGE="MESSAGE";
+
+// Bookings
+export const CREATE_BOOKING = "CREATE_BOOKING";
+export const FETCH_BOOKINGS = "FETCH_BOOKINGS";
+export const FETCH_BOOKING= "FETCH_BOOKING";
+export const UPDATE_BOOKING = "UPDATE_BOOKING";
+export const DELETE_BOOKING = "DELETE_BOOKING";

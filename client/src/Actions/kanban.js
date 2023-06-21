@@ -19,7 +19,11 @@ import {
     DELETE_TASK_COMMENT,
     GET_ALL_TASKS_COMMENTS,
     CREATE_TASK_CHECKLIST,
-    DELETE_TASK_CHECKLIST
+    DELETE_TASK_CHECKLIST,
+    DRAGGED,
+    DRAG,
+    CHECK,
+    MESSAGE
 } from "../Constants/actionTypes";
 import * as api from '../Api/index.js';
 
@@ -44,10 +48,10 @@ export const fetchAllTasks = () => async (dispatch) => {
     }
 };
 
-export const getTask = (id) => async (dispatch) => {
+export const fetchTask = (id) => async (dispatch) => {
     try {
         dispatch({ type: START_LOADING });
-        const { data } = await api.getTask(id);
+        const { data } = await api.fetchTask(id);
         dispatch({ type: FETCH_TASK, payload: data });
         dispatch({ type: END_LOADING });
     } catch (error) {
@@ -57,21 +61,26 @@ export const getTask = (id) => async (dispatch) => {
     }
 };
 
-export function boardOpen() {
-    return {
-        type: BOARD_OPEN
-    };
-}
+
 export const deleteTask = (id) => async (dispatch) => {
     try {
         dispatch({ type: START_LOADING });
-        await api.deleteTask(id);
+        const { data } = await api.deleteTask(id);
+
         dispatch({ type: DELETE_TASK, payload: id });
+        dispatch({ type: MESSAGE, payload: data.message });
+        setTimeout(() => {
+            dispatch({ type: MESSAGE, payload: null }); // Set the message to null after a delay
+        }, 3000); // Delay in milliseconds (adjust as needed)
         dispatch({ type: END_LOADING });
     } catch (error) {
-        dispatch({ type: START_LOADING })
-        dispatch({ type: ERROR, payload: error.response.data.message })
-        dispatch({ type: END_LOADING })
+        const errorMessage = error.response && error.response.data ? error.response.data.message : 'Unknown error occurred';
+        dispatch({ type: START_LOADING });
+        dispatch({ type: ERROR, payload: errorMessage });
+        setTimeout(() => {
+            dispatch({ type: ERROR, payload: null }); 
+        }, 3000); 
+        dispatch({ type: END_LOADING });
     }
 };
 export const updateTask = (id, task) => async (dispatch) => {
@@ -92,7 +101,8 @@ export const dragAndDrop = (id, dropZone) => async (dispatch) => {
     } catch (error) {
         dispatch({ type: START_LOADING })
         dispatch({ type: ERROR, payload: error.response.data.message })
-        dispatch({ type: END_LOADING })    }
+        dispatch({ type: END_LOADING })
+    }
 
 };
 // export function dragAndDrop(taskId, dropZone) {
@@ -107,12 +117,23 @@ export const dragAndDrop = (id, dropZone) => async (dispatch) => {
 
 export const createTaskComment = (comment) => async (dispatch) => {
     try {
-        const { data } = await api.createTaskComment(comment);
-        dispatch({ type: CREATE_TASK_COMMENT, payload: data });
+        dispatch({ type: START_LOADING });
+
+        // Create the comment and fetch the updated task separately
+        await api.createTaskComment(comment);
+        const updatedTask = await api.fetchTask(comment.taskId);
+
+        dispatch({ type: CREATE_TASK_COMMENT, payload: updatedTask });
+        dispatch({ type: END_LOADING });
     } catch (error) {
-        console.log(error);
+        dispatch({ type: START_LOADING });
+        dispatch({ type: ERROR, payload: error.response.data.message });
+        dispatch({ type: END_LOADING });
     }
-}
+};
+
+
+
 export const deleteTaskComment = (id) => async (dispatch) => {
     try {
         dispatch({ type: START_LOADING });
@@ -125,6 +146,7 @@ export const deleteTaskComment = (id) => async (dispatch) => {
         dispatch({ type: END_LOADING })
     }
 };
+
 export const fetchAllTasksComments = () => async (dispatch) => {
     try {
         dispatch({ type: START_LOADING });
@@ -139,24 +161,38 @@ export const fetchAllTasksComments = () => async (dispatch) => {
 };
 export const createTaskChecklist = (checklist) => async (dispatch) => {
     try {
-        const { data } = await api.createTaskChecklist(checklist);
-        dispatch({ type: CREATE_TASK_CHECKLIST, payload: data });
+        dispatch({ type: START_LOADING });
+
+        // Create the checklist and fetch the updated task separately
+        await api.createTaskChecklist(checklist);
+        const updatedTask = await api.fetchTask(checklist.taskId);
+
+        dispatch({ type: CREATE_TASK_CHECKLIST, payload: updatedTask });
+        dispatch({ type: END_LOADING });
     } catch (error) {
-        console.log(error);
+        dispatch({ type: START_LOADING });
+        dispatch({ type: ERROR, payload: error.response.data.message });
+        dispatch({ type: END_LOADING });
     }
-}
+};
 export const deleteTaskChecklist = (id) => async (dispatch) => {
     try {
         dispatch({ type: START_LOADING });
-        await api.deleteTaskChecklist(id);
+        const { data } = await api.deleteTaskChecklist(id);
         dispatch({ type: DELETE_TASK_CHECKLIST, payload: id });
+        dispatch({ type: MESSAGE, payload: data.message });
+        setTimeout(() => {
+            dispatch({ type: MESSAGE, payload: null }); // Set the message to null after a delay
+        }, 3000); // Delay in milliseconds (adjust as needed)
         dispatch({ type: END_LOADING });
     } catch (error) {
-        dispatch({ type: START_LOADING })
-        dispatch({ type: ERROR, payload: error.response.data.message })
-        dispatch({ type: END_LOADING })
+        const errorMessage = error.response && error.response.data ? error.response.data.message : 'Unknown error occurred';
+        dispatch({ type: START_LOADING });
+        dispatch({ type: ERROR, payload: errorMessage });
+        dispatch({ type: END_LOADING });
     }
 };
+
 export const fetchAllTaskChecklists = () => async (dispatch) => {
     try {
         dispatch({ type: START_LOADING });
@@ -173,7 +209,12 @@ export const fetchAllTaskChecklists = () => async (dispatch) => {
 export const updateTaskChecklist = (id, checklist) => async (dispatch) => {
     try {
         const { data } = await api.updateTaskChecklist(id, checklist);
+
         dispatch({ type: UPDATE_TASK_CHECKLIST, payload: data })
+        dispatch({ type: MESSAGE, payload: data.message });
+        setTimeout(() => {
+            dispatch({ type: MESSAGE, payload: null }); // Set the message to null after a delay
+        }, 3000); // Delay in milliseconds (adjust as needed)
     } catch (error) {
         dispatch({ type: START_LOADING })
         dispatch({ type: ERROR, payload: error.response.data.message })
@@ -205,6 +246,26 @@ export function targetTheDropZone(status) {
 export function select(task) {
     return {
         type: SELECT,
-        payload: {task}
+        payload: { task }
+    };
+}
+export function boardOpen() {
+    return {
+        type: BOARD_OPEN
+    };
+}
+export function checkOrUncheckCheckList() {
+    return {
+        type: CHECK
+    };
+}
+export function drag() {
+    return {
+        type: DRAG
+    };
+}
+export function dragged() {
+    return {
+        type: DRAGGED
     };
 }

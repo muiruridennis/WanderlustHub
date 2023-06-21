@@ -1,11 +1,12 @@
 import { PrimaryGeneratedColumn, Column, JoinColumn, Entity, OneToOne, OneToMany } from "typeorm";
 import LocalFile from "../../local-file/entity/localFile.entity"
-import { Exclude } from "class-transformer";
+import { Exclude, Expose } from "class-transformer";
 import { UserRole } from "../dto/roles.interface"
 import Review from "../../reviews/entity/review.entity";
 import Booking from "../../booking/entity/booking.entity"
 import Comment from "../..//kanban/entity/comment.entity";
 import Task from "../..//kanban/entity/task.entity";
+
 
 @Entity()
 class User {
@@ -13,11 +14,13 @@ class User {
   id?: number;
 
   @Column()
+  @Expose()
   name: string;
 
   @Column({
     unique: true //unique flag. It indicates that there should not be two users with the same email
   })
+  @Expose()
   email: string;
 
   @Column({ nullable: true })
@@ -30,7 +33,7 @@ class User {
   roles?: UserRole;
 
   @Column({ nullable: true })
-  @Exclude()
+  // @Exclude()
   public password?: string;
 
   @Column({ default: false })
@@ -53,14 +56,15 @@ class User {
   // Thanks to creating the separate avaterId property, we can get the id of the file even without joining the DatabaseFile table. This neat trick can 
   // increase our performance a bit and avoid fetching the binary data unnecessarily.
 
-  @Exclude()
+  // @Exclude()
   confirmPassword: string;
 
   @Column({ nullable: true })
-  @Exclude()
+  // @Exclude()
   public currentHashedRefreshToken?: string;
 
   @Column({ nullable: true })
+  // @Exclude()
   resetLink: string;
 
   @OneToMany(

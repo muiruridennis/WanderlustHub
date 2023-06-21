@@ -107,6 +107,7 @@ export class AuthService {
         const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')}`;
         return { cookie, token }
     }
+    
     //A method that generates cookies to clear both the access token and the refresh token
     public getCookiesForLogOut() {
         return [

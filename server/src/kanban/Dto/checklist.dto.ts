@@ -1,4 +1,4 @@
-import {  IsString, IsBoolean, IsOptional  } from "class-validator";
+import {  IsString, IsBoolean, IsOptional, IsNumber  } from "class-validator";
 
 export  class CreateChecklistDto {
     @IsString()
@@ -6,6 +6,9 @@ export  class CreateChecklistDto {
   
     @IsBoolean()
     isChecked: boolean;
+
+    @IsNumber()
+    taskId:number
 }
 
 export  class UpdateChecklistDto {
@@ -16,4 +19,7 @@ export  class UpdateChecklistDto {
     @IsOptional()
     @IsBoolean()
     isChecked: boolean;
+
+    @IsNumber()
+    taskId:number
 }

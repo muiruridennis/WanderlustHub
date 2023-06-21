@@ -2,7 +2,7 @@ import {
     AUTH, LOGOUT, LOGGED_USER,  ERROR,
     END_LOADING, RECOVER_PASSWORD, RESET_PASSWORD, CONFIRM_EMAIL, RESEND_CONFIRM_EMAIL,START_LOADING
 } from "../Constants/actionTypes";
-const initialStates ={ authData: {}, isLoading: false, error: null, user: null,}
+const initialStates ={ authData: {}, isLoading: false, error: null, user: null, displayMessage: null,}
 
 const AuthReducer = (state = initialStates, action) => {
 
@@ -22,7 +22,7 @@ const AuthReducer = (state = initialStates, action) => {
         case CONFIRM_EMAIL:
             return { ...state, authData: action?.data };
         case LOGOUT:
-            return { ...state, authData: action?.data };
+            return { ...state, displayMessage: action.payload };
         case RESEND_CONFIRM_EMAIL:
             return { ...state, authData: action?.data };
         case LOGGED_USER:

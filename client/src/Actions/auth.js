@@ -4,6 +4,7 @@ import {
 } from "../Constants/actionTypes";
 import { ROUTES } from "../Constants/routes"
 import * as api from '../Api/index.js';
+import Logout from "@mui/icons-material/Logout";
 
 export const signin = (formData, navigate) => async dispatch => {
 
@@ -11,11 +12,15 @@ export const signin = (formData, navigate) => async dispatch => {
         dispatch({ type: START_LOADING })
         const { data } = await api.signIn(formData);
         dispatch({ type: AUTH, data });
+
         dispatch({ type: END_LOADING });
         navigate(ROUTES.main)
     } catch (error) {
         dispatch({ type: START_LOADING })
         dispatch({ type: ERROR, payload: error.response.data.message })
+        setTimeout(() => {
+            dispatch({ type: ERROR, payload: null }); // Set the message to null after a delay
+        }, 3000); // Delay in milliseconds (adjust as needed)
         dispatch({ type: END_LOADING })
     }
 };
@@ -43,7 +48,8 @@ export const recoverPassword = (email) => async (dispatch) => {
         dispatch({ type: END_LOADING });
     } catch (error) {
         dispatch({ type: ERROR, payload: error.response.data.message })
-        dispatch({ type: END_LOADING })    }
+        dispatch({ type: END_LOADING })
+    }
 }
 export const resetPassword = (resetData) => async (dispatch) => {
     try {
@@ -53,7 +59,8 @@ export const resetPassword = (resetData) => async (dispatch) => {
         dispatch({ type: END_LOADING })
     } catch (error) {
         dispatch({ type: ERROR, payload: error.response.data.message })
-        dispatch({ type: END_LOADING })    }
+        dispatch({ type: END_LOADING })
+    }
 }
 export const confirmEmail = (token) => async (dispatch) => {
     try {
@@ -66,7 +73,7 @@ export const confirmEmail = (token) => async (dispatch) => {
         dispatch({ type: END_LOADING })
     }
 }
-export const resendConfirmEmail = async (dispatch) => {
+export const resendConfirmEmail = () => async (dispatch) => {
     try {
         dispatch({ type: START_LOADING })
         const { data } = await api.resendConfirmEmail();
@@ -78,14 +85,19 @@ export const resendConfirmEmail = async (dispatch) => {
     }
 }
 
-export const logOut = async (dispatch) => {
+export const logOut = () => async (dispatch) => {
     try {
         const { data } = await api.logOut();
-        dispatch({ type: LOGOUT, data });
+        dispatch({ type: LOGOUT, payload: data.msg });
+        setTimeout(() => {
+            dispatch({ type: LOGOUT, payload: null }); 
+        }, 3000); 
     } catch (error) {
-        console.log(error)
+        dispatch({ type: START_LOADING })
+        dispatch({ type: ERROR, payload: error.response.data.message })
+        dispatch({ type: END_LOADING })
     }
-}
+};
 
 export const fetchLoggedUser = () => async (dispatch) => {
     try {

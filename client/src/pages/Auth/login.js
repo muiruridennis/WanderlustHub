@@ -1,21 +1,37 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, Link } from "react-router-dom";
-import { Avatar, Paper, Typography, Grid, Button, Container, Box, useTheme, useMediaQuery } from "@mui/material";
-import LockOutlined from "@mui/icons-material/LockOutlined";
+import { useNavigate, Link } from 'react-router-dom';
+import {
+  Avatar,
+  Paper,
+  Typography,
+  Grid,
+  Button,
+  Container,
+  Box,
+  useTheme,
+  useMediaQuery,
+} from '@mui/material';
+
 import { Formik, Form, ErrorMessage } from 'formik';
-import Circularprogress from "../../Components/CircularProgress"
-import Logo from "../../Components/logo"
+import { ToastContainer, toast } from 'react-toastify';
+
+import LockOutlined from '@mui/icons-material/LockOutlined';
+
+import Circularprogress from '../../Components/CircularProgress';
+import Logo from '../../Components/logo';
+
+import useGoogleAuthentication from './useGoogleAuthentication';
+
+import Input from './input';
+import { signup, signin } from '../../Actions/auth';
+import loginSchema from './validation';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 import BackgroundImage from '../../Images/login.jpg';
 import google from '../../Images/google.png';
 import coast from '../../Images/coast.jpg';
-import Input from "./input";
-import { signup, signin } from "../../Actions/auth";
-import loginSchema from "./validation";
-import useGoogleAuthentication from "./useGoogleAuthentication";
-import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
 
 
 function Auth() {
@@ -39,13 +55,24 @@ function Auth() {
 
   const validate = (values) => {
     const errors = {};
-    if (values.firstName === "" && isSignup) errors.firstName = " first name is required";
-    if (values.lastName === "" && isSignup) errors.lastName = "last name is required";
-    if (values.phoneNumber === "" && isSignup) errors.phoneNumber = "Phone Number is required";
+    const validationMessages = {
+      firstName: "First name is required",
+      lastName: "Last name is required",
+      phoneNumber: "Phone Number is required",
+      confirmPassword: "Confirm password field is required",
+    };
 
-    if (values.confirmPassword === "" && isSignup) errors.confirmPassword = "confirm password field is required";
+    if (isSignup) {
+      Object.keys(validationMessages).forEach((key) => {
+        if (values[key] === "") {
+          errors[key] = validationMessages[key];
+        }
+      });
+    }
+
     return errors;
   };
+
   const validationErrors = {
     color: "#FF0000",
     fontStyle: "italic",
@@ -88,7 +115,8 @@ function Auth() {
         container
         sx={{ flex: '1 1 auto' }}
       >
-         <Grid
+        <Grid
+          item
           xs={12}
           lg={6}
           sx={{
@@ -141,6 +169,7 @@ function Auth() {
           </Box>
         </Grid>
         <Grid
+          item
           xs={12}
           lg={6}
           sx={{
@@ -222,22 +251,19 @@ function Auth() {
                 validationSchema={loginSchema}
                 validate={validate}
                 onSubmit={(values) => {
-                  if (isSignup) {
-                    dispatch(signup(values, navigate))
-                  } else {
-                    dispatch(signin(values, navigate));
-                  }
+                  const authAction = isSignup ? signup : signin;
+                  dispatch(authAction(values, navigate));
                   if (error) {
-                    notifySuccess()
-                  }
-                  else {
-                    notifyError()
+                    notifyError();
+                  } else {
+                    notifySuccess();
                   }
                 }}
+
+
               >
                 {
                   formik => {
-                    const { isSubmitting } = formik;
                     return (
                       <Form onSubmit={formik.handleSubmit}
                         sx={{
@@ -333,7 +359,7 @@ function Auth() {
             />
           </Container>
         </Grid>
-       
+
       </Grid>
     </Box>
   )

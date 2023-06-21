@@ -3,14 +3,14 @@ import { TextField, Grid, InputAdornment, IconButton } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-function Input({ half, name, autoFocus, type, handleChange, handleShowPassword, label }) {
+function Input({ half, name, autoFocus, type, handleChange, handleShowPassword, label, required}) {
     return (
         <Grid item xs={12} sm={half ? 6 : 12}>
             <TextField
                 name={name}
                 onChange={handleChange}
                 variant="outlined"
-                required={false}
+                required={required}
                 fullWidth
                 label={label}
                 autoFocus={autoFocus}

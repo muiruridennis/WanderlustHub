@@ -23,7 +23,7 @@ export class KanbanService {
   async getAllTasks() {
     return this.taskRepository.find(
       {
-        relations: ["author"]
+        relations: ["author", "comments.author"]
       });
   }
 
@@ -43,7 +43,7 @@ export class KanbanService {
     if (task) {
       return task;
     }
-    throw new HttpException(`task  does not exist`, HttpStatus.NOT_FOUND);
+    throw new HttpException(`Task  does not exist`, HttpStatus.NOT_FOUND);
   }
 
   async getTaskById(id: number) {
@@ -58,27 +58,53 @@ export class KanbanService {
   }
 
 
+  // Delete the associated comments 
+  // but this method is not effective because When you delete the comments individually in a loop,
+  //  it results in multiple database queries, which can introduce additional overhead
+  //   due to the network latency and query execution time for each deletion. 
+  // This approach can become slower as the number of comments increases because each delete 
+  // operation requires a round-trip to the database.
+  // async deleteTask(id: number) {
+  //   const task = await this.getTaskById(id);
+
+  //   for (const comment of task.comments) {
+  //     await this.commentRepository.delete(comment.id);
+  //   }
+
+  // Now delete the task
+  //   await this.taskRepository.delete(id);
+
+  //   return { message: "Task deleted successfully" };
+  // }
+  async deleteTask(id: number) {
+    const task = await this.taskRepository.findOneBy({ id });
+
+    if (task) {
+      // Delete the associated comments and Checklists
+      await this.commentRepository.delete({ task: { id } });
+      await this.checklistRepository.delete({ task: { id} });
+
+      // Now delete the task
+      await this.taskRepository.delete(id);
+
+      return { message: "Task deleted successfully!" };
+    } else {
+      throw new HttpException(
+        `Task does not exist`,
+        HttpStatus.NOT_FOUND
+      );
+    }
+  }
+
+
+
   async updateTask(id: number, task: UpdateTaskDto) {
     await this.findTask(id)
     await this.taskRepository.update(id, task);
-    return {message:" task updated successfully"};
+    return { message: " task updated successfully" };
   }
 
-  async deleteTask(id: number) {
-    await this.findTask(id)
-    await this.taskRepository.delete(id);
-    return { Message: "Task deleted successfully" };
-  }
 
-  async createChecklist(checklist: CreateChecklistDto, taskId: number) {
-    const task = await this.getTaskById(taskId);
-    const newChecklist = this.checklistRepository.create({
-      ...checklist,
-      task
-    });
-    await this.checklistRepository.save(newChecklist);
-    return task;
-  }
   async getAllChecklist() {
     return this.checklistRepository.find(
       {
@@ -86,8 +112,22 @@ export class KanbanService {
       }
     );
   }
+  async createChecklist({ title, isChecked, taskId }: CreateChecklistDto) {
+    const task = await this.findTask(taskId);
+    const newChecklist = await this.checklistRepository.create({
+      title,
+      isChecked,
+      task
+    });
+    await this.checklistRepository.save(newChecklist);
+    // Return the updated task object
+    return task;
+  }
+
   async getChecklistById(id: number) {
-    const checkList = await this.checklistRepository.findOneBy({ id });
+    const checkList = await this.checklistRepository.findOne({
+      where: { id }
+    });
     if (checkList) {
       return checkList;
     }
@@ -104,32 +144,38 @@ export class KanbanService {
   }
 
   async deleteChecklist(id: number) {
-    const checklist = await this.taskRepository.findOne(
-      {
-        where: { id }
-      });
-    if (!checklist) {
-      throw new HttpException(`checklist  does not exist`, HttpStatus.NOT_FOUND);
-    } await this.checklistRepository.delete(id);
-    return { message: 'checklist deleted successfully' }
+    await this.getChecklistById(id);
+    await this.checklistRepository.delete(id);
+
+    return { message: 'Checklist deleted successfully' };
   }
 
 
-  async createComment(comment: CreateCommentDto, taskId: number, user: User,) {
-    const task = await this.getTaskById(taskId);
-    const newComment = await this.commentRepository.create({
-      ...comment,
-      task,
-      author: user
-    })
-    await this.commentRepository.save(newComment)
 
+  async createComment({ comment, taskId }: CreateCommentDto, user: User) {
+    const task = await this.findTask(taskId);
+
+    // Create the comment entity without the taskId
+    const newComment = await this.commentRepository.create({
+      comment,
+      author: user,
+      task: task,
+    });
+
+    await this.commentRepository.save(newComment);
+
+    // Return the updated task object
     return task;
   }
+
+
   async getAllcomment() {
     return this.commentRepository.find(
       {
-        relations: ["author"]
+        relations: ["author"],
+        order: {
+          createdAt: "ASC"
+        }
       }
     );
   }

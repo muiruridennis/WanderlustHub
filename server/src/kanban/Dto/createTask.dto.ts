@@ -8,14 +8,15 @@ export class CreateTaskDto {
     @IsEnum(Priority)
     priority: Priority;
 
+    @IsOptional()
     @IsString()
     description: string;
 
-    // @IsDate()
     @IsDateString()
     @IsOptional()
     dueDate?: Date;
-
+    
+    @IsOptional()
     @IsString()
     assignedTo: string;
 

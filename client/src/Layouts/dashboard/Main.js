@@ -8,7 +8,10 @@ import { useMediaQuery, useTheme } from "@mui/material";
 
 function Main() {
   return (
-    <main component="main" style={{ flex: 1 }}>
+    <main component="main" style={{
+      flex: 1,
+      //  padding: '16px', // Adjust the value as per your requirement
+    }}>
       <Routes>
         {mainRoutes.map((route, idx) => {
           return (

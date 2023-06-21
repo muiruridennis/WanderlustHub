@@ -1,6 +1,6 @@
 import {
     Controller, Post, ClassSerializerInterceptor, UseInterceptors,
-    Body, Req, HttpCode, UseGuards, Get, Res, Patch, Param
+    Body, Req, HttpCode, UseGuards, Get, Res, Patch, SerializeOptions
 }
     from '@nestjs/common';
 import { RegisterUserstDTO } from "./dto/register-user.dto";
@@ -17,6 +17,9 @@ import { ForgotPasswordDto } from './dto/forgotPassword.dto';
 
 
 @Controller('auth')
+@SerializeOptions({
+    strategy: 'excludeAll'
+  })
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
     constructor(

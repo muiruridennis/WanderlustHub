@@ -15,15 +15,15 @@ function KanbanPopup(props) {
     setOpenPopup(false);
   };
   return (
-    <Dialog open={openPopup} maxWidth="xl"
-      // sx={{
-      //   position: 'fixed',
-      //   top: 0,
-      //   right: "100",
-      //   height: '100vh',
-      //   width: '50vw',
-      //   // backgroundColor: 'white',
-      // }}
+    <Dialog open={openPopup} 
+    maxWidth='lg'
+      sx={{
+        "& .MuiDialog-container": {
+          justifyContent: "flex-end",
+          alignItems: "flex-start",
+          marginTop:9,
+        }
+      }}
     >
       <DialogTitle>
         <div style={{ display: 'flex', justifyContent: "space-between", marginBottom: '10px' }}>

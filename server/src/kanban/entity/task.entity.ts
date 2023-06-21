@@ -22,8 +22,10 @@ export default class Task {
     @OneToMany(() => Comment, comment => comment.task, {
         eager: true,
         cascade: true,
+        onDelete: "CASCADE",
     })
     comments: Comment[];
+
 
     @OneToMany(() => Checklist, (checklist) => checklist.task, {
         eager: true,
@@ -35,6 +37,7 @@ export default class Task {
         () => User,
         (author: User) => author.kanbanTask
     )
+
     public author: User;
 
 

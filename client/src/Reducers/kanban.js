@@ -17,20 +17,26 @@ import {
     CREATE_TASK_COMMENT,
     DELETE_TASK_COMMENT,
     CREATE_TASK_CHECKLIST,
-    DELETE_TASK_CHECKLIST
+    DELETE_TASK_CHECKLIST,
+    DRAGGED,
+    DRAG,
+    CHECK,
+    MESSAGE
 } from "../Constants/actionTypes";
-import { normalizedTasks } from "../Constants/DummyData"
 
 const initialState = {
+    // to fix about checkList from here!!!! Happy coding 
     tasks: [],
+    message: null,
     itemSelected: null,
     isBoardOpen: true,
     categoryOpen: null,
     targetDropZone: null,
     isLoading: false,
-    error: null
+    error: null,
+    isDragged: false,
+    isChecked: false,
 };
-
 const kanbanReducer = (state = initialState, action) => {
     switch (action.type) {
         case START_LOADING:
@@ -45,6 +51,12 @@ const kanbanReducer = (state = initialState, action) => {
             return { ...state, targetDropZone: action.payload.status };
         case TARGET_LEFT:
             return { ...state, targetDropZone: null };
+        case DRAG:
+            return { ...state, isDragged: true };
+        case CHECK:
+            return { ...state, isChecked: true };
+        case DRAGGED:
+            return { ...state, isDragged: false };
         case DELETE_TASK:
             return { ...state, tasks: state.tasks.filter(task => task.id !== action.payload) };
         case CREATE_TASK:
@@ -52,26 +64,84 @@ const kanbanReducer = (state = initialState, action) => {
         case GET_ALL_TASKS:
             return { ...state, tasks: action.payload };
         case FETCH_TASK:
-            return { ...state, task: action.payload };
-        case DELETE_TASK_COMMENT:
-            return { ...state, tasks: state.tasks.comments.filter(task => task.id !== action.payload) };
-        case CREATE_TASK_COMMENT:
-            return { ...state, tasks: [...state.tasks?.comments, action.payload] };
+            return {
+                ...state,
+                tasks: state.tasks.map((task) =>
+                    task.id === action.payload.id ? action.payload : task
+                ),
+            };
 
-        case DELETE_TASK_CHECKLIST:
-            return { ...state, tasks: state.tasks.checklists.filter(task => task.id !== action.payload) };
-        case CREATE_TASK_CHECKLIST:
-            return { ...state, tasks: [...state.tasks?.checklists, action.payload] };
         case UPDATE_TASK:
             return {
                 ...state,
                 tasks: state.tasks.map((task) => task.id === action.payload.id ? action.payload : task)
                 //if task is updated it should return a new updated array of tasks otherwise it should return task as was 
             };
+        case CREATE_TASK_COMMENT:
+            return {
+                ...state,
+                tasks: state.tasks.map(task => {
+                    if (task.id === action.payload.id) {
+                        return {
+                            ...action.payload,
+                            comments: [
+                                ...(task.comments || []), // Spread the previous comments
+                                action.payload.comments[action.payload.comments.length - 1] // Add the new comment at the end
+                            ]
+                        };
+                    } else {
+                        return task;
+                    }
+                }),
+                error: null, // Clear the error state
+            };
+
+        case CREATE_TASK_CHECKLIST:
+            return {
+                ...state,
+                tasks: state.tasks.map(task => {
+                    if (task.id === action.payload.id) {
+                        return {
+                            ...action.payload,
+                            checklists: [
+                                ...(task.checklists || []), // Spread the previous comments
+                                action.payload.checklists[action.payload.checklists.length - 1] // Add the new comment at the end
+                            ]
+                        };
+                    } else {
+                        return task;
+                    }
+                }),
+                error: null, // Clear the error state
+            };
+
+        case CREATE_TASK_CHECKLIST:
+            const taskId = action.payload.taskId;
+            const newChecklist = action.payload.checklist;
+            return {
+                ...state,
+                tasks: state.tasks.map((task) => {
+                    if (task.id === taskId) {
+                        return {
+                            ...task,
+                            checklists: [...task.checklists, newChecklist],
+                        };
+                    }
+                    return task;
+                }),
+            };
         case UPDATE_TASK_CHECKLIST:
             return {
                 ...state,
-                tasks: state.tasks.checklists.map((checklist) => checklist.id === action.payload.id ? action.payload : checklist)
+                checklists: state.checklists.map((checklist) => checklist.id === action.payload.id ? action.payload : checklist)
+            };
+        case DELETE_TASK_CHECKLIST:
+            return {
+                ...state,
+                tasks: state.tasks.map(task => ({
+                    ...task,
+                    checklists: task.checklists.filter(checklist => checklist.id !== action.payload)
+                }))
             };
 
         case DRAG_AND_DROP:
@@ -83,7 +153,15 @@ const kanbanReducer = (state = initialState, action) => {
         case WHO_OPEN:
             return { ...state, categoryOpen: action.payload };
         case ERROR:
-            return { ...state, error: action.payload };
+            return {
+                ...state,
+                error: action.payload,
+            };
+        case MESSAGE:
+            return {
+                ...state,
+                message: action.payload,
+            };
         default:
             return state;
     }

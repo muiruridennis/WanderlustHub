@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { Box, Typography, Divider, Avatar } from "@mui/material";
+import { Box, Typography, Avatar } from "@mui/material";
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Task from "./Task";
 import Add from "./Add";
 import { useDispatch, useSelector } from "react-redux";
-import { dragAndDrop, targetTheDropZone, leaveDropZone } from "../../Actions/kanban";
+import { dragAndDrop, targetTheDropZone, leaveDropZone, drag, dragged } from "../../Actions/kanban";
 
 function Tasks({ data, status, name }) {
   const [openCards, setOpenCards] = useState(true);
   const dispatch = useDispatch();
-  const { itemSelected, targetDropZone } = useSelector((state) => state.Kanban);
+  const { itemSelected, targetDropZone, isDragged } = useSelector((state) => state.Kanban);
   const handleToggle = () => {
     setOpenCards(prevState => !prevState);
   };
@@ -33,12 +33,16 @@ function Tasks({ data, status, name }) {
     event.preventDefault();
     dispatch(targetTheDropZone(status));
     dispatch(dragAndDrop(itemSelected?.task?.id, { "status": targetDropZone }));
+    dispatch(drag())
   };
+
+
   return (
     <Box
-      sx={{
-        marginBottom: 7
-      }}
+    sx={{
+      marginBottom: 7,
+    }}
+    
       onDragOver={handleDragOver}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
@@ -51,7 +55,6 @@ function Tasks({ data, status, name }) {
           {openCards ? <KeyboardArrowDownIcon /> : <ChevronRightIcon />}
         </Box>
       </Box>
-      <Divider />
       {openCards && (
         <Box>
           {data.map(task => (

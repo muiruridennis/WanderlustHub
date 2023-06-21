@@ -12,6 +12,7 @@ import { createTheme } from './theme';
 import App from './App';
 import "./index.css";
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
@@ -20,11 +21,12 @@ const CLIENT_ID = process.env.REACT_APP_GOOGLE_AUTH_CLIENT_ID;
 const theme = createTheme();
 root.render(
   // <React.StrictMode>
+
   <Provider store={store}>
     <BrowserRouter>
       <GoogleOAuthProvider clientId={CLIENT_ID}>
         <ThemeProvider theme={theme}>
-        <CssBaseline />
+          <CssBaseline />
 
           <App />
         </ThemeProvider>

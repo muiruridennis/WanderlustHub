@@ -27,6 +27,7 @@ import Avatar from '@mui/material/Avatar';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { useSelector, useDispatch } from "react-redux";
 import { fetchLoggedUser } from "../../Actions/auth";
+import DisplayPhoto from "../../Images/display-photo.jpg"
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -190,9 +191,9 @@ const Header = () => {
           // backgroundColor: (theme) => alpha(theme.palette.background.default, 0.8),
 
           color: "secondary.contrastText",
-          position: "fixed",
+          // position: "fixed",
           top: 0,
-          zIndex: (theme) => theme.zIndex.appBar
+          zIndex: (theme) => theme.zIndex.drawer + 1, // Increase the zIndex value
         }}
       >
         <Toolbar>
@@ -207,7 +208,7 @@ const Header = () => {
             Take-us Safaris
           </Typography>
 
-          <Search>
+          {/* <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -215,7 +216,7 @@ const Header = () => {
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
             />
-          </Search>
+          </Search> */}
           <Box sx={{ flexGrow: 1, }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' }, }}>
             <Tooltip title="Mails">
@@ -265,8 +266,10 @@ const Header = () => {
                   {authData?.firstName.charAt(0)}
                 </Avatar>
               } */}
-                <Avatar>User</Avatar>
-              </IconButton>
+                <Avatar
+                  src={DisplayPhoto}
+                  variant="rounded"
+                />              </IconButton>
             </Tooltip>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>

@@ -80,7 +80,7 @@ function ResetPassword() {
                                                 <Typography sx={{ mb: 2 }}>
                                                     Your password has been successfully reset. Click below to log in.
                                                 </Typography>
-                                                <Link to="/">
+                                                <Link to="/auth">
                                                     <Button color="primary" fullWidth
                                                         sx={{ fontSize: "16px", textTransform: "none" }}
                                                     > login </Button>

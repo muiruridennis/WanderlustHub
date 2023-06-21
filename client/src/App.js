@@ -1,7 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 import Overview from './Layouts/dashboard/Layout';
+// import Overview from './Layouts/dashboard/new/layout';
 import AuthLayout from './Layouts/Auth/layout';
 import Account from './Layouts/account/layout';
+import Kanban from './Layouts/kanban/layout';
+import Client from './Layouts/client/layout';
 import MiniLayout from './pages/Users/UserDetails';
 
 import {
@@ -21,6 +24,8 @@ function App() {
         <Route path="tours/paymentConfirmation" element={<PaymentConfirmation />} />
         <Route path="overview/*" name="Overview" element={<Overview />} >
           <Route path="overview/account/*" name="Account" element={< Account />} />
+          <Route path="overview/kanban/*" name="Kanban" element={< Kanban />} />
+          <Route path="overview/clientsDetails/:id/*" name="Clients" element={< Client />} />
           <Route path="overview/users/:clientId/*" name="Minipages" element={< MiniLayout />} />
         </Route>
       </Routes>

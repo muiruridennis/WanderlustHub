@@ -1,19 +1,9 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from "react-redux";
-import { Container, Button, List, Typography, Divider } from '@mui/material';
-import { useMediaQuery, useTheme } from "@mui/material";
-import General from "./general"
+import { Container,  Typography, List } from '@mui/material';
 import Children from '../../Layouts/account/layout';
-import { useParams, useNavigate, NavLink } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
+import { NavLink } from 'react-router-dom';
 
 
 function Index() {
-    const [navLinkActive, setNavlinkActive] = useState(true);
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const theme = useTheme();
-    const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
     const navLinkStyles = ({ isActive }) => (
 
         isActive

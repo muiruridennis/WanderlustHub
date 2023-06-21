@@ -1,28 +1,37 @@
-import React, { useState } from "react";
-import { deleteTask, select } from "../../Actions/kanban";
-import SingleTask from "./SingleTask"
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, Typography, Button, Stack, Avatar, Paper } from "@mui/material";
 import ClearIcon from '@mui/icons-material/Clear';
 import CommentIcon from '@mui/icons-material/Comment';
-import AttachFileIcon from '@mui/icons-material/AttachFile';
-import KanbanPopup from "./KanbanPopup"
+
+import { useDispatch, useSelector } from "react-redux"
+// import { ToastContainerWrapper, notifyError, notifySuccess } from '../../Utils/notificationUtils';
+import KanbanPopup from "./popUp/KanbanPopup"
 import avatar from "../../Images/avatar.jpg";
-import { useDispatch } from "react-redux"
+import Dialogue from "./popUp/index";
+import { deleteTask, select } from "../../Actions/kanban";
+
 const Task = ({ task }) => {
     const dispatch = useDispatch();
     const [openPopup, setOpenPopup] = useState(false);
-    const isLoading = false;
 
     const handleDragStart = (event) => {
         dispatch(select(task));
         event.dataTransfer.effectAllowed = 'move';
         event.dataTransfer.setData('text/plain', null);
     };
-
-    const handleDelete = () => {
-        deleteTask(task.id);
+    const handleDelete = async ({ id }) => {
+        try {
+            // Dispatch the deleteTask action
+            await dispatch(deleteTask(id));
+        } catch (error) {
+            // Handle any error that occurred during deletion
+            console.error("An error occurred while deleting the task:", error);
+        }
     };
-  
+
+    const handleOpenPopup = () => {
+        setOpenPopup(true)
+    };
 
     return (
         <>
@@ -31,7 +40,8 @@ const Task = ({ task }) => {
                 onDragStart={handleDragStart}
                 sx={{
                     marginBottom: 1,
-                    maxHeight: 200
+                    maxHeight: 200,
+                    cursor: "grab"
                 }}
             >
                 <Paper elevation={4} sx={{ backgroundColor: "#ECF9FF" }}>
@@ -39,7 +49,7 @@ const Task = ({ task }) => {
                         <Stack spacing={"auto"} direction="row" sx={{ marginBottom: 0.5 }}>
                             <Typography variant="subtitle1">{task.priority}</Typography>
                             <Button
-                                onClick={handleDelete}
+                                onClick={() => handleDelete(task)}
                                 variant="text"
                                 color="secondary"
                                 sx={{
@@ -53,23 +63,22 @@ const Task = ({ task }) => {
                             </Button>
                         </Stack>
                         <Typography variant="subtitle1" sx={{ marginBottom: 2 }}>{task.title}</Typography>
-                        <Stack direction="row" spacing={"auto"} onClick={() => setOpenPopup(true)}>
+                        <Stack direction="row" spacing={"auto"} onClick={handleOpenPopup}
+                        >
                             <Stack direction="row" spacing={1} sx={{ marginTop: 1.2 }}>
-                                <div sx="comments-num"><CommentIcon fontSize="small" />{task.comments.length}</div>
-                                {/* <div sx="attach-num"><AttachFileIcon fontSize="small" />{task.attach}</div> */}
+                                <div sx="comments-num"><CommentIcon fontSize="small" />{task.comments?.length}</div>
                             </Stack>
                             <Stack direction="row" spacing={1}>
-                                {/* <Button size="small"><AddIcon />Add</Button> */}
                                 <Avatar src={avatar} alt="avatar" />
                             </Stack>
                         </Stack>
                     </CardContent>
+
                 </Paper>
             </Card>
-            <KanbanPopup openPopup={openPopup} setOpenPopup={setOpenPopup} title="Task" >
-                {isLoading ? <h1>loading...</h1> :
-                    <SingleTask task={task} />
-                }
+            <KanbanPopup openPopup={openPopup} setOpenPopup={setOpenPopup} title="Task"       >
+                <Dialogue task={task} />
+
             </KanbanPopup>
         </>
     );

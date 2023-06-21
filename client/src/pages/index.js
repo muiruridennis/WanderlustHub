@@ -1,11 +1,17 @@
 import Overview from "./Overview";
 import ClientsPage from "./clients/clients";
+import CustomersPage from "./clients/customer";
+import ClientsInfo from "./clients/clientsDetails";
+import GeneralInfo from "./clients/generalInfo";
+import  ClientsBookings from "./clients/bookings.js";
+import  ClientsActivities from "./clients/activities.js";
+
 import InventoryPage from "./Inventory";
 import AuthPage from "./Auth/login";
 import RecoverPassword from "./Auth/RecoverPassword";
 import ResetPassword from "./Auth/ResetPassword";
 import ConfirmEmail from "./Auth/EmailConfirmation";
-import BookingPage from "./Bookings";
+import BookingPage from "./Bookings/Bookings";
 import CalendarApp from "./Calendar";
 import UsersPage from "./Users/Users";
 import UserDetails from "./Users/UserDetails";
@@ -26,8 +32,13 @@ import ToursDetails from "./Tours/toursDetails";
 import Chekout from "./Tours/Chekout";
 import PaymentConfirmation from "./Tours/PaymentConfirmation";
 import Kanban from "./Kanban/Kanban.js";
+import TaskComments from "./Kanban/popUp/taskComment";
+import TaskChecklists from "./Kanban/popUp/taskChecklist";
+import TaskOverview from "./Kanban/popUp/SingleTask";
 
 export {
     Overview, ClientsPage, Personal, Transactions, Referrals, Activities, InventoryPage, AuthPage, ToursDetails, Chekout, GeneralAccount, Settings, Billings, Security, Notifications,
-    BookingPage, ConfirmEmail, RecoverPassword, ResetPassword, UsersPage, CalendarApp, UserDetails, Mpesa, Tours, Index, PaymentConfirmation, MainAccount, Kanban
+    BookingPage, ConfirmEmail, RecoverPassword, ResetPassword, UsersPage, CalendarApp, UserDetails, Mpesa, Tours, Index, PaymentConfirmation, MainAccount, Kanban,
+     TaskComments, TaskChecklists, TaskOverview, CustomersPage, ClientsInfo, GeneralInfo,  ClientsBookings,
+     ClientsActivities
 };

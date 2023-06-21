@@ -9,10 +9,12 @@ import { OverviewBookings } from '../sections/overview/overviewBookings';
 import ClienytsByGender from '../sections/overview/clienytsByGender';
 import { OverviewLatestBookings } from '../sections/overview/OverviewLatestBookings';
 import { OverviewExpenses } from '../sections/overview/OverviewExpenses';
-import { OverviewPlannedEvents} from '../sections/overview/OverviewPlannedEvents';
+import { OverviewPlannedEvents } from '../sections/overview/OverviewPlannedEvents';
 
 function Overview() {
   const now = new Date();
+  const gridItemProps = { xs: 12, sm: 12, lg: 3 };
+
   return (
     <>
       <Box
@@ -28,9 +30,7 @@ function Overview() {
             spacing={3}
           >
             <Grid item
-              xs={12}
-              sm={6}
-              lg={3}
+             {...gridItemProps}
             >
               <OverviewBudget
                 difference={12}
@@ -40,9 +40,7 @@ function Overview() {
               />
             </Grid>
             <Grid item
-              xs={12}
-              sm={6}
-              lg={3}
+             {...gridItemProps}
             >
               <OverviewTotalClients
                 difference={16}
@@ -52,19 +50,16 @@ function Overview() {
               />
             </Grid>
             <Grid item
-              xs={12}
-              sm={6}
-              lg={3}
+             {...gridItemProps}
             >
               <OverviewTasksProgress
                 sx={{ height: '100%' }}
                 value={75.5}
               />
             </Grid>
-            <Grid item
-              xs={12}
-              sm={6}
-              lg={3}
+            <Grid
+              item
+             {...gridItemProps}
             >
               <OverviewTotalProfit
                 sx={{ height: '100%' }}
@@ -75,59 +70,62 @@ function Overview() {
             <Grid item
               xs={12}
               lg={7}
+              sm={12}
             >
               <OverviewBookings
                 sx={{ height: '500px' }}
               />
             </Grid>
-            <Grid item
+            <Grid
+              item
               xs={12}
-              md={6}
+              md={12}
               lg={5}
+              sm={12}
             >
               <OverviewPlannedEvents
                 sx={{ height: '500px' }}
                 const events={[
                   {
-                    id:1,
+                    id: 1,
                     name: "Thursday Meeting",
-                    date:1689125653500,
-                    location:"Online"
+                    date: 1689125653500,
+                    location: "Online"
                   },
                   {
-                    id:2,
+                    id: 2,
                     name: "Physical Meeting",
-                    date:1689125653500,
-                    location:"Not specified"
+                    date: 1689125653500,
+                    location: "Not specified"
                   },
                   {
-                    id:3,
+                    id: 3,
                     name: "Coast Tour",
-                    date:1689129853500,
-                    location:"Mombasa"
+                    date: 1689129853500,
+                    location: "Mombasa"
                   },
                   {
-                    id:4,
+                    id: 4,
                     name: "Amboseli  ",
-                    date:1555016400000,
-                    location:"Amboseli"
+                    date: 1555016400000,
+                    location: "Amboseli"
                   },
                   {
-                    id:5,
+                    id: 5,
                     name: "Coast Tour",
-                    date:1689121053500,
-                    location:"Mombasa"
+                    date: 1689121053500,
+                    location: "Mombasa"
                   },
                   {
-                    id:6,
+                    id: 6,
                     name: "Coast Tour",
-                    date:1689125653500,
-                    location:"Mombasa"
+                    date: 1689125653500,
+                    location: "Mombasa"
                   },
                 ]}
               />
             </Grid>
-            {/* <Grid item
+            <Grid item
               xs={12}
               md={6}
               lg={4}
@@ -135,12 +133,14 @@ function Overview() {
               <ClienytsByGender
                 sx={{ height: '500px' }}
               />
-            </Grid> */}
+            </Grid>
 
             <Grid
+              item
               xs={12}
               md={6}
               lg={4}
+              sm={12}
             >
               <OverviewExpenses
                 tours={[
@@ -175,7 +175,7 @@ function Overview() {
                     updatedAt: subDays(subHours(now, 5), 6).getTime()
                   },
                   {
-                    id: 'bcad5524fe3a2f8f8620ceda',
+                    id: 'bcad5524fe3a0ceda',
                     amount: 14500,
                     name: 'Nairobi National Park',
                     updatedAt: subDays(subHours(now, 5), 6).getTime()
@@ -184,10 +184,12 @@ function Overview() {
                 sx={{ height: '100%' }}
               />
             </Grid>
-            <Grid
+            {/* <Grid
+              item
               xs={12}
-              md={12}
-              lg={8}
+              md={6}
+              lg={4}
+              sm={12}
             >
               <OverviewLatestBookings
                 bookings={[
@@ -272,7 +274,7 @@ function Overview() {
                 ]}
                 sx={{ height: '100%' }}
               />
-            </Grid>
+            </Grid> */}
           </Grid>
         </Container>
       </Box>

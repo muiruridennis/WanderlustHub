@@ -20,7 +20,7 @@ export class BookingService {
     ) { }
     async findAllBookings() {
         return this.bookingRepository.find({
-            relations: ["user"]
+            relations: ["user", "tour"]
         })
     }
 

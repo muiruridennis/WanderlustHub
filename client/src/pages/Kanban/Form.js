@@ -27,17 +27,24 @@ function Form({ setIsFormOpen, isFormOpen, status }) {
   const validationSchema = Yup.object().shape({
     priority: Yup.string().required("Priority is required"),
     title: Yup.string().required("Task title is required"),
+    description: Yup.string().required("Task description is required"),
+    assignedTo: Yup.string().required("Task assigned To is required"),
   });
 
   const formik = useFormik({
     initialValues: {
       priority: "",
+      description: "",
       title: "",
+      assignedTo: "",
+      dueDate: "",
       status
     },
     validationSchema,
     onSubmit: (values) => {
       dispatch(createTask(values));
+      setIsFormOpen(prevState => !prevState)
+
     },
   });
 
@@ -75,9 +82,10 @@ function Form({ setIsFormOpen, isFormOpen, status }) {
 
           <TextField
             fullWidth
-            variant="filled"
+            variant="outlined"
             type="text"
-            placeholder="My new task title..."
+            // placeholder="My new task title..."
+            label="Task Title"
             name="title"
             value={formik.values.title}
             onChange={formik.handleChange}
@@ -86,6 +94,54 @@ function Form({ setIsFormOpen, isFormOpen, status }) {
             helperText={formik.touched.title && formik.errors.title}
             multiline
             sx={{ marginBottom: 2, backgroundColor: "#84D2C5", marginTop: 2 }}
+
+          />
+
+          <TextField
+            fullWidth
+            variant="outlined"
+            type="text"
+            // placeholder="My new task description..."
+            label="Task Description"
+            name="description"
+            value={formik.values.description}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.description && Boolean(formik.errors.description)}
+            helperText={formik.touched.description && formik.errors.description}
+            multiline
+            sx={{ marginBottom: 2, backgroundColor: "#84D2C5", marginTop: 2 }}
+
+          />
+          <TextField
+            fullWidth
+            variant="outlined"
+            type="text"
+            label="Task Assigned To"
+            // placeholder="task Asigned To ..."
+            name="assignedTo"
+            value={formik.values.assignedTo}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.assignedTo && Boolean(formik.errors.assignedTo)}
+            helperText={formik.touched.assignedTo && formik.errors.assignedTo}
+            multiline
+            sx={{ marginBottom: 2, backgroundColor: "#84D2C5", marginTop: 2 }}
+
+          />
+          <label style={{ fontSize: "12px" }}>Due Date</label>
+          <TextField
+            name="dueDate"
+            type="date"
+            variant="outlined"
+            // label="Due Date"
+            fullWidth
+            margin="normal"
+            value={formik.values.dueDate}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.dueDate && Boolean(formik.errors.dueDate)}
+            helperText={formik.touched.dueDate && formik.errors.dueDate}
 
           />
           <Stack spacing={3} direction="row" sx={{ marginTop: 1, }}>
