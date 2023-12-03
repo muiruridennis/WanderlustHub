@@ -1,7 +1,6 @@
-import {PrimaryGeneratedColumn, Column, Entity, CreateDateColumn, OneToOne, ManyToOne} from "typeorm"
-import User from "../../users/entity/user.entity";
-import Client from "../../client/entity/client.entity";
-import Tour from "../../tour/entity/tour.entity";
+import { PrimaryGeneratedColumn, Column, Entity, JoinColumn, OneToOne, ManyToOne, CreateDateColumn } from "typeorm"
+import Booking from '../../booking/entity/booking.entity'; // Adjust the import path as needed
+import Mpesa from "../../mpesa/entity/mpesa.entity";
 
 @Entity()
 class Payment {
@@ -9,25 +8,26 @@ class Payment {
     id?: number;
 
     @Column()
-    paymentAmount: number;
+    amount: number;
+
+    @CreateDateColumn({ type: 'timestamp',})
+    paymentDate: Date;
 
     @Column()
-    referenceNumber: string;
+    paymentMethod: string; // Payment method (e.g., credit card, PayPal, bank transfer)
 
-    @Column({default: false})
-    paymentSuccess: boolean;
+    @ManyToOne(() => Booking, booking => booking.payments, {
+        onDelete: 'CASCADE', // Optional: Delete associated payment when booking is deleted
+        eager: true,
+        cascade: true,
+    })
+    booking: Booking;
 
-    @Column({default: false})
-    approved: boolean;
-
-    @CreateDateColumn()
-    paymentDate: Date
-
-    // @ManyToOne(() => User, user => user.payments)
-    // user: User;
-
-    // @ManyToOne(()=> Tour, tour => tour.payments)
-    // tour: Tour;
-
+    @OneToOne(() => Mpesa, mpesa => mpesa.payment, {
+        eager: true,
+        cascade: true,
+    })
+    @JoinColumn()
+    mpesa: Mpesa;
 }
 export default Payment;

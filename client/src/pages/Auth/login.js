@@ -13,7 +13,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 
-import { Formik, Form, ErrorMessage } from 'formik';
+import { Formik } from 'formik';
 import { ToastContainer, toast } from 'react-toastify';
 
 import LockOutlined from '@mui/icons-material/LockOutlined';
@@ -23,9 +23,9 @@ import Logo from '../../Components/logo';
 
 import useGoogleAuthentication from './useGoogleAuthentication';
 
-import Input from './input';
+import Input from '../../Components/TextFieldInput';
 import { signup, signin } from '../../Actions/auth';
-import loginSchema from './validation';
+import { signupSchema, signinSchema } from './validation';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -52,43 +52,6 @@ function Auth() {
   const { error, isLoading } = useSelector((state) => state.auth);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const validate = (values) => {
-    const errors = {};
-    const validationMessages = {
-      firstName: "First name is required",
-      lastName: "Last name is required",
-      phoneNumber: "Phone Number is required",
-      confirmPassword: "Confirm password field is required",
-    };
-
-    if (isSignup) {
-      Object.keys(validationMessages).forEach((key) => {
-        if (values[key] === "") {
-          errors[key] = validationMessages[key];
-        }
-      });
-    }
-
-    return errors;
-  };
-
-  const validationErrors = {
-    color: "#FF0000",
-    fontStyle: "italic",
-    marginLeft: "30px",
-    marginTop: "10px"
-  };
-  const backgroundStyles = {
-    backgroundImage: `url(${BackgroundImage})`,
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    minHeight: "100vh",
-    display: "flex",
-    alignItems: "center",
-  }
-
-
   const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword);
   const swithMode = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup);
@@ -102,7 +65,6 @@ function Auth() {
   if (error) {
     notifyError()
   }
-
   return (
     <Box
       component="main"
@@ -176,7 +138,6 @@ function Auth() {
             backgroundColor: 'background.paper',
             display: 'flex',
             flexDirection: 'column',
-            // position: 'relative'
           }}
         >
           <Box
@@ -190,7 +151,6 @@ function Auth() {
             }}
           >
             <Box
-              // component={NextLink}
               href="/"
               sx={{
                 display: 'inline-flex',
@@ -248,8 +208,7 @@ function Auth() {
               </Box>
               <Formik
                 initialValues={initialValues}
-                validationSchema={loginSchema}
-                validate={validate}
+                validationSchema={isSignup ? signupSchema : signinSchema}
                 onSubmit={(values) => {
                   const authAction = isSignup ? signup : signin;
                   dispatch(authAction(values, navigate));
@@ -265,34 +224,84 @@ function Auth() {
                 {
                   formik => {
                     return (
-                      <Form onSubmit={formik.handleSubmit}
+                      <form
+                        onSubmit={formik.handleSubmit}
                         sx={{
                           w: '100%', // Fix IE 11 issue.
                           mt: "10px",
-                        }} autoComplete="false">
+                        }}
+                        noValidate
+                        autoComplete
+                      >
                         <Grid container spacing={2}>
                           {
                             isSignup && (
                               <>
-                                <Input name="firstName" label="First Name" handleChange={formik.handleChange} half required={true} />
-                                <ErrorMessage style={validationErrors} component="span" name="firstName" />
-                                <Input name="lastName" label="Last Name" handleChange={formik.handleChange} half required={true} />
-                                <ErrorMessage style={validationErrors} component="span" name="lastName" />
-                                <Input name="phoneNumber" label="Phone Number" handleChange={formik.handleChange} required={true} />
-                                <ErrorMessage style={validationErrors} component="span" name="phoneNumber" />
+                                <Input
+                                  name="firstName"
+                                  label="First Name"
+                                  handleChange={formik.handleChange}
+                                  half
+                                  required
+                                  onBlur={formik.handleBlur}
+                                  error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+                                  helperText={formik.touched.firstName && formik.errors.firstName}
+                                />
+                                <Input
+                                  name="lastName"
+                                  label="Last Name"
+                                  handleChange={formik.handleChange}
+                                  half
+                                  required
+                                  onBlur={formik.handleBlur}
+                                  error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+                                  helperText={formik.touched.lastName && formik.errors.lastName}
+                                />
 
+                                <Input
+                                  name="phoneNumber"
+                                  label="Phone Number"
+                                  handleChange={formik.handleChange}
+                                  required
+                                  onBlur={formik.handleBlur}
+                                  error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+                                  helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+                                />
                               </>
                             )
                           }
 
-                          <Input name="email" label="Email Adress" handleChange={formik.handleChange} type="email" />
-                          <ErrorMessage style={validationErrors} component="span" name="email" />
-                          <Input name="password" label=" Password" handleChange={formik.handleChange} type={showPassword ? "text" : "password"} handleShowPassword={handleShowPassword} />
-                          <ErrorMessage style={validationErrors} component="span" name="password" />
+                          <Input
+                            name="email"
+                            label="Email Adress"
+                            handleChange={formik.handleChange}
+                            type="email"
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.email && Boolean(formik.errors.email)}
+                            helperText={formik.touched.email && formik.errors.email}
+                          />
+                           <Input
+                            name="password"
+                            label=" Password"
+                            handleChange={formik.handleChange}
+                            type={showPassword ? "text" : "password"} 
+                            handleShowPassword={handleShowPassword}
+                            value={formik.values.password}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.password && Boolean(formik.errors.password)}
+                            helperText={formik.touched.password && formik.errors.password}
+                          />
                           {isSignup && (
                             <>
-                              <Input name="confirmPassword" label="Repeat password" handleChange={formik.handleChange} type="password" />
-                              <ErrorMessage style={validationErrors} component="span" name="confirmPassword" />
+                              <Input
+                                name="confirmPassword"
+                                label="Repeat password"
+                                handleChange={formik.handleChange}
+                                type="password"
+                                onBlur={formik.handleBlur}
+                                error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
+                                helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+                              />
                             </>
                           )}
 
@@ -346,7 +355,7 @@ function Auth() {
                           </Grid>
 
                         </Grid>
-                      </Form>
+                      </form>
                     )
                   }
                 }

@@ -1,174 +1,70 @@
 import React from 'react';
-import { Box, Container, Divider, Grid, Paper, Typography } from '@mui/material';
-import SyncAltIcon from '@mui/icons-material/SyncAlt';
+import { Box, Container, Divider, Button, Paper, Typography, Stack } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+import { styled } from "@mui/material/styles";
 
+function Transaction({ transactionsData, transactionId }) {
+    // Find the selected transaction based on the transactionId
+    const selectedTransaction = transactionsData.find(
+        (transaction) => transaction.id === transactionId
+    );
 
-function Transaction() {
-    const isComplete = false;
-    const titleStyle = {
-        fontSize: "11px",
-        letterSpacing: ".2em",
-        lineHeight: 1.2,
-        fontWeight: 700,
-        textTransform: "uppercase",
-        paddingTop: 1,
-        paddingBottom: 1, 
-        color: "#364a63"
+    if (!selectedTransaction) {
+        // Handle case when selectedTransaction is not found
+        return <div>No transaction data found for the selected ID</div>;
     }
-    const spanStyle = {
-        fontSize: "13px",
-        color: "000000",
-        marginRight: "2rem"
 
-    }
-    const spanCaption = {
-        fontSize: "16px",
-        fontWeight: 400,
-        lineHeight: 1.5,
-        letterSpacing: "-0.01em",
-        textAlign: "center",
-    }
+    const StyledBox = styled(Box)({
+        backgroundColor: "#F5F5F5",
+        borderRadius: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: 70
+    });
 
     return (
-        <Container maxWidth="sm"  >
-            <Paper elevation={0} sx={{ margin: 0 }}>
-                <Box sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: 2
-                }}>
-                    <Box sx={{ padding: "0.5rem", display: "flex", alignItems: "center" }}>
-                        <SyncAltIcon fontSize="large"
-                            sx={{
+        <Container maxWidth="lg">
+            <StyledBox>
+                <StyledBox>
+                    {selectedTransaction.isApproved === true && selectedTransaction.status === "success" ? (
+                        <CheckCircleIcon color='success' fontSize="large" />
+                    ) : (
+                        <CancelIcon color='error' fontSize='large' />
+                    )}
+                </StyledBox>
 
-                                bgcolor: "#E8F9FD",
-                                borderRadius: "25px",
-                                color: "#66BFBF",
-                                mr: 1
-                            }}
-                        />
-                        <div >
-                            <Typography variant="h5" >115.00 USD</Typography>
-                            <span style={{
-                                fontSize: "13px",
-                                color: "#8094ae",
-                            }}>Aug 12, 2022 09:00 AM</span>
-                        </div>
-                    </Box>
-                    <Box sx={{
-                        bgcolor: "#1ee0ac",
-                        p: 1,
-                        color: "#FFFFFF"
-                    }}>
-                        Completed
-                    </Box>
-                </Box>
-                <Divider />
-                <Box  >
-                    <Grid container spacing={6}>
-                        <Grid item lg={6}>
-                            <Typography variant="h6"
-                                sx={titleStyle}
-                            > In Account</Typography>
-                            <div style={{ display: 'inline' }}>
-                                <span style={spanStyle}> Amount</span>
-                                <span style={spanCaption}> 14500 ksh</span>
-                            </div>
-                            <div>
-                                <span style={spanStyle}> User Account</span>
-                                <span style={spanCaption}> 0001034Dt</span>
-                            </div>
-                            <div>
-                                <span style={spanStyle}> Amount</span>
-                                <span style={spanCaption}> 14500 ksh</span>
-                            </div>
-                        </Grid>
-                        <Grid item lg={6}>
-                            <Typography variant="h6"
-                                sx={titleStyle}
-                            > In Transaction</Typography>
-                            <div>
-                                <span style={spanStyle}> Amount</span>
-                                <span style={spanCaption}> 14500 ksh</span>
-                            </div>
-                            <div>
-                                <span style={spanStyle}> Amount</span>
-                                <span style={spanCaption}> 14500 ksh</span>
-                            </div>
-                            <div>
-                                <span style={spanStyle}> Amount</span>
-                                <span style={spanCaption}> 14500 ksh</span>
-                            </div>
-
-                        </Grid>
-                    </Grid>
-                </Box>
-                <Divider />
-                <Box>
-                    <Typography variant="h6"
-                        sx={titleStyle}
-                    > Booking Details</Typography>
-                    <Grid container  spacing={1.5}>
-                        <Grid item lg={6}>
-                            <div>
-                                <span style={spanStyle}> Order Date</span>
-                                <span style={spanCaption}> 9/12/2022</span>
-                            </div>
-                            <div>
-                                <span style={spanStyle}> Completed At</span>
-                                <span style={spanCaption}> 9/12/2022</span>
-                            </div>
-
-                        </Grid>
-                        <Grid item lg={6}>
-                            <div>
-                                <span style={spanStyle}> Placed By</span>
-                                <span style={spanCaption}> John Doe</span>
-                            </div>
-                            <div>
-                                <span style={spanStyle}> Approved By</span>
-                                <span style={spanCaption}> Jane Smith</span>
-                            </div>
-
-                        </Grid>
-                    </Grid>
-                </Box>
-                <Divider />
-                <Box >
-                    <Typography variant="h6"
-                        sx={titleStyle}
-                    > Additional Details</Typography>
-                    <Grid container spacing={2}>
-                        <Grid item lg={12}>
-                            <div>
-                                <span style={spanStyle}> Transaction Type</span>
-                                <span style={spanCaption}> Mpesa Deposit</span>
-                            </div>
-                            <div>
-                                <span style={spanStyle}> Payment Gateway</span>
-                                <span style={spanCaption}>  Mpesa</span>
-                            </div>
-                            <div>
-                                <span style={spanStyle}> Payment From</span>
-                                <span style={spanCaption}> 07348789878989</span>
-                            </div>
-                            <div>
-                                <span style={spanStyle}> Payment To</span>
-                                <span style={spanCaption}> Bank Account </span>
-                            </div>
-                            <div>
-                                <span style={spanStyle}> Updated Balance</span>
-                                <span style={spanCaption}> 073487</span>
-                            </div>
-                        </Grid>
-
-                    </Grid>
-                </Box>
+            </StyledBox>
+            <Typography variant="h6" align="center">
+                {selectedTransaction.details}
+            </Typography>
+            <Divider />
+            <Paper elevation={2} sx={{ paddingY: "2rem", paddingX: "1rem", marginY: 1, backgroundColor: "#FFEBEB" }}>
+                <Stack spacing={2}>
+                    <TransactionInfo label="Amount" value={selectedTransaction.amount} />
+                    <TransactionInfo label="Payment Status" value={selectedTransaction.status} color={selectedTransaction.status === "success" ? "green" : "red"} />
+                    <TransactionInfo label="Ref Number" value={selectedTransaction.reference} />
+                    <TransactionInfo label="Payment Method" value={selectedTransaction.paymentMethod} />
+                    <TransactionInfo label="Payment Time" value={selectedTransaction.date} />
+                    <TransactionInfo label="Payment Approved" value={selectedTransaction.isApproved ? "Approved" : "Not Approved"} color={selectedTransaction.isApproved ? "green" : "red"} />
+                </Stack>
             </Paper>
-
-        </Container >
-    )
+            <Button variant="contained" fullWidth>
+                Back
+            </Button>
+        </Container>
+    );
 }
 
-export default Transaction
+const TransactionInfo = ({ label, value, color }) => (
+    <Stack direction="row" spacing={2} justifyContent="space-between">
+        <Typography variant="body1">{label}</Typography>
+        <Typography variant="body1" align='right' sx={{ color: color || 'inherit' }}>
+            {value}
+        </Typography>
+    </Stack>
+);
+
+export default Transaction;
+

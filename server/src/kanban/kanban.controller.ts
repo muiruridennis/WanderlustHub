@@ -2,7 +2,6 @@ import {
     Controller,
     Get,
     Post,
-    Put,
     Delete,
     Body,
     Param,
@@ -13,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { CreateTaskDto, UpdateTaskDto } from './Dto/createTask.dto';
 import { KanbanService } from './kanban.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthenticationGuard  } from '../auth/guards/jwt-auth.guard';
 import RequestWithUser from "../auth/requestWithUser.interface";
 import CreateCommentDto from './Dto/comment.dto';
 import { CreateChecklistDto, UpdateChecklistDto } from './Dto/checklist.dto';
@@ -25,12 +24,12 @@ import { CreateChecklistDto, UpdateChecklistDto } from './Dto/checklist.dto';
 export class KanbanController {
     constructor(private readonly kanbanService: KanbanService) { }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthenticationGuard )
     @Post("create")
     async createTask(@Body() task: CreateTaskDto, @Req() req: RequestWithUser) {
         return await this.kanbanService.createTask(task, req.user);
     }
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthenticationGuard )
     @Get()
     async findAll() {
         return await this.kanbanService.getAllTasks();
@@ -51,7 +50,7 @@ export class KanbanController {
         return await this.kanbanService.updateTask(id, update);
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthenticationGuard )
     @Post('task/comment')
     async createComment(@Body() comment: CreateCommentDto, @Req() req: RequestWithUser) {
         return await this.kanbanService.createComment(comment, req.user);
@@ -73,12 +72,12 @@ export class KanbanController {
         return await this.kanbanService.deleteComment(id)
     }
 
-    // @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthenticationGuard )
     // async createChecklist(@Body() checklist: CreateChecklistDto, taskId: number) {
     //     return await this.kanbanService.createChecklist(checklist, taskId);
     // }
     
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthenticationGuard )
     @Post("task/checklist")
     async createChecklist(@Body() checklist: CreateChecklistDto) {
         return await this.kanbanService.createChecklist(checklist);

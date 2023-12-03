@@ -1,11 +1,14 @@
 import { PrimaryGeneratedColumn, Column, JoinColumn, Entity, OneToOne, OneToMany } from "typeorm";
-import LocalFile from "../../local-file/entity/localFile.entity"
-import { Exclude, Expose } from "class-transformer";
-import { UserRole } from "../dto/roles.interface"
+import { Expose, Exclude } from "class-transformer";
 import Review from "../../reviews/entity/review.entity";
 import Booking from "../../booking/entity/booking.entity"
-import Comment from "../..//kanban/entity/comment.entity";
-import Task from "../..//kanban/entity/task.entity";
+import Comment from "../../kanban/entity/comment.entity";
+import Task from "../../kanban/entity/task.entity";
+import CustomEvent from '../../calendar/entity/calendar.entity';
+import NotificationPreference from "./notificationPreference.entity";
+import Address from "./address.entity";
+import { Profile } from './profile.entity';
+import Permission from "../.././utils/types/permission.type"
 
 
 @Entity()
@@ -17,9 +20,7 @@ class User {
   @Expose()
   name: string;
 
-  @Column({
-    unique: true //unique flag. It indicates that there should not be two users with the same email
-  })
+  @Column({ unique: true })
   @Expose()
   email: string;
 
@@ -29,42 +30,31 @@ class User {
   @Column({ default: false })
   public isPhoneNumberConfirmed: boolean;
 
-  @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
-  roles?: UserRole;
+  @Column({
+    type: 'enum',
+    enum: Permission,
+    array: true,
+    default: []
+  })
+  public permissions: Permission[]
+
 
   @Column({ nullable: true })
-  // @Exclude()
+  @Exclude()
   public password?: string;
 
   @Column({ default: false })
   public isEmailConfirmed: boolean;
 
-  @OneToOne(
-    () => LocalFile,
-    {
-      nullable: true
-    }
-  )
-  @JoinColumn({ name: 'avatarId' })
-  public avatar?: LocalFile;
-
   @Column({ default: false })
   public isRegisteredWithGoogle: boolean;
 
   @Column({ nullable: true })
-  public avatarId?: number;
-  // Thanks to creating the separate avaterId property, we can get the id of the file even without joining the DatabaseFile table. This neat trick can 
-  // increase our performance a bit and avoid fetching the binary data unnecessarily.
-
-  // @Exclude()
-  confirmPassword: string;
-
-  @Column({ nullable: true })
-  // @Exclude()
+  @Exclude()
   public currentHashedRefreshToken?: string;
 
   @Column({ nullable: true })
-  // @Exclude()
+  @Exclude()
   resetLink: string;
 
   @OneToMany(
@@ -90,5 +80,32 @@ class User {
   })
   bookings: Booking[];
 
+  @OneToMany(() => CustomEvent, (customEvent: CustomEvent) => customEvent.user, {
+    cascade: true,
+  })
+  customEvents: CustomEvent[];
+
+
+  @OneToOne(() => Address, address => address.user, {
+    eager: true,
+    cascade: true,
+  })
+  
+  @JoinColumn()
+  public address: Address;
+
+  @OneToOne(() => Profile, (profile: Profile) => profile.user, {
+    cascade: true,
+    eager: true,
+  })
+  @JoinColumn()
+  profile: Profile;
+
+  @OneToOne(() => NotificationPreference, (notificationPreference) => notificationPreference.user, {
+    cascade: true,
+    eager: true,
+  })
+  @JoinColumn()
+  notificationPreferences: NotificationPreference;
 };
 export default User;

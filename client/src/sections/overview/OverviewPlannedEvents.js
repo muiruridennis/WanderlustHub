@@ -1,103 +1,112 @@
-import { format } from 'date-fns';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardHeader,
-  Divider,
-  IconButton,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  SvgIcon,
-  Typography
-} from '@mui/material';
+import React from 'react';
+import { Grid, Card, CardMedia, CardContent, Typography, Box, IconButton, Collapse, Stack, Paper } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { formatDistanceToNow, parseISO, isValid } from 'date-fns';
+import Meeting from "../../Images/meeting.jpg";
+import abedares from "../../Images/abedares.jpg";
+import mara from "../../Images/mara.jpg";
 
-export const OverviewPlannedEvents = (props) => {
-  const { events = [], sx } = props;
+const upcomingEvents = [
+  {
+    id: 1,
+    name: 'Maasai Mara Adventure Tour',
+    date: '2023-08-15',
+    location: 'Mountain Valley',
+    description: 'Embark on an unforgettable adventure in the majestic mountain valley.',
+    imageURL: mara,
+  },
+  {
+    id: 2,
+    name: 'Island Paradise Getaway',
+    date: '2023-09-10',
+    location: 'Tropical Island',
+    description: 'Escape to a tropical paradise and enjoy the sun, sand, and clear blue waters.',
+    imageURL: abedares,
+  },
+  {
+    id: 2,
+    name: 'Physical Meeting',
+    date: '2023-07-7',
+    location: 'Undisclosed',
+    description: 'Every director should attend',
+    imageURL: Meeting,
+  },
+];
+
+
+const UpcomingEvents = () => {
+  const [expandedCards, setExpandedCards] = React.useState({});
+
+  const handleExpandClick = (cardId) => {
+    setExpandedCards((prevExpandedCards) => ({
+      ...prevExpandedCards,
+      [cardId]: !prevExpandedCards[cardId],
+    }));
+  };
+
+  const getTimeRemaining = (eventDate) => {
+    const parsedEventDate = parseISO(eventDate);
+  
+    if (!isValid(parsedEventDate)) {
+      return <Typography color="error.dark">Invalid date</Typography>;
+    }
+  
+    return formatDistanceToNow(parsedEventDate, { addSuffix: true });
+  };
   return (
-    <Card sx={sx}>
-      <Typography color="#000000" sx={{ fontSize: "1.25rem", fontWeight: 700 }}>Upcoming Events</Typography>
-      <List>
-        {events.map((event, index) => {
-          const hasDivider = index < events.length - 1;
-          const plannedAt = format(event.date, 'dd/MM/yyyy');
-
-          return (
-            <ListItem
-              divider={hasDivider}
-              key={event.id}
-            >
-              {/* <ListItemAvatar>
-                {
-                  client
-                    ? (
-                      <Box
-                        component="img"
-                        src={client}
-                        sx={{
-                          borderRadius: 1,
-                          height: 48,
-                          width: 48
-                        }}
-                      />
-                    )
-                    : (
-                      <Box
-                        sx={{
-                          borderRadius: 1,
-                          backgroundColor: 'neutral.200',
-                          height: 48,
-                          width: 48
-                        }}
-                      />
-                    )
-                }
-              </ListItemAvatar> */}
-              <ListItemText
-                primary={event.name}
-                primaryTypographyProps={{ variant: 'subtitle2'}}
-                secondaryTypographyProps={{ variant: 'body2' }}
+    <Paper elevation={3} sx={{padding:3}}>
+      <Typography variant="h6" sx={{ marginBottom: 2 }}>
+        Upcoming Events
+      </Typography>
+      <Grid container spacing={3}>
+        {upcomingEvents.map(({ id, imageURL, name, date, location, description }) => (
+          <Grid item xs={12} sm={6} md={4} key={id}>
+            <Card>
+              <CardMedia
+                component="img"
+                height="180"
+                width="100"
+                image={imageURL}
+                alt={name}
+                sx={{
+                  objectFit: 'cover', // Ensure the image covers the entire CardMedia
+                }}
               />
-              <ListItemText
-                primary={event.location}
-                primaryTypographyProps={{ variant: 'caption' }}
-                secondaryTypographyProps={{ variant: 'body2' }}
-              />
-              <ListItemText
-                primary={plannedAt}
-                primaryTypographyProps={{ variant: 'caption' }}
-                secondaryTypographyProps={{ variant: 'body2' }}
-              />
-              <IconButton edge="end">
-                <SvgIcon>
-                  <MoreHorizIcon />
-                </SvgIcon>
-              </IconButton>
-            </ListItem>
-          );
-        })}
-      </List>
-      <Divider />
-      <CardActions sx={{ justifyContent: 'flex-end' }}>
-        <Button
-          color="inherit"
-          endIcon={(
-            <SvgIcon fontSize="small">
-              <ArrowForwardIcon />
-            </SvgIcon>
-          )}
-          size="small"
-          variant="text"
-          sx={{textTransform: "none"}}
-        >
-          View all
-        </Button>
-      </CardActions>
-    </Card>
+              <CardContent>
+                <Typography variant="subtitle1" gutterBottom>
+                  {name}
+                </Typography>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography variant="subtitle2">{date}</Typography>
+                  <Typography variant="subtitle2">{location}</Typography>
+                </Box>
+              </CardContent>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', px: 2 }}>
+                <Stack direction="row" spacing={2} >
+                <Typography variant="body2">Time Remaining:  </Typography>
+                <Typography variant="body2">{getTimeRemaining(date)}</Typography>
+                </Stack>
+                <IconButton
+                  onClick={() => handleExpandClick(id)}
+                  aria-expanded={expandedCards[id]}
+                  aria-label="show more"
+                >
+                  {/* <ExpandMoreIcon /> */}
+                  {expandedCards[id] ? null : <Typography variant='button' sx={{color:"#22A699", textTransform:"none"}}>Learn More</Typography>}
+                                    <ExpandMoreIcon />
+                </IconButton>
+              </Box>
+              <Collapse in={expandedCards[id]} timeout="auto" unmountOnExit>
+                <CardContent>
+                  <Typography paragraph>{description}</Typography>
+                </CardContent>
+              </Collapse>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Paper>
   );
 };
+
+export default UpcomingEvents;

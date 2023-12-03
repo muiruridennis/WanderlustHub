@@ -1,4 +1,3 @@
-
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Card, Typography } from '@mui/material';
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';

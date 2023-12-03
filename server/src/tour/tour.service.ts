@@ -19,7 +19,7 @@ export class TourService {
             return tour;
         }
         throw new HttpException(
-            'Tour with this id does not exist',
+            `Tour with  id ${id} does not exist`,
             HttpStatus.NOT_FOUND
         );
     }

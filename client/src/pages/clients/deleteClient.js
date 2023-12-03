@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import ConfirmDialog from "../../Components/ConfirmDialog";
 export const DeleteClient = () => {
-    const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' });
+    const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '', action:"" });
 
     const handleSubmit = useCallback(
         (event) => {
@@ -41,6 +41,8 @@ export const DeleteClient = () => {
                               isOpen: true,
                               title: 'Are you sure to delete Your Account?',
                               subTitle: "You can't undo this operation",
+                              action:"Delete",
+
                               onConfirm: () => {
                                 setConfirmDialog({
                                   ...confirmDialog,

@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, Req, UseGuards, Delete, Param } from '@nes
 import { ReviewsService } from './reviews.service';
 import Tour from "../tour/entity/tour.entity";
 import CreateReviewDto from "./dto/review.dto";
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthenticationGuard  } from '../auth/guards/jwt-auth.guard';
 import RequestWithUser from "../auth/requestWithUser.interface";
 @Controller('reviews')
 export class ReviewsController {
@@ -10,7 +10,7 @@ export class ReviewsController {
         private readonly reviewsService: ReviewsService
     ) { }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthenticationGuard )
     @Post("create")
     async createReview(@Body() review: CreateReviewDto, @Req() req: RequestWithUser, tourId: number) {
         const newReview = await this.reviewsService.createReview(review, req.user, tourId)
@@ -22,7 +22,7 @@ export class ReviewsController {
         return await this.reviewsService.allReviews()
     }
     
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthenticationGuard )
     @Delete("delete/:id")
     async remove(@Param("id") id: number) {
         await this.reviewsService.deleteReview(id)

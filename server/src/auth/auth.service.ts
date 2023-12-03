@@ -26,16 +26,15 @@ export class AuthService {
 
     public async register(registrationData: RegisterUserstDTO) {
         const hashedPassword = await this.usersService.hashPassword(registrationData.password)
+        if (registrationData.password !== registrationData.confirmPassword) {
+            throw new HttpException('Passwords does not match', HttpStatus.BAD_REQUEST);
+        }
         try {
-            if (registrationData.password !== registrationData.confirmPassword) {
-                throw new HttpException('Passwords does not match', HttpStatus.BAD_REQUEST);
-            }
             const createdUser = await this.usersService.createNewUser({
                 ...registrationData,
                 password: hashedPassword,
                 resetLink: ''
             });
-            createdUser.password = undefined; // you should not return password
             return createdUser;
         } catch (error) {
             if (error?.code === PostgresErrorCode.UniqueViolation) {
@@ -54,14 +53,14 @@ export class AuthService {
     }
     //To be used in local strategy
     public async getAuthenticatedUser(email: string, plainTextPassword: string) {
+        const user = await this.usersService.getByEmail(email);
         try {
-            const user = await this.usersService.getByEmail(email);
             await this.verifyPassword(plainTextPassword, user.password);
             user.password = undefined;
             return user;
         } catch (error) {
             throw new HttpException(
-                'Wrong credentials provided please try again!',
+                'Unexpected error occured',
                 HttpStatus.BAD_REQUEST
             );
         }
@@ -107,7 +106,7 @@ export class AuthService {
         const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')}`;
         return { cookie, token }
     }
-    
+
     //A method that generates cookies to clear both the access token and the refresh token
     public getCookiesForLogOut() {
         return [
@@ -143,11 +142,11 @@ export class AuthService {
     async resetPassord(resetDetails: ResetPasswordDto) {
         const { resetLink, password } = resetDetails;
         const hashedPassword = await this.usersService.hashPassword(password)
-         await this.decodeConfirmationToken(resetLink);
+        await this.decodeConfirmationToken(resetLink);
         const user = await this.usersService.getByResetLink(resetLink); //helps us find if this is the real user that has clicked on the reset link
         await this.usersService.resetPassword(user.email, hashedPassword);
 
-        return { message: ' Password set Successfully'}
+        return { message: ' Password set Successfully' }
     }
     public async decodeConfirmationToken(token) {
         // if (!(await this.isEnabled())) {
@@ -160,8 +159,8 @@ export class AuthService {
 
             if (typeof payload === 'object' && 'email' in payload) {
                 return payload.email;
-              }
-              throw new BadRequestException();
+            }
+            throw new BadRequestException();
 
         } catch (error) {
             if (error?.name === 'TokenExpiredError') {

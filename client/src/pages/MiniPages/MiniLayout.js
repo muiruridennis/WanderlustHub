@@ -2,7 +2,7 @@ import React from 'react'
 import { minorRoutes } from '../../Constants/AppContentRoutes';
 import { Route, Routes, Navigate  } from 'react-router-dom';
 
-function MiniLayout({client}) {
+function MiniLayout({user}) {
     return (
             <Routes>
                 {minorRoutes.map((route, idx) => {
@@ -14,7 +14,7 @@ function MiniLayout({client}) {
                                 path={route.path}
                                 exact={route.exact}
                                 name={route.name}
-                                element={<route.element client={client} />}
+                                element={<route.element user={user} />}
                             />
                         )                
                     )

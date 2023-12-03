@@ -1,9 +1,10 @@
 import { OneToMany } from 'typeorm';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn , JoinColumn} from 'typeorm';
 import { Difficulty } from '../difficulty';
 import Review from '../../reviews/entity/review.entity';
 import Booking from "../../booking/entity/booking.entity"
-
+import Destination from '../../destination/entity/destination.entity';
+import CustomEvent from '../../calendar/entity/calendar.entity';
 
 @Entity()
 class Tour {
@@ -17,10 +18,17 @@ class Tour {
     startDate: Date;
 
     @Column()
+    endDate: Date;
+
+    @Column()
     price: number;
 
     @Column()
-    summary: string;
+    tourType: string;
+
+
+    @Column()
+    description: string;
 
     @Column({ nullable: true })
     imageCover: string;
@@ -45,6 +53,15 @@ class Tour {
 
     @Column('text', { array: true, nullable: true })
     public etinerary: string[];
+
+    @ManyToOne(() => Destination, (destination) => destination.tours)
+    destination: Destination;
+    
+    @OneToMany(() => CustomEvent, customEvent => customEvent.tour, {
+        eager: true,
+        cascade: true,
+    })
+    customEvents: CustomEvent[];
 
 }
 

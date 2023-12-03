@@ -3,7 +3,7 @@ import { useParams, useNavigate, NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { getClient } from "../../Actions/clients";
 import CircularProgress from '../../Components/CircularProgress'
-import { Box, Button, Paper, Typography, Divider } from '@mui/material';
+import { Box, Button, Paper, Typography, Divider, Container } from '@mui/material';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import MiniLayout from "../MiniPages/MiniLayout"
 import List from '@mui/material/List';
@@ -16,18 +16,34 @@ import { styled } from '@mui/material/styles';
 
 
 function UserDetails() {
-  let { clientId } = useParams();
+  let { userId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const { isLoading, client } = useSelector((state) => state.clients);
+  const isLoading = false
+  // const { 
+  //   // isLoading,
+  //   user } = useSelector((state) => state.user);
+  const user = {
+    id: 1,
+    username: 'john_doe',
+    email: 'john.doe@example.com',
+    role: 'Admin',
+    registrationDate: '2023-07-01',
+    firstName: 'John',
+    lastName: 'Doe',
+    phoneNumber: '123-456-7890',
+    address: '123 Main St, New York, USA',
+    status: 'Active',
+    avatar: 'path/to/avatar1.jpg',
+    verified: true,
+  }
   const navLinkStyles = ({ isActive }) => (
 
     isActive
       ? {
-        color: '#3E6D9C',
+        color: '#6366f1',
         textDecoration: "underline",
         textUnderlineOffset: "1em",
         textDecorationThickness: "3px",
@@ -46,6 +62,25 @@ function UserDetails() {
         marginRight: "2rem"
       }
   );
+  const navLists = [
+    {
+      name: "General",
+      to: `/overview/users/${userId}/personal`,
+    },
+    {
+      name: "Transactions",
+      to: `/overview/users/${userId}/transactions`,
+    },
+    {
+      name: "Refferals",
+      to: `/overview/users/${userId}/reffrals`,
+    },
+    {
+      name: "Activities",
+      to: `/overview/users/${userId}/activities`,
+    },
+    
+  ]
 
 
   const handleNavigate = () => {
@@ -56,99 +91,41 @@ function UserDetails() {
     marginLeft: "5px"
   }));
 
-  useEffect(() => {
-    dispatch(getClient(clientId));
-  }, [clientId, dispatch]); //it should rerender when the id changes
+  // useEffect(() => {
+  //   dispatch(getClient(userId));
+  // }, [userId, dispatch]); //it should rerender when the id changes
 
-  if (isLoading) {
-    return <CircularProgress />
-  }
-  if (!client) return null; //
+  // if (isLoading) {
+  //   return <CircularProgress />
+  // }
+  // if (!user) return null; //
 
   return (
-    <div style={{ backgroundColor: "#EEEEEE", margin: "auto", }}>
-      <Box sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        marginBottom: 4,
-        ml: 3,
-        p: 1,
+    <Container maxWidth="xl"
+      sx={{
+        flexGrow: 1,
+        py: 8
       }}>
-        <div>
-          <Box sx={{ display: 'flex' }}>
-            <Typography variant="h6" > User / </Typography>
-            <Typography variant="h6" color="primary">{` ${client.firstName} ${client.lastName}`}</Typography>
-          </Box>
-          <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", mt: 1 }}>
-            <Typography variant="caption"> User ID: UD003054</Typography>
-            <Typography sx={{ ml: 2, mr: 2 }} variant="caption"> Last Login: 15 Feb, 2019 01:02 PM</Typography>
-            <Typography variant="caption">Account Status: <span>Active</span> </Typography>
-          </Box>
-        </div>
-        <Button
-          size="small"
-          variant="outlined"
-          onClick={handleNavigate}
-          sx={{
-            m: 2,
-            textTransform: "none",
-            // pr: 2, pl: 2, 
-            color: "black",
-            display: isSmallScreen ? "none" : "flex"
-
-          }}
-        > <KeyboardBackspaceIcon fontSize="small" sx={{ mr: 1 }} />Back</Button>
-      </Box>
-      <Paper elevation={3}
-        sx={{
-          p: isSmallScreen ? "auto" : 2,
-          ml: isSmallScreen ? "auto" : 1,
-          mr: isSmallScreen ? "auto" : 1,
-          mb: isSmallScreen ? "auto" : 2,
-
-        }
-        }>
+      <div>
+        <Typography variant="h4" align='left' sx={{ marginBottom: 7 }}>
+          Account
+        </Typography>
         <List
           sx={{ width: 'auto', bgcolor: 'background.paper', display: 'flex', }}
         >
-          <NavLink
-            to={`/admin/users/${clientId}/personal`}
-
-            style={
-              navLinkStyles
-            }
-          >
-            <PersonOutlineIcon sx={{ alignItems: "center" }} />
-            <ListText>Personal</ListText>
-          </NavLink>
-          <NavLink
-            to={`/admin/users/${clientId}/transactions`}
-            style={navLinkStyles}
-
-          >
-            <SyncAltIcon />
-            <ListText>Tranactions</ListText>
-          </NavLink>
-          <NavLink
-            to={`/admin/users/${clientId}/referrals`}
-            style={navLinkStyles}
-          >
-            <GroupIcon />
-            <ListText>Referrals</ListText>
-          </NavLink>
-          <NavLink
-            to={`/admin/users/${clientId}/activities`}
-
-            style={navLinkStyles}
-          >
-            <InsightsIcon />
-            <ListText>Activities</ListText>
-          </NavLink>
+          {navLists.map(({ name, to }) => (
+            <NavLink
+              key={name}
+              to={to}
+              style={navLinkStyles}
+            >
+              {name}
+            </NavLink>
+          ))}
         </List>
-        <Divider />
-        <MiniLayout client={client} />
-      </Paper>
-    </div >
+      </div>
+      <MiniLayout user={user}  />
+    </Container>
   )
 }
 

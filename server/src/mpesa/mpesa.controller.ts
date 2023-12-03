@@ -5,14 +5,14 @@ import RequestWithToken from "./requestWithToken";
 import StkPush from './dto/stkPush.dto';
 import User from '.././users/entity/user.entity';
 import RequestWithUser from "../auth/requestWithUser.interface";
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthenticationGuard  } from '../auth/guards/jwt-auth.guard';
 
 
 @Controller('mpesa')
 export class MpesaController {
     constructor(private mpesaService: MpesaService) { }
 
-    // @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthenticationGuard )
     @Get("all")
     async getAll() {
         return await this.mpesaService.getAll();
@@ -22,7 +22,7 @@ export class MpesaController {
         return await this.mpesaService.getDate(date);
     }
     
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthenticationGuard )
     @Post('stkpush')
     async lipaNaMpesaStkPush(@Req() request: RequestWithToken, @Body() stkPush: StkPush,
         @Req() req: RequestWithUser

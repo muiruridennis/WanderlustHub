@@ -16,9 +16,9 @@ function ConfirmDialog(props) {
                 }
             }}>
             <DialogTitle sx={{ textAlign: 'center' }}>
-                <IconButton 
-                disableRipple 
-                sx={{
+                <IconButton
+                    disableRipple
+                    sx={{
                         backgroundColor: theme.palette.secondary.light,
                         color: theme.palette.secondary.main,
                         '&:hover': {
@@ -29,12 +29,12 @@ function ConfirmDialog(props) {
                             fontSize: '3rem',
                         }
                     }
-                }>
+                    }>
                     <NotListedLocationIcon />
                 </IconButton>
             </DialogTitle>
             <DialogContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h6">
+                <Typography variant="subtitle1">
                     {confirmDialog.title}
                 </Typography>
                 <Typography variant="subtitle2">
@@ -43,13 +43,15 @@ function ConfirmDialog(props) {
             </DialogContent>
             <DialogActions sx={{ justifyContent: 'space-around' }}>
                 <Button
-                color='inherit'
+                    color='inherit'
+                    size='small'
                     variant="outlined"
                     onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })} >CANCEL</Button>
                 <Button
                     variant="contained"
+                    size='small'
                     color="error"
-                    onClick={confirmDialog.onConfirm} >Yes Delete</Button>
+                    onClick={confirmDialog.onConfirm} >{`Yes! ${confirmDialog.action}`}</Button>
             </DialogActions>
         </Dialog>)
 }

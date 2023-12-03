@@ -1,15 +1,15 @@
-import { IsString, IsNotEmpty, Matches, IsNumber } from 'class-validator';
+import { IsDate, IsNumber, IsString, ValidateNested } from 'class-validator';
 
 export class CreateBookingDto {
+  @IsNumber()
+  tourId: number; 
+ 
   @IsString()
-  @IsNotEmpty()
-  @Matches(/^\+[1-9]\d{1,14}$/)
-  phoneNumber: string;
+  paymentMethod: string;
 
-  // @IsNumber()
-  // @IsNotEmpty()
-  // tourId: number;
+  @IsNumber()
+  amount: number;
 
 }
 
-export default CreateBookingDto;
+

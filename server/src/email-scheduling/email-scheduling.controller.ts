@@ -5,7 +5,7 @@ import {
     UseGuards,
     Post,
 } from '@nestjs/common';
-import {JwtAuthGuard} from '../auth/guards/jwt-auth.guard';
+import {JwtAuthenticationGuard } from '../auth/guards/jwt-auth.guard';
 import EmailSchedulingService from './email-scheduling.service';
 import EmailScheduleDto from './dto/emailSchedule.dto';
 
@@ -16,7 +16,7 @@ export default class EmailSchedulingController {
     ) { }
 
     @Post('schedule')
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthenticationGuard )
     async scheduleEmail(@Body() emailSchedule: EmailScheduleDto) {
         this.emailSchedulingService.scheduleEmail(emailSchedule);
     }

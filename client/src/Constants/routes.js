@@ -12,7 +12,7 @@ export const ROUTES = {
   Kanban: "/overview/kanban",
   profile: "/overview/profile",
   darkTheme: "/overview/darkTheme",
-  expenses: "/overview/expenses",
+  finances: "/overview/finances",
   account: "/overview/account/general",
   settings: "/overview/settings",
 };

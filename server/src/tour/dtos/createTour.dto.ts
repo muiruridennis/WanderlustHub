@@ -16,11 +16,16 @@ export default class CreateTourDto {
     price: number
 
     @IsString()
-    summary: string;
+    description: string;
 
     @IsDateString()
-    // @IsDate()
     startDate: Date
+
+    @IsDateString()
+    endDate: Date
+    
+    @IsString()
+    tourType: string
 
     @IsString()
     imageCover: string;

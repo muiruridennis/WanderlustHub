@@ -1,8 +1,7 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import {
-    TypeOrmModuleAsyncOptions,
-    TypeOrmModuleOptions,
-} from '@nestjs/typeorm';
+import { TypeOrmModuleAsyncOptions, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import DatabaseLogger from '../database/databaseLogger';
+
 import { config } from 'dotenv';
 config();
 
@@ -15,6 +14,7 @@ export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
     useFactory: async (): Promise<TypeOrmModuleOptions> => {
         return {
             type: 'postgres',
+            // logger: new DatabaseLogger(),
             host: configService.get('POSTGRES_HOST'),
             port: configService.get('POSTGRES_PORT'),
             username: configService.get('POSTGRES_USER'),
@@ -22,7 +22,7 @@ export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
             database: configService.get('POSTGRES_DB'),
             entities: [__dirname + '/../**/*.entity.ts', __dirname + '/../**/*.entity.js'],
             migrations: ["dist/src/migrations/*.js'", "dist/src/migrations/*.ts'"],
-            migrationsTableName: "migrations",      
+            migrationsTableName: "migrations",
             extra: {
                 charset: 'utf8mb4_unicode_ci',
             },

@@ -2,7 +2,7 @@ import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { DirectorsRepository } from "./directors-repository";
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateDirectorDto } from "./models/create-director-Dto";
-import {LocalFilesService} from "../local-file/local-file.service";
+import { LocalFilesService } from "../local-file/local-file.service";
 
 @Injectable()
 export class DirectorsService {
@@ -27,29 +27,29 @@ export class DirectorsService {
         const directors = await this.DirectorsRepository.find({ relations: ["LocalFile"] });
         return directors;
     };
-    async updateDirectorDetails(id: number, detailsToUpdate:CreateDirectorDto) {
+    async updateDirectorDetails(id: number, detailsToUpdate: CreateDirectorDto) {
         const directorToUpdate = await this.DirectorsRepository.findOne(
             {
                 where: {
                     id
                 }
             });
-        if (!directorToUpdate){
+        if (!directorToUpdate) {
             throw new HttpException(`Director with id ${id} does not exist`, HttpStatus.NOT_FOUND)
         }
         const updatedDirectorDetails = await this.DirectorsRepository.save(detailsToUpdate);
-        return { updatedDirectorDetails, message: "Director updated successfully"}
+        return { message: "Director updated successfully" }
     }
 
-    async deleteDirector (id: number) {
+    async deleteDirector(id: number) {
         const directorToDelete = await this.DirectorsRepository.delete(id);
-        return { directorToDelete, message: "Director deleted successfully"}
+        return { directorToDelete, message: "Director deleted successfully" }
     }
     async addAvatar(directorId: number, imageBuffer: Buffer, filename: string) {
         const avatar = await this.localFilesService.uploadDatabaseFile(imageBuffer, filename);
         await this.DirectorsRepository.update(directorId, {
-          avatarId: avatar.id
+            avatarId: avatar.id
         });
         return avatar;
-      }
+    }
 }

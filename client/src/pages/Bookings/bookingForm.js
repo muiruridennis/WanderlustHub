@@ -9,28 +9,30 @@ import {
   FormLabel,
   RadioGroup,
   Radio,
-  Select,
-  InputLabel,
+
   Grid,
   Stack,
-  FormHelperText
 } from '@mui/material';
 
 import { useTheme, useMediaQuery } from "@mui/material";
+import { LocalizationProvider, MobileDateTimePicker } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from "react-redux";
-import Input from './input';
+// import Input from './input';
+import Input from "../../Components/TextFieldInput";
+import MyInput from '../../Components/SelectInput';
+
 
 
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required('First Name is required'),
-  lastName: Yup.string().required('Last Name is required'),
+  name: Yup.string().required(' Name is required'),
   email: Yup.string().email('Invalid email').required('Email is required'),
   phoneNumber: Yup.string().required('Phone Number is required'),
   tourType: Yup.string().required('Tour Type is required'),
-  dateAndTime: Yup.string().required('Date and Time is required'),
-  duration: Yup.string().required('Duration is required'),
+  startDate: Yup.string().required('Start Date is required'),
+  endDate: Yup.string().required('End Date is required'),
   participants: Yup.number().required('Number of Participants is required'),
   accommodation: Yup.string().required('Accommodation Preferences required'),
   dietaryRestrictions: Yup.string().required('Dietary Restrictions is required'),
@@ -70,57 +72,50 @@ const validationSchema = Yup.object().shape({
     otherwise: Yup.boolean(),
   }),
 });
-const FormikWrapper = React.forwardRef((props, ref) => (
-  <Formik innerRef={ref} {...props} />
-));
 
 const BookingForm = (props) => {
 
-  const { currentId, setOpenPopup, bookings, setCurrentId, tourCost } = props;
+  const { currentId, close, bookings, tourCost } = props;
+  console.log("bookings", bookings)
+
   const [totalCost, setTotalCost] = useState(tourCost);
   const [participants, setParticipants] = useState(1);
-  const initialValues = useMemo(() => {
-    return {
-      firstName: '',
-      lastName: '',
-      email: '',
-      phoneNumber: '',
-      tourType: '',
-      dateAndTime: '',
-      duration: '',
-      participants,
-      accommodation: '',
-      dietaryRestrictions: '',
-      accessibilityNeeds: '',
-      specialRequests: '',
-      totalCost,
-      paymentMethod: '',
-      cardNumber: '',
-      expirationDate: '',
-      cvvCode: '',
-      mpesaPaymentConfirmed: false,
-      mpesaTransactionID: '',
-      mpesaPhoneNumber: '',
-    };
-  }, [participants, totalCost]);
-  const [bookingData, setBookingData] = useState(initialValues)
-  const dispatch = useDispatch();
-  // const booking = bookings.map(({ bookings }) => {
-  //   if (currentId) {
-  //     return bookings.find((booking) => booking.id === currentId);
-  //   } else {
-  //     return null;
-  //   }
-  // });
-  const booking = currentId
-  ? bookings
-      .map(({ bookings }) => bookings)
-      .flat()
-      .find((booking) => booking.id === currentId)
-  : null;
 
 
-  console.log("booking", bookingData);
+  const initialValues = {
+    status: "",
+    bookedAtDate:"",
+    name: '',
+    email: '',
+    phoneNumber: '',
+    participants: 1,
+    accommodation: '',
+    dietaryRestrictions: '',
+    accessibilityNeeds: '',
+    specialRequests: '',
+    totalCost,
+    paymentMethod: '',
+    cardNumber: '',
+    expirationDate: '',
+    cvvCode: '',
+    mpesaPaymentConfirmed: false,
+    mpesaTransactionID: '',
+    mpesaPhoneNumber: '',
+  }
+
+  const [booking, setBooking] = useState(initialValues);
+
+  const selectedBooking = currentId ? bookings
+    .map(({ bookings }) => bookings)
+    .flat()
+    .find((booking) => booking.id === currentId) : null;
+
+  useEffect(() => {
+    if (selectedBooking) {
+      setBooking(selectedBooking);
+    }
+  }, [selectedBooking]);
+
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const formikRef = useRef(null);
@@ -139,24 +134,7 @@ const BookingForm = (props) => {
   };
 
 
-  // useEffect(() => {
-  //   if (booking) setBookingData(booking);
-  // }, [booking]);
-  useEffect(() => {
-    if (booking && booking !== bookingData) {
-      setBookingData(booking);
-    }
-  }, [booking, bookingData]);
-  
 
-  const clear = () => {
-    setCurrentId(null);
-  };
-
-  const close = () => {
-    setOpenPopup(false);
-    clear();
-  };
   const style = {
     textField: {
       margin: theme.spacing(1),
@@ -173,60 +151,110 @@ const BookingForm = (props) => {
   return (
     <Container component="main" maxWidth="md">
       <Paper elevation={2} sx={{ padding: 3 }}>
-        <FormikWrapper
-          initialValues={initialValues}
-          ref={formikRef}
+        <Formik
+          initialValues={booking}
+          enableReinitialize={true}
           validationSchema={validationSchema}
           onSubmit={(values, actions) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              actions.setSubmitting(false);
-            }, 1000);
+            // setTimeout(() => {
+            //   alert(JSON.stringify(values, null, 2));
+            //   actions.setSubmitting(false);
+            // }, 1000);
+            console.log("values", values);
           }}
         >
           {formik => (
-            <form onSubmit={formik.handleSubmit} autoComplete noValidate >
+            <form
+              onSubmit={formik.handleSubmit}
+              autoComplete
+              noValidate 
+              >
+
               <Grid container spacing={2}>
-                <Input name="firstName" label="First Name" half required handleChange={formik.handleChange} />
-                <Input name="lastName" label="Last Name" half required handleChange={formik.handleChange} />
-                <Input name="email" type="email" label="Email Address" half required handleChange={formik.handleChange} />
-                <Input name="phoneNumber" label="Phone Number" half required handleChange={formik.handleChange} />
-                <Grid item xs={12} spacing={2}>
-                  <Field name="tourType">
-                    {({ field }) => (
-                      <FormControl fullWidth>
-                        <InputLabel>Tour Type</InputLabel>
-                        <Select
-                          {...field}
-                          label="Tour Type"
-                          value={formik.values.tourType}
-                          onChange={formik.handleChange}
-                          error={formik.touched.tourType && Boolean(formik.errors.tourType)}
-                        >
-                          <MenuItem value="">Select Tour Type</MenuItem>
-                          <MenuItem value="camping">Camping</MenuItem>
-                          <MenuItem value="roadTrips">Road Trips</MenuItem>
-                          <MenuItem value="corporateTeamBuilding">Corporate</MenuItem>
-                          <MenuItem value="tourPackages">Tour Packages</MenuItem>
-                        </Select>
-                        {formik.touched.tourType && formik.errors.tourType && (
-                          <FormHelperText error>{formik.errors.tourType}</FormHelperText>
-                        )}
-                      </FormControl>
-                    )}
-                  </Field>
+                <Input
+                  name="name"
+                  label="Full Name"
+                  type="text"
+                  multiline
+                  handleChange={formik.handleChange}
+                  fullWidth
+                  required
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.name && Boolean(formik.errors.name)}
+                  helperText={formik.touched.name && formik.errors.name}
+                />
+                <Input
+                  name="email"
+                  label=" Email"
+                  type="text"
+                  multiline
+                  handleChange={formik.handleChange}
+                  fullWidth
+                  required
+                  half
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.email && Boolean(formik.errors.email)}
+                  helperText={formik.touched.email && formik.errors.email}
+                />
+                <Input
+                  name="phoneNumber"
+                  label="Phone Number"
+                  half
+                  required
+                  handleChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+                  helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+                />
+                <MyInput label="Status" name="status">
+                  <MenuItem value="Pending">Pending</MenuItem>
+                  <MenuItem value="Confirmed">Confirmed</MenuItem>
+                  <MenuItem value="Cancelled">Cancelled</MenuItem>
+                </MyInput>
+                <MyInput label="Tour Type" name="tourType">
+                  <MenuItem value="">Select Tour Type</MenuItem>
+                  <MenuItem value="Camping">Camping</MenuItem>
+                  <MenuItem value="Road Trips">Road Trips</MenuItem>
+                  <MenuItem value="Corporate Team Building">Corporate</MenuItem>
+                  <MenuItem value="Tour Packages">Tour Packages</MenuItem>
+                </MyInput>
+                <Grid item xs={6} lg={6}>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <MobileDateTimePicker
+                      label="Start Date"
+                      value={formik.values.contractExpiryDate}
+                      onChange={(newValue) => {
+                        formik.setFieldValue('startDate', newValue);
+                      }}
+                      sx={{
+                        width: '100%',
+                        marginBottom: 2,
+                      }}
+                    />
+                  </LocalizationProvider>
                 </Grid>
-                <Input name="dateAndTime" type="date" fullWidth required handleChange={formik.handleChange} />
-                <Input name="duration" label="Duration" required handleChange={formik.handleChange} />
+                <Grid item xs={6} lg={6}>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <MobileDateTimePicker
+                      label="End Date"
+                      value={formik.values.contractExpiryDate}
+                      onChange={(newValue) => {
+                        formik.setFieldValue('endDate', newValue);
+                      }}
+                      sx={{
+                        width: '100%',
+                        marginBottom: 2,
+                      }}
+                    />
+                  </LocalizationProvider>
+                </Grid>
                 <Input
                   name="participants"
                   type="number"
                   label="Number of Participants"
                   required
-                  readOnly
                   value={formik.values.participants}
                   handleChange={handleParticipantsChange}
-
                 />
 
                 <Grid item>
@@ -244,9 +272,31 @@ const BookingForm = (props) => {
                     <ErrorMessage name="accommodation" component="div" />
                   </FormControl>
                 </Grid>
-                <Input name="dietaryRestrictions" label="Dietary Restrictions" required handleChange={formik.handleChange} />
-                <Input name="accessibilityNeeds" label="Accessibility Needs" required handleChange={formik.handleChange} />
-                <Input name="specialRequests" label="Other Special Requests" required handleChange={formik.handleChange} />
+                <Input
+                  name="dietaryRestrictions"
+                  label="Dietary Restrictions"
+                  required
+                  handleChange={formik.handleChange}
+                  value={formik.values.dietaryRestrictions}
+                />
+                <Input
+                  name="accessibilityNeeds"
+                  label="Accessibility Needs"
+                  required 
+                  handleChange={formik.handleChange}
+                />
+                <Input
+                  name="specialRequests"
+                  label="Other Special Requests"
+                  required
+                  handleChange={formik.handleChange}
+                />
+                <Input
+                  name="bookedAtDate"
+                  label="booked At Date"
+                  required
+                  handleChange={formik.handleChange}
+                />
                 <Input
                   name="totalCost"
                   label="Total cost"
@@ -278,8 +328,26 @@ const BookingForm = (props) => {
                   {formik.values.paymentMethod === 'mpesa' && (
                     <>
                       <Grid container spacing={2}>
-                        <Input name="mpesaPhoneNumber" label="Mpesa Phone Number" required handleChange={formik.handleChange} />
-                        <Input name="mpesaTransactionID" label="Mpesa Transaction ID" required handleChange={formik.handleChange} />
+                        <Input
+                          name="mpesaPhoneNumber"
+                          label="Mpesa Phone Number"
+                          required
+                          handleChange={formik.handleChange}
+                          value={formik.values.mpesaPhoneNumber}
+                          onBlur={formik.handleBlur}
+                          error={formik.touched.mpesaPhoneNumber && Boolean(formik.errors.mpesaPhoneNumber)}
+                          helperText={formik.touched.mpesaPhoneNumber && formik.errors.mpesaPhoneNumber}
+                        />
+                        <Input
+                          name="mpesaTransactionID"
+                          label="Mpesa Transaction ID"
+                          required
+                          handleChange={formik.handleChange}
+                          value={formik.values.mpesaTransactionID}
+                          onBlur={formik.handleBlur}
+                          error={formik.touched.mpesaTransactionID && Boolean(formik.errors.mpesaTransactionID)}
+                          helperText={formik.touched.mpesaTransactionID && formik.errors.mpesaTransactionID}
+                        />
                       </Grid>
                       <Grid item>
                         <FormControl fullWidth component="fieldset" sx={{ marginBottom: 2 }}>
@@ -324,7 +392,7 @@ const BookingForm = (props) => {
               </Grid>
             </form>
           )}
-        </FormikWrapper>
+        </Formik>
       </Paper>
     </Container>
   );

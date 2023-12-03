@@ -1,25 +1,40 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import {
   Button,
   Card,
   CardActions,
   CardContent,
   CardHeader,
-  Checkbox,
+  Switch,
   Divider,
   FormControlLabel,
-  Stack,
-  Typography,
-  Unstable_Grid2 as Grid
+   Radio,
+  FormControl, RadioGroup,
+  FormLabel, FormGroup
 } from '@mui/material';
 
 export const SettingsNotifications = () => {
-  const handleSubmit = useCallback(
-    (event) => {
-      event.preventDefault();
-    },
-    []
-  );
+  const [formData, setFormData] = useState({
+    notificationType: 'booking_update',
+    emailEnabled: true,
+    smsEnabled: false,
+    inAppEnabled: true,
+  });
+
+  const handleChange = (event) => {
+    const { name, value, type, checked } = event.target;
+    const newValue = type === 'checkbox' ? checked : value;
+
+    setFormData({
+      ...formData,
+      [name]: newValue,
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(formData)
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -30,72 +45,50 @@ export const SettingsNotifications = () => {
         />
         <Divider />
         <CardContent>
-          <Grid
-            container
-            spacing={6}
-            wrap="wrap"
-          >
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              md={4}
+          <FormControl component="fieldset" >
+            <FormLabel component="legend">Notification Type</FormLabel>
+            <RadioGroup
+              aria-label="notificationType"
+              name="notificationType"
+              value={formData.notificationType}
+              onChange={handleChange}
+              row
             >
-              <Stack spacing={1}>
-                <Typography variant="h6">
-                  Notifications
-                </Typography>
-                <Stack>
-                  <FormControlLabel
-                    control={<Checkbox defaultChecked />}
-                    label="Email"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox defaultChecked />}
-                    label="Push Notifications"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox />}
-                    label="Text Messages"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox defaultChecked />}
-                    label="Phone calls"
-                  />
-                </Stack>
-              </Stack>
-            </Grid>
-            <Grid
-              item
-              md={4}
-              sm={6}
-              xs={12}
-            >
-              <Stack spacing={1}>
-                <Typography variant="h6">
-                  Messages
-                </Typography>
-                <Stack>
-                  <FormControlLabel
-                    control={<Checkbox defaultChecked />}
-                    label="Email"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox />}
-                    label="Push Notifications"
-                  />
-                  <FormControlLabel
-                    control={<Checkbox defaultChecked />}
-                    label="Phone calls"
-                  />
-                </Stack>
-              </Stack>
-            </Grid>
-          </Grid>
+              <FormControlLabel
+                value="booking_update"
+                control={<Radio />}
+                label="Booking Update"
+              />
+              <FormControlLabel
+                value="promotions"
+                control={<Radio />}
+                label="Promotions"
+              />
+              <FormControlLabel
+                value="news_alert"
+                control={<Radio />}
+                label="News Alert"
+              />
+            </RadioGroup>
+          </FormControl>
+          <FormGroup>
+            <FormControlLabel
+              control={<Switch name="emailEnabled" checked={formData.emailEnabled} onChange={handleChange} />}
+              label="Email Enabled"
+            />
+            <FormControlLabel
+              control={<Switch name="smsEnabled" checked={formData.smsEnabled} onChange={handleChange} />}
+              label="SMS Enabled"
+            />
+            <FormControlLabel
+              control={<Switch name="inAppEnabled" checked={formData.inAppEnabled} onChange={handleChange} />}
+              label="In-App Enabled"
+            />
+          </FormGroup>
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained">
+          <Button variant="contained" type="submit">
             Save
           </Button>
         </CardActions>

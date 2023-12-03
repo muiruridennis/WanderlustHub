@@ -7,7 +7,7 @@ import MuiDrawer from "@mui/material/Drawer";
 const StyledDrawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "isOpen",
 })(({ isOpen, theme }) => ({
-  width: isOpen ? 240 : theme.spacing(7),
+  width: isOpen ? 140 : theme.spacing(7),
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -20,7 +20,7 @@ const StyledDrawer = styled(MuiDrawer, {
 }));
 
 const CustomDrawer = () => {
-  const { isOpen, toggleIsOpen } = useDrawerContext();
+  const { isOpen, setIsOpen } = useDrawerContext();
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -29,12 +29,13 @@ const CustomDrawer = () => {
     <StyledDrawer
       variant={isLargeScreen ? "permanent" : "temporary"}
       open={!isLargeScreen && isOpen ? true : false}
-      onClose={() => toggleIsOpen(!isOpen)}
+      onClose={() => setIsOpen(!isOpen)}
       isOpen={isOpen}
     >
       <MenuItemsList />
       <AppEssentials  />
     </StyledDrawer>
+    
   );
 };
 
