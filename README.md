@@ -1,6 +1,6 @@
 # TravelApp - Explore, Book, and Experience
 
-Welcome to TravelApp, a comprehensive web application that opens the door to a world of exciting travel experiences. Built using React for the client-side, Material-UI for a sleek and responsive UI, and NestJS with PostgreSQL for a robust backend, TravelApp is your go-to platform for planning and booking unforgettable journeys.
+Welcome to WanderHub, a comprehensive web application that opens the door to a world of exciting travel experiences. Built using React for the client-side, Material-UI for a sleek and responsive UI, and NestJS with PostgreSQL for a robust backend, TravelApp is your go-to platform for planning and booking unforgettable journeys.
 
 ## Table of Contents
 
