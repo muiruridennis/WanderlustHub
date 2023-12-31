@@ -39,7 +39,8 @@ import {
   VendorDetails,
   VendorGeneralInfo,
   VendorPaymentHistory,
-  VendorInvoices
+  VendorInvoices,
+  TourPackageDetails
 
 } from "../pages";
 
@@ -77,6 +78,10 @@ export const authRoutes = [
   { path: 'recoverPassword', name: 'RecoverPassword', element: RecoverPassword },
   { path: 'resetPassword/:resetLink', name: 'ResetPassword', element: ResetPassword },
   { path: 'confirmEmail/:confirmationToken', name: 'ConfirmEmail', element: ConfirmEmail },
+]
+export const tourRoutes = [
+  { path: 'packages/:packageId', index: "index", name: 'TourPackageDetails', element: TourPackageDetails },
+
 ]
 export const accountRoutes = [
   { path: 'general', index: "index", name: 'General', element: GeneralAccount },

@@ -60,7 +60,7 @@ export class AuthService {
             return user;
         } catch (error) {
             throw new HttpException(
-                'Unexpected error occured',
+                'Wrong credentials provided',
                 HttpStatus.BAD_REQUEST
             );
         }

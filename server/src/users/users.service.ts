@@ -15,7 +15,6 @@ import NotificationPreference from './entity/notificationPreference.entity';
 import { plainToClassFromExist } from 'class-transformer';
 
 
-
 @Injectable()
 export class UsersService {
     private readonly saltRounds = 10;
@@ -85,14 +84,17 @@ export class UsersService {
         const { firstName, lastName } = userData
         const newUser = await this.userRepository.create({
             ...userData,
-            name: `${firstName} ${lastName}`
+            name: `${firstName} ${lastName}`,
+            
         });
+
         await this.userRepository.save(newUser);
         const defaultPreferences = await this.notificationPreferenceRepository.create({ user: newUser });
         await this.notificationPreferenceRepository.save(defaultPreferences);
 
         return newUser;
     }
+
     //To be implemented in Auth controller 
     async setCurrentRefreshToken(refreshToken: string, userId: number) {
         const currentHashedRefreshToken = await bcrypt.hash(refreshToken, 10);

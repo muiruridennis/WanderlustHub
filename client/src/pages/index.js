@@ -45,10 +45,11 @@ import VendorDetails from "./Finances/vendor/vendor'sDetails";
 import VendorGeneralInfo from "./Finances/vendor/generalInfo";
 import VendorPaymentHistory from "./Finances/vendor/vendorPaymentHistory.js";
 import VendorInvoices from "./Finances/vendor/vendorInvoices.js";
+import TourPackageDetails from "./LandingPage/packageDetails/tourPackageDetails"
 
 export {
     Overview, ClientsPage, Personal, Transactions, Referrals, Activities, InventoryPage, AuthPage, ToursDetails, Chekout, GeneralAccount, Settings, Billings, Security, Notifications,
     BookingPage, ConfirmEmail, RecoverPassword, ResetPassword, UsersPage, CalendarApp, UserDetails, Mpesa, Tours, Index, PaymentConfirmation, MainAccount, Kanban,
-     TaskComments, TaskChecklists, TaskOverview,  ClientsInfo, GeneralInfo,  ClientsBookings,
+     TaskComments, TaskChecklists, TaskOverview,  ClientsInfo, GeneralInfo,  ClientsBookings,TourPackageDetails,
      ClientsActivities, MonetaryAnalysis, Finances, Expenses, Income, NetProfit, Vendor, VendorDetails,VendorGeneralInfo,VendorPaymentHistory, VendorInvoices
 };

@@ -15,7 +15,8 @@ import {
   import CreateFeatureFlagDto from './dto/createFeatureFlag.dto';
   import FindOneParams from '../utils/findOneParams';
   import UpdateFeatureFlagDto from './dto/updateFeatureFlag.dto';
-  
+  import PermissionGuard from "../users/permission.guard"
+import Permission from 'src/utils/types/permission.type';
   @Controller('feature-flags')
   @UseInterceptors(ClassSerializerInterceptor)
   export default class FeatureFlagsController {
@@ -26,8 +27,8 @@ import {
       return this.featureFlagsService.getAll();
     }
   
-    @Post('create')
-    @UseGuards(JwtAuthenticationGuard )
+    @Post()
+    @UseGuards(PermissionGuard(Permission.isSuperAdmin))
     async create(@Body() featureFlag: CreateFeatureFlagDto) {
       return this.featureFlagsService.create(featureFlag);
     }

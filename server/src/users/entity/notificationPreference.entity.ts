@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
 import User from './user.entity';
-// import { NotificationType } from "../-enum";
+import { NotificationType } from "../-enum";
 
 @Entity()
 class NotificationPreference {
@@ -16,8 +16,8 @@ class NotificationPreference {
     @Column({ default: true })
     public inAppNotificationEnabled: boolean;
 
-    // @Column({ type: 'enum', enum: NotificationType, default: NotificationType.BOOKING_UPDATE })
-    // notificationType: NotificationType;
+    @Column({ type: 'enum', enum: NotificationType, default: NotificationType.BOOKING_UPDATE })
+    notificationType: NotificationType;
 
     @OneToOne(() => User, (user) => user.notificationPreferences)
     @JoinColumn()
