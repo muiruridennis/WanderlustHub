@@ -6,7 +6,7 @@ import {
 }
     from "../Constants/actionTypes";
 
-const initialState = { clients: [], isLoading: true,  isSearching: true }
+const initialState = { clients: [], isLoading: false,  isSearching: true }
 
 export default function (state = initialState, action) {
     switch (action.type) {

@@ -18,8 +18,8 @@ function Popup(props) {
     <Dialog open={openPopup} maxWidth="lg" >
       <DialogTitle>
         <div style={{ display: 'flex', justifyContent: "space-between", marginBottom: '10px' }}>
-          <Typography variant="h6" sx={{ marginLeft: "5px", fontWeight:500 }}>{title}</Typography>
-          <Button onClick={handleClose} variant="outlined"  
+          <Typography variant="body2" sx={{ marginLeft: "5px", fontWeight:800 }}>{title}</Typography>
+          <Button onClick={handleClose} variant="text"  size="small"
           sx={{
             position: "absolute",
             right: theme.spacing(1),

@@ -15,40 +15,39 @@ import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import PersonIcon from '@mui/icons-material/Person';
 import ExploreIcon from '@mui/icons-material/Explore';
+import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
 
-export const DRAWER_LIST = [
+ const DRAWER_LIST = [
   {
     route: ROUTES.main,
-    literal: 'Dashboard',
+    literal: 'Overview',
     Icon: DashboardIcon,
   },
-  
-];
-
-export const settings = [
   {
-    route: ROUTES.profile,
-    literal: 'My Profile',
-    Icon: PersonIcon,
-  },
-
-  {
-    route: ROUTES.setting,
-    literal: 'Settings',
-    Icon: SettingsApplicationsIcon,
+    route: ROUTES.bookings,
+    literal: 'Bookings',
+    Icon: ShoppingCartIcon,
   },
   {
-    route: ROUTES.darkTheme,
-    literal: 'Theme',
-    Icon: DarkModeIcon,
+    route: ROUTES.customers,
+    literal: 'Customers',
+    Icon: PeopleIcon,
   },
   {
-    route: ROUTES.logout,
-    literal: 'Logout',
-    Icon: LogoutIcon,
+    route: ROUTES.inventory,
+    literal: 'Inventory',
+    Icon: AttachMoneyIcon,
   },
-];
-export const apps = [
+  {
+    route: ROUTES.expenses,
+    literal: 'Expenses',
+    Icon: MoneyIcon,
+  },
+  {
+    route: ROUTES.payments,
+    literal: 'Payments',
+    Icon: AttachMoneyIcon,
+  },
   {
     route: ROUTES.calendar,
     literal: 'Calendar',
@@ -60,16 +59,9 @@ export const apps = [
     Icon: ChatIcon,
   },
   {
-    route: ROUTES.jira,
-    literal: 'Jira Like',
-    Icon: CenterFocusWeakIcon,
-  },
-];
-export const reports = [
-  {
-    route: ROUTES.bookings,
-    literal: 'Bookings',
-    Icon: BookIcon,
+    route: ROUTES.Kanban,
+    literal: 'Kanban',
+    Icon: ViewKanbanIcon,
   },
   {
     route: ROUTES.users,
@@ -92,35 +84,15 @@ export const reports = [
     literal: 'Reports',
     Icon: AssessmentIcon,
   },
-];
-
-// export const essentials = [
-  
-//   {
-//     route: ROUTES.logout,
-//     literal: 'Caledar',
-//     Icon: CalendarMonthIcon,
-//   },
-//   {
-//     route: ROUTES.logout,
-//     literal: 'Chat',
-//     Icon: ChatIcon,
-//   },
-//   {
-//     route: ROUTES.logout,
-//     literal: 'Jira Like',
-//     Icon: CenterFocusWeakIcon,
-//   },
-// ];
-export const accounts = [
   {
-    route: ROUTES.expenses,
-    literal: 'Expenses',
-    Icon: MoneyIcon,
+    route: ROUTES.account,
+    literal: 'Account',
+    Icon: PersonIcon,
   },
   {
-    route: ROUTES.payments,
-    literal: 'Payments',
-    Icon: AttachMoneyIcon,
+    route: ROUTES.settings,
+    literal: 'Settings',
+    Icon: SettingsApplicationsIcon,
   },
 ];
+export default DRAWER_LIST

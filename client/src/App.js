@@ -1,19 +1,36 @@
 import { Routes, Route } from "react-router-dom";
-import MainLayout from './Layouts/MainLayout';
-import MiniLayout from './pages/Users/UserDetails'
-import { LoginPage } from "./pages"
+import Overview from './Layouts/dashboard/Layout';
+// import Overview from './Layouts/dashboard/new/layout';
+import AuthLayout from './Layouts/Auth/layout';
+import Account from './Layouts/account/layout';
+import Kanban from './Layouts/kanban/layout';
+import Client from './Layouts/client/layout';
+import MiniLayout from './pages/Users/UserDetails';
+
+import {
+  Tours, Index, ToursDetails, Chekout, PaymentConfirmation
+} from "./pages"
 
 function App() {
   return (
     <div className="App">
       <Routes>
-        <Route index element={<LoginPage />} />
-        <Route path="admin/*" name="Dashboard" element={<MainLayout />} >
-          <Route path="admin/users/:clientId/*" name="Minipages" element={< MiniLayout />} />
+        <Route index element={<Index />} />
+        <Route path="auth/*" name='Auth' element={<AuthLayout />} />
+        <Route path="tours/" element={<Tours />} />
+        <Route path="tours/:tourId" element={<ToursDetails />} />
+
+        <Route path="tours/checkout/:tourId" element={<Chekout />} />
+        <Route path="tours/paymentConfirmation" element={<PaymentConfirmation />} />
+        <Route path="overview/*" name="Overview" element={<Overview />} >
+          <Route path="overview/account/*" name="Account" element={< Account />} />
+          <Route path="overview/kanban/*" name="Kanban" element={< Kanban />} />
+          <Route path="overview/clientsDetails/:id/*" name="Clients" element={< Client />} />
+          <Route path="overview/users/:clientId/*" name="Minipages" element={< MiniLayout />} />
         </Route>
       </Routes>
     </div>
-  );
+  )
 }
 
 export default App;

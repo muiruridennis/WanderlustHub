@@ -1,6 +1,7 @@
 import {PrimaryGeneratedColumn, Column, Entity, CreateDateColumn, OneToOne, ManyToOne} from "typeorm"
-import Client from "../../clients/entity/client.entity";
-import Destination from "../../destinations/entity/destination.entity";
+import User from "../../users/entity/user.entity";
+import Client from "../../client/entity/client.entity";
+import Tour from "../../tour/entity/tour.entity";
 
 @Entity()
 class Payment {
@@ -8,16 +9,25 @@ class Payment {
     id?: number;
 
     @Column()
-    payAmount: number;
+    paymentAmount: number;
+
+    @Column()
+    referenceNumber: string;
+
+    @Column({default: false})
+    paymentSuccess: boolean;
+
+    @Column({default: false})
+    approved: boolean;
 
     @CreateDateColumn()
-    payDate: Date
+    paymentDate: Date
 
-    @OneToOne(() => Client, client => client.payment)
-    client: Client;
+    // @ManyToOne(() => User, user => user.payments)
+    // user: User;
 
-    @ManyToOne(()=> Destination, destination => destination.payment)
-    destination: Destination;
+    // @ManyToOne(()=> Tour, tour => tour.payments)
+    // tour: Tour;
 
 }
 export default Payment;

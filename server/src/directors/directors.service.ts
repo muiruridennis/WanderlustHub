@@ -28,7 +28,12 @@ export class DirectorsService {
         return directors;
     };
     async updateDirectorDetails(id: number, detailsToUpdate:CreateDirectorDto) {
-        const directorToUpdate = await this.DirectorsRepository.findOne(id);
+        const directorToUpdate = await this.DirectorsRepository.findOne(
+            {
+                where: {
+                    id
+                }
+            });
         if (!directorToUpdate){
             throw new HttpException(`Director with id ${id} does not exist`, HttpStatus.NOT_FOUND)
         }

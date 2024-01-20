@@ -1,6 +1,6 @@
 import { CREATE_DIRECTOR, FETCH_DIRECTORS, START_LOADING, END_LOADING, DELETE_DIRECTOR, UPDATE_DIRECTOR } from "../Constants/actionTypes";
 
-const initialState = { directors: [], isLoading: true }
+const initialState = { directors: [], isLoading: false }
 
 export default function (state = initialState, action) {
     switch (action.type) {

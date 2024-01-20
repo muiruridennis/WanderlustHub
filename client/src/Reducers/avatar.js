@@ -1,6 +1,6 @@
 import {FETCH_AVATAR, START_LOADING, END_LOADING } from "../Constants/actionTypes";
 
-const initialState = {avatars: [], isLoading: true };
+const initialState = {avatars: [], isLoading: false };
 export default function (state = initialState, action) {
     switch (action.type) {
         case START_LOADING:

@@ -1,11 +1,7 @@
 import CircularProgress from '@mui/material/CircularProgress';
 import { Box } from '@mui/material';
-import { styled } from "@mui/material/styles";
-import { useTheme } from "@mui/material";
 
 function Circularprogress() {
- 
-
     return (
         <Box sx={{
             position: 'absolute',
@@ -16,5 +12,4 @@ function Circularprogress() {
         </Box>
     )
 }
-
 export default Circularprogress

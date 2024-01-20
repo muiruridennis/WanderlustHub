@@ -20,8 +20,6 @@ export const fetchClients = () => async (dispatch) => {
     } catch (error) {
         console.log(error)
     }
-
-
 };
 
 export const deleteClient = (id) => async (dispatch) => {

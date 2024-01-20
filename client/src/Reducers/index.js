@@ -7,6 +7,9 @@ import directors from "./directors";
 import tours from "./tours";
 import users from "./users";
 import avatar from "./avatar";
+import mpesa from "./mpesa";
+import Kanban from "./kanban";
+import Bookings from "./bookings";
 
 export default combineReducers(
     {
@@ -16,5 +19,8 @@ export default combineReducers(
         tours,
         directors, 
         users,
-        avatar
+        avatar,
+        mpesa,
+        Kanban,
+        Bookings
     });
