@@ -10,6 +10,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 function Input({
   half,
+  oneThird,
   name,
   autoFocus,
   type,
@@ -25,7 +26,7 @@ function Input({
   multiline,
 }) {
   return (
-    <Grid item xs={12} sm={half ? 6 : 12}>
+    <Grid item xs={12} sm={half ? 6 : (oneThird ? 4 : 12)}>
       <TextField
         value={value}
         onBlur={onBlur}
@@ -52,6 +53,8 @@ function Input({
               }
             : null
         }
+        inputProps={type === 'number' ? { min: 0 } : {}} // Ensure that the input value is greater than or equal to 0 for number type
+
         readOnly={readOnly}
         multiline={multiline}
       />

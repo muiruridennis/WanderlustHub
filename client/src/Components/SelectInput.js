@@ -2,7 +2,7 @@ import React from 'react';
 import { FormControl, FormLabel, Select, Grid, FormHelperText } from '@mui/material';
 import { useField, ErrorMessage } from 'formik';
 
-const MyInput = ({ label, half, ...props }) => {
+const SelectInput = ({ label, half, ...props }) => {
     const [field, meta] = useField(props);
     return (
         <Grid item xs={12} sm={half ? 6 : 12}>
@@ -24,4 +24,4 @@ const MyInput = ({ label, half, ...props }) => {
     );
 };
 
-export default MyInput;
+export default SelectInput;

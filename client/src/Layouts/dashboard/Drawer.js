@@ -2,20 +2,31 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import { useDrawerContext } from "../../contexts/drawer-context";
 import { styled } from "@mui/material/styles";
 import { MenuItemsList, AppEssentials } from "./MenuList";
-import MuiDrawer from "@mui/material/Drawer";
+import Drawer from "@mui/material/Drawer";
 
-const StyledDrawer = styled(MuiDrawer, {
+const StyledDrawer = styled(Drawer, {
   shouldForwardProp: (prop) => prop !== "isOpen",
 })(({ isOpen, theme }) => ({
-  width: isOpen ? 140 : theme.spacing(7),
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
+  width: isOpen ? 240 : theme.spacing(7),
+  position: "static",
+  top: 0, 
+  transition: isOpen
+    ? theme.transitions.create("width", {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      })
+    : theme.transitions.create("width", {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
   "& .MuiDrawer-paper": {
     background: "#D8DCD6",
+    position: "static",
     overflowX: "hidden",
-    marginTop: theme.spacing(7),
+  },
+  [theme.breakpoints.down("sm")]: {
+    position: "fixed",
+    top: 0,
   },
 }));
 

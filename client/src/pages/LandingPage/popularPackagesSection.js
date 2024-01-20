@@ -1,5 +1,5 @@
 import react from 'react';
-import {Typography, Grid, Container} from '@mui/material';
+import { Typography, Grid, Container } from '@mui/material';
 
 
 import kenyaSafari from '../../Images/kenya-safari.jpg';
@@ -9,6 +9,8 @@ import serengetiAdventure from '../../Images/serengeti-adventure.jpg';
 import maasaiCulturalTour from '../../Images/maasai-cultural-tour.jpg';
 import maasaiMaraSafari from "../../Images/masaimara.jpg";
 import TourCard from './tourCard';
+import TourCarousel from './tourCarousel';
+
 
 const popularPackagesData = [
   {
@@ -21,7 +23,8 @@ const popularPackagesData = [
     days: 7,
     activities: 8,
     places: 4,
-    price: "ksh 12600",
+    price: 12600,
+    bookingFee: 2500,
     location: 'Northern Kenya',
     advancedFacilities: [
       'Luxury Accommodation',
@@ -45,7 +48,8 @@ const popularPackagesData = [
     days: 6,
     activities: 10,
     places: 5,
-    price: "ksh 12600",
+    price: 10600,
+    bookingFee: 1500,
     location: 'Mt. Kenya',
     advancedFacilities: [
       'Professional Mountain Guides',
@@ -69,7 +73,8 @@ const popularPackagesData = [
     days: 5,
     activities: 6,
     places: 3,
-    price: "ksh 12600",
+    price: 45894,
+    bookingFee: 10000,
     location: 'Zanzibar Island',
     advancedFacilities: [
       'Beachfront Accommodation',
@@ -93,7 +98,8 @@ const popularPackagesData = [
     days: 8,
     activities: 12,
     places: 6,
-    price: "ksh 12600",
+    price: 12654,
+    bookingFee: 3500,
     location: 'Serengeti National Park',
     advancedFacilities: [
       'Guided Safari Tours',
@@ -117,7 +123,8 @@ const popularPackagesData = [
     days: 4,
     activities: 5,
     places: 2,
-    price: "ksh 12600",
+    price: 8760,
+    bookingFee: 1500,
     location: 'Maasai Land',
     advancedFacilities: [
       'Interactive Cultural Workshops',
@@ -141,7 +148,8 @@ const popularPackagesData = [
     days: 7,
     activities: 8,
     places: 4,
-    price: "ksh 12600",
+    price: 14378,
+    bookingFee: 2500,
     location: 'Maasai Mara National Park',
     advancedFacilities: [
       'Balloon Safaris',
@@ -155,25 +163,121 @@ const popularPackagesData = [
       { day: 3, activity: 'Hot Air Balloon Safari' },
     ],
   },
+  {
+    id: 7,
+    title: 'Serengeti Wildlife Safari',
+    description: 'Explore the diverse wildlife of Serengeti on this thrilling safari adventure.',
+    image: serengetiAdventure,
+    location: 'Serengeti National Park',
+    days: 6,
+    activities: 10,
+    places: 5,
+    price: 14500,
+    bookingFee: 3000,
+    advancedFacilities: [
+      'Luxury Accommodation',
+      'Professional Safari Guide',
+      'Customized Safari Vehicle',
+      'Gourmet Dining Options',
+    ],
+    tourPlan: [
+      { day: 1, activity: 'Morning Safari' },
+      { day: 2, activity: 'Nature Walk' },
+      { day: 3, activity: 'Wildlife Photography' },
+      { day: 4, activity: 'Sundowner Experience' },
+      { day: 5, activity: 'Cultural Interaction' },
+      { day: 6, activity: 'Hot Air Balloon Safari' },
+    ],
+  },
+  {
+    id: 8,
+    title: 'Ngorongoro Crater Exploration',
+    description: 'Discover the wonders of Ngorongoro Crater, a UNESCO World Heritage Site.',
+    image: mountKenyaTrek,
+    location: 'Ngorongoro Conservation Area',
+    days: 5,
+    activities: 8,
+    places: 3,
+    price: 13200,
+    bookingFee: 4000,
+    advancedFacilities: [
+      'Comfortable Accommodation',
+      'Knowledgeable Tour Guide',
+      'Transportation Included',
+      'Cultural Experiences',
+    ],
+    tourPlan: [
+      { day: 1, activity: 'Crater Rim Tour' },
+      { day: 2, activity: 'Wildlife Spotting' },
+      { day: 3, activity: 'Cultural Interaction' },
+      { day: 4, activity: 'Hiking Adventure' },
+      { day: 5, activity: 'Scenic Views Exploration' },
+    ],
+  },
+  {
+    id: 9,
+    title: 'Zanzibar Cultural Tour',
+    description: 'Immerse yourself in the rich cultural heritage of Zanzibar on this cultural tour.',
+    image: zanzibarBeach,
+    location: 'Zanzibar Island',
+    days: 4,
+    activities: 6,
+    places: 2,
+    price: 11800,
+    bookingFee: 2000,
+    advancedFacilities: [
+      'Cultural Accommodation',
+      'Local Tour Guide',
+      'Culinary Delights',
+      'Traditional Dance Performances',
+    ],
+    tourPlan: [
+      { day: 1, activity: 'Historical Stone Town Tour' },
+      { day: 2, activity: 'Spice Plantation Visit' },
+      { day: 3, activity: 'Beach Relaxation' },
+      { day: 4, activity: 'Cultural Workshops' },
+    ],
+  },
+
+  {
+    id: 10,
+    title: 'Mount Kilimanjaro Trek',
+    description: 'Embark on a challenging trek to the summit of Mount Kilimanjaro, the highest peak in Africa.',
+    image: mountKenyaTrek,
+    location: 'Mount Kilimanjaro',
+    days: 8,
+    activities: 12,
+    places: 6,
+    price: 16000,
+    bookingFee: 4000,
+    advancedFacilities: [
+      'Base Camp Accommodation',
+      'Experienced Mountain Guide',
+      'Climbing Gear Provided',
+      'High-Altitude Training',
+    ],
+    tourPlan: [
+      { day: 1, activity: 'Arrival and Acclimatization' },
+      { day: 2, activity: 'Machame Gate to Machame Camp' },
+      { day: 3, activity: 'Machame Camp to Shira Camp' },
+      { day: 4, activity: 'Shira Camp to Barranco Camp' },
+      { day: 5, activity: 'Barranco Camp to Karanga Camp' },
+      { day: 6, activity: 'Karanga Camp to Barafu Camp' },
+      { day: 7, activity: 'Summit Day and Descent' },
+      { day: 8, activity: 'Back to Base Camp and Departure' },
+    ],
+  },
 ];
 
 const PopularPackagesSection = () => {
- 
+
   return (
     <section style={{ padding: '4rem 0', backgroundColor: '#A6A8A6' }}>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Typography variant="h3" align="center" sx={{ marginBottom: '3rem', fontWeight: 800 }}>
           Most Popular Packages
         </Typography>
-
-        <Grid container spacing={3}>
-          {popularPackagesData.map((tourPackage, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <TourCard tourPackage={tourPackage}  />
-            </Grid>
-          ))}
-        </Grid>
-
+        <TourCarousel toursData={popularPackagesData}  numberOfRows={1}/>
       </Container>
     </section>
   )

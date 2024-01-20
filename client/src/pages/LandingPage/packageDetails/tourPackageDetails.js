@@ -22,7 +22,7 @@ import maasaiCulturalTour from '../../../Images/maasai-cultural-tour.jpg';
 import maasaiMaraSafari from "../../../Images/masaimara.jpg";
 import TourPlan from './tourPlan';
 import Reviews from './reviews';
-import RelatedTours from './relatedTours';
+import TourCarousel from '../tourCarousel';
 import BookingForm from './bookingForm';
 
 const popularPackagesData = [
@@ -36,7 +36,8 @@ const popularPackagesData = [
         days: 7,
         activities: 8,
         places: 4,
-        price: "ksh 12600",
+        price: 12600,
+        bookingFee: 2500,
         location: 'Northern Kenya',
         advancedFacilities: [
             'Luxury Accommodation',
@@ -60,7 +61,8 @@ const popularPackagesData = [
         days: 6,
         activities: 10,
         places: 5,
-        price: "ksh 12600",
+        price: 10600,
+        bookingFee: 1500,
         location: 'Mt. Kenya',
         advancedFacilities: [
             'Professional Mountain Guides',
@@ -84,7 +86,8 @@ const popularPackagesData = [
         days: 5,
         activities: 6,
         places: 3,
-        price: "ksh 12600",
+        price: 45894,
+        bookingFee: 10000,
         location: 'Zanzibar Island',
         advancedFacilities: [
             'Beachfront Accommodation',
@@ -108,7 +111,8 @@ const popularPackagesData = [
         days: 8,
         activities: 12,
         places: 6,
-        price: "ksh 12600",
+        price: 12654,
+        bookingFee: 3500,
         location: 'Serengeti National Park',
         advancedFacilities: [
             'Guided Safari Tours',
@@ -132,7 +136,8 @@ const popularPackagesData = [
         days: 4,
         activities: 5,
         places: 2,
-        price: "ksh 12600",
+        price: 8760,
+        bookingFee: 1500,
         location: 'Maasai Land',
         advancedFacilities: [
             'Interactive Cultural Workshops',
@@ -156,7 +161,8 @@ const popularPackagesData = [
         days: 7,
         activities: 8,
         places: 4,
-        price: "ksh 12600",
+        price: 14378,
+        bookingFee: 2500,
         location: 'Maasai Mara National Park',
         advancedFacilities: [
             'Balloon Safaris',
@@ -179,7 +185,8 @@ const popularPackagesData = [
         days: 6,
         activities: 10,
         places: 5,
-        price: 'ksh 14500',
+        price: 14500,
+        bookingFee: 3000,
         advancedFacilities: [
             'Luxury Accommodation',
             'Professional Safari Guide',
@@ -204,7 +211,8 @@ const popularPackagesData = [
         days: 5,
         activities: 8,
         places: 3,
-        price: 'ksh 13200',
+        price: 13200,
+        bookingFee: 4000,
         advancedFacilities: [
             'Comfortable Accommodation',
             'Knowledgeable Tour Guide',
@@ -228,7 +236,8 @@ const popularPackagesData = [
         days: 4,
         activities: 6,
         places: 2,
-        price: 'ksh 11800',
+        price: 11800,
+        bookingFee: 2000,
         advancedFacilities: [
             'Cultural Accommodation',
             'Local Tour Guide',
@@ -252,7 +261,8 @@ const popularPackagesData = [
         days: 8,
         activities: 12,
         places: 6,
-        price: 'ksh 16000',
+        price: 16000,
+        bookingFee: 4000,
         advancedFacilities: [
             'Base Camp Accommodation',
             'Experienced Mountain Guide',
@@ -299,7 +309,7 @@ const TourPackageDetails = () => {
         image, location, price,
         days, activities, places,
         advancedFacilities,
-        tourPlan } = selectedPackage;
+        tourPlan, bookingFee } = selectedPackage;
 
     if (!selectedPackage) {
         return <Typography>No package selected...</Typography>;
@@ -317,9 +327,9 @@ const TourPackageDetails = () => {
                     }}
                 />
             </div>
-            <Container sx={{ p: 1 }}>
-                <Grid container spacing={2}>
-                    <Grid item xs={12} md={8}>
+            <Container maxWidth="xl" sx={{ textAlign: "justify" }} >
+                <Grid container spacing={4} >
+                    <Grid item xs={12} md={12}>
                         <Box sx={{ mt: 6, display: "flex", justifyContent: "space-between" }}>
                             <div>
                                 <Typography variant="h5" >
@@ -334,12 +344,12 @@ const TourPackageDetails = () => {
                                     direction="row"
                                     justifyContent="center"
                                     alignItems="center"
-                                    spacing={2}
+                                    spacing={1}
                                 >
-                                    <Typography variant="body2" color="black" align="center">
+                                    <Typography variant="body1" color="black" align="center">
                                         <AccessTimeIcon fontSize='large' color='success' sx={{ verticalAlign: 'middle' }} /> {`${days} Days`}
                                     </Typography>
-                                    <Typography variant="body2" color="black" align="center">
+                                    <Typography variant="body1" color="black" align="center">
                                         <RowingIcon fontSize='large' color='success' sx={{ verticalAlign: 'middle' }} /> {`${activities} Activities`}
                                     </Typography>
                                     <Typography variant="body1" color="black" align="center">
@@ -352,10 +362,9 @@ const TourPackageDetails = () => {
 
                         </Box>
                         <Divider sx={{ mb: 2, mt: 2 }} />
-
-                        <Box sx={{ mt: 6, display: "flex", justifyContent: "space-between" }}>
+                        <Box sx={{ mt: 6, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                             <div>
-                                <Rating name="size-small" defaultValue={4.5} size="large" readOnly />
+                                <Rating name="size-small" defaultValue={4.5} size="medium" readOnly />
 
                             </div>
                             <div>
@@ -363,18 +372,19 @@ const TourPackageDetails = () => {
                                     direction="row"
                                     justifyContent="center"
                                     alignItems="center"
-                                    spacing={2}
+                                    spacing={0}
                                 >
-                                    <Button variant='contained'>Share <ShareRoundedIcon /> </Button>
-                                    <Button variant='contained'>Review <ReviewsRoundedIcon /></Button>
-                                    <Button variant='contained'>Wishlist <FavoriteRoundedIcon /></Button>
+                                    <Button variant='text' size='small'>Share <ShareRoundedIcon /> </Button>
+                                    <Button variant='text' size='small'>Review <ReviewsRoundedIcon /></Button>
+                                    <Button variant='text' size='small'>Wishlist <FavoriteRoundedIcon /></Button>
                                 </Stack>
                             </div>
-
 
                         </Box>
                         <Divider sx={{ mb: 2, mt: 2 }} />
 
+                    </Grid>
+                    <Grid item xs={12} md={7}>
                         <Box sx={{ mt: 4 }}>
                             <Typography variant="h6" sx={{ mb: 2 }}>
                                 Tour Description
@@ -387,7 +397,6 @@ const TourPackageDetails = () => {
                                 Advance Facilities
                             </Typography>
                             <Typography variant="body1" sx={{ mb: 2 }}>
-
                                 Elevate your experience with the exclusive {selectedPackage.title} package. We take pride in offering
                                 top-notch facilities designed to cater to your every need during this unforgettable journey.
                             </Typography>
@@ -405,21 +414,19 @@ const TourPackageDetails = () => {
                         <Reviews />
 
                     </Grid>
-                    <Grid item>
-                        <BookingForm/>
+                    <Grid item xs={12} md={5}>
+                        <BookingForm price={price} bookingFee={bookingFee} />
                     </Grid>
                 </Grid>
-
                 <Box sx={{ mt: 4 }}>
                     <Typography variant="h6" sx={{ mb: 2 }}>
                         Leave a Review
                     </Typography>
-
                 </Box>
 
                 <Divider sx={{ mb: 2, mt: 2 }} />
-                <RelatedTours relatedTours={relatedTours} />
-            </Container>
+                <TourCarousel toursData={relatedTours} numberOfRows={1}/>
+            </Container >
         </>
     );
 };

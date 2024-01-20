@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { Link } from 'react-router-dom';
-import { Box, Typography, Card, CardMedia, CardContent, Button } from '@mui/material';
-import TourCard from '../tourCard';
+import { Box, Typography, } from '@mui/material';
+import TourCard from './tourCard';
 
-const RelatedTours = ({ relatedTours }) => {
+const TourCarousel= ({ toursData, numberOfRows }) => {
     const scrollToTop = () => {
         window.scrollTo({
             top: 0,
@@ -21,6 +20,7 @@ const RelatedTours = ({ relatedTours }) => {
         speed: 500,
         slidesToShow: 3,
         slidesToScroll: 1,
+        rows:numberOfRows,
         responsive: [
             {
                 breakpoint: 600,
@@ -45,7 +45,7 @@ const RelatedTours = ({ relatedTours }) => {
                 Related Tours
             </Typography>
             <Slider {...settings} >
-                {relatedTours.map((tourPackage) => (
+                {toursData.map((tourPackage) => (
                     <TourCard tourPackage={tourPackage} onDetailsClick={scrollToTop} key={tourPackage.id} />
                 ))}
             </Slider>
@@ -53,4 +53,4 @@ const RelatedTours = ({ relatedTours }) => {
     );
 };
 
-export default RelatedTours;
+export default TourCarousel;

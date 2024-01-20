@@ -1,176 +1,355 @@
 import React from 'react';
-import { useFormik } from 'formik';
+import { Formik, getIn } from 'formik';
+import {
+  Paper,
+  Button,
+  FormControlLabel,
+  Checkbox,
+  Grid,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  Collapse,
+  MenuItem,
+} from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import * as yup from 'yup';
-import { TextField, Button, Grid, FormControl, InputLabel, MenuItem, Select, Typography, Container } from '@mui/material';
+import Input from "../../../Components/TextFieldInput";
+import SelectInput from '../../../Components/SelectInput';
 
-const validationSchema = yup.object({
-  date: yup.string().required('Date is required'),
-  time: yup.string().required('Time is required'),
-  adultTickets: yup.number().required('Number of adult tickets is required').min(1, 'At least 1 adult ticket'),
-  youthTickets: yup.number().required('Number of youth tickets is required').min(0, 'Youth tickets cannot be negative'),
-  childTickets: yup.number().required('Number of child tickets is required').min(0, 'Child tickets cannot be negative'),
-  additionalServices: yup.object({
-    perBooking: yup.number().required('Service per booking is required').min(0, 'Service per booking cannot be negative'),
-    perPerson: yup.number().required('Service per person is required').min(0, 'Service per person cannot be negative'),
-  }),
-});
+const BookingForm = ({ price, bookingFee }) => {
+  const isSignedUp = false;
+  const [expanded, setExpanded] = React.useState(false);
 
-const BookingForm = () => {
-  const formik = useFormik({
-    initialValues: {
-      date: '',
-      time: '',
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+  const initialValues = {
+    tickets: {
       adultTickets: 0,
-      youthTickets: 0,
       childTickets: 0,
-      additionalServices: {
-        perBooking: 0,
-        perPerson: 0,
-      },
     },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      // Handle form submission logic here
-      console.log(values);
+    contactInformation: {
+      name: '',
+      email: '',
+      phoneNumber: '',
     },
+    paymentMethod: "full", // Set a default payment method
+    termsAndConditions: false,
+    partialPaymentAmount: 0,
+  };
+
+  const validationSchema = yup.object({
+    total: yup.number().positive('Must be a positive number'),
+    contactInformation: yup.object({
+      name: yup.string().required('Name is required'),
+      email: yup.string().email('Invalid email').required('Email is required'),
+      phoneNumber: yup.string().required('Phone number is required'),
+    }),
+    tickets: yup.object().shape({
+      adultTickets: yup
+        .number()
+        .positive('Must be a positive number')
+        .integer('Must be a whole number and greater than or equal to 0')
+        .min(0, 'Must be at least 0'),
+
+      childTickets: yup
+        .number()
+        .positive('Must be a positive number')
+        .integer('Must be a whole number and greater than or equal to 0')
+        .min(0, 'Must be at least 0'),
+    }),
+
+    termsAndConditions: yup.boolean().oneOf([true], 'Must accept terms and conditions'),
   });
 
+
+  const calculateTotal = (values) => {
+    const { adultTickets, childTickets } = values.tickets;
+    const { paymentMethod } = values;
+    const basePrice = price;
+
+    if (paymentMethod === 'full') {
+      values.partialPaymentAmount = 0;
+
+      // Calculate total with tickets and booking fee for full payment
+
+      const total = adultTickets * basePrice + (childTickets * (1 / 2) * basePrice);
+      return total >= 0 ? total : 0;
+    }
+    else if (paymentMethod === 'partial') {
+            values.partialPaymentAmount = bookingFee;
+
+      // Calculate remaining balance without ticket prices for partial payment
+      const partialPaymentAmount = parseFloat(values.partialPaymentAmount) || 0;
+      const remainingBalance = basePrice - partialPaymentAmount;
+      return remainingBalance >= 0 ? remainingBalance : 0;
+    }
+
+    return 0; // Default to 0 if payment method is not recognized
+  };
+
+
+
+
   return (
-    <Container>
-      <form onSubmit={formik.handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              id="date"
-              label="Date"
-              type="date"
-              value={formik.values.date}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.date && Boolean(formik.errors.date)}
-              helperText={formik.touched.date && formik.errors.date}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              id="time"
-              label="Time"
-              type="time"
-              value={formik.values.time}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.time && Boolean(formik.errors.time)}
-              helperText={formik.touched.time && formik.errors.time}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              id="adultTickets"
-              label="Adult Tickets"
-              type="number"
-              value={formik.values.adultTickets}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.adultTickets && Boolean(formik.errors.adultTickets)}
-              helperText={formik.touched.adultTickets && formik.errors.adultTickets}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              id="youthTickets"
-              label="Youth Tickets"
-              type="number"
-              value={formik.values.youthTickets}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.youthTickets && Boolean(formik.errors.youthTickets)}
-              helperText={formik.touched.youthTickets && formik.errors.youthTickets}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              id="childTickets"
-              label="Child Tickets"
-              type="number"
-              value={formik.values.childTickets}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.childTickets && Boolean(formik.errors.childTickets)}
-              helperText={formik.touched.childTickets && formik.errors.childTickets}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <FormControl fullWidth>
-              <InputLabel id="additionalServices">Additional Services</InputLabel>
-              <Select
-                labelId="additionalServices"
-                id="additionalServices"
-                value={formik.values.additionalServices.perBooking}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.additionalServices && Boolean(formik.errors.additionalServices)}
-                inputProps={{
-                  name: 'additionalServices.perBooking',
-                  id: 'additionalServices.perBooking',
-                }}
-              >
-                <MenuItem value={0}>None</MenuItem>
-                <MenuItem value={20}>Service A</MenuItem>
-                {/* Add more services as needed */}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <FormControl fullWidth>
-              <InputLabel id="additionalServicesPerPerson">Additional Services Per Person</InputLabel>
-              <Select
-                labelId="additionalServicesPerPerson"
-                id="additionalServicesPerPerson"
-                value={formik.values.additionalServices.perPerson}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.additionalServices && Boolean(formik.errors.additionalServices)}
-                inputProps={{
-                  name: 'additionalServices.perPerson',
-                  id: 'additionalServices.perPerson',
-                }}
-              >
-                <MenuItem value={0}>None</MenuItem>
-                <MenuItem value={10}>Service B</MenuItem>
-                {/* Add more services as needed */}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="h6">Total: ${calculateTotal(formik.values)}</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Button type="submit" variant="contained" color="primary">
-              Booking Now
+    <Paper elevation={16} sx={{ p: 1, position: "sticky", top: 20, zIndex: 1 }}>
+      <Typography variant="h6" align='center' sx={{ m: 2 }}>Booking Tour</Typography>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={(values) => {
+          console.log(values);
+        }}
+      >
+        {formik => (
+          <form onSubmit={formik.handleSubmit}>
+            <Grid container>
+              <Grid container spacing={2}>
+                {!isSignedUp && (
+                  <>
+                    <Input
+                      half
+                      name="contactInformation.name"
+                      label=" Name"
+                      value={formik.values.contactInformation.name}
+                      handleChange={formik.handleChange}
+                      variant="contained"
+                      onBlur={formik.handleBlur}
+                      error={Boolean(
+                        getIn(formik.touched, 'contactInformation.name') &&
+                        getIn(formik.errors, 'contactInformation.name')
+                      )}
+                      helperText={
+                        getIn(formik.touched, 'contactInformation.name') &&
+                        getIn(formik.errors, 'contactInformation.name')
+                      }
+                    />
+                    <Input
+                      half
+                      name="contactInformation.email"
+                      label=" Email"
+                      value={formik.values.contactInformation.email}
+                      handleChange={formik.handleChange}
+                      variant="contained"
+                      onBlur={formik.handleBlur}
+                      error={Boolean(
+                        getIn(formik.touched, 'contactInformation.email') &&
+                        getIn(formik.errors, 'contactInformation.email')
+                      )}
+                      helperText={
+                        getIn(formik.touched, 'contactInformation.email') &&
+                        getIn(formik.errors, 'contactInformation.email')
+                      }
+                    />
+                    <Input
+                      half
+                      name="contactInformation.phoneNumber"
+                      label=" Phone Number"
+                      value={formik.values.contactInformation.phoneNumber}
+                      handleChange={formik.handleChange}
+                      variant="contained"
+                      onBlur={formik.handleBlur}
+                      error={Boolean(
+                        getIn(formik.touched, 'contactInformation.phoneNumber') &&
+                        getIn(formik.errors, 'contactInformation.phoneNumber')
+                      )}
+                      helperText={
+                        getIn(formik.touched, 'contactInformation.phoneNumber') &&
+                        getIn(formik.errors, 'contactInformation.phoneNumber')
+                      }
+                    />
+                  </>
+                )}
+              </Grid>
+              <Grid container spacing={2}>
+                <SelectInput
+                  label="Payment Method"
+                  name="paymentMethod"
+                  variant="outlined"
+                >
+                  <MenuItem value="full">Full Payment</MenuItem>
+                  <MenuItem value="partial">Partial Payment</MenuItem>
+                </SelectInput>
+
+              </Grid>
+              {formik.values.paymentMethod === "partial" ? (
+                <Grid container sx={{ mt: 2 }} spacing={2}>
+
+                  <Input
+                    fullWidth
+                    name="partialPaymentAmount"
+                    label="Partial Payment Amount (KSH)"
+                    type="number"
+                    variant="outlined"
+                    value={formik.values.partialPaymentAmount}
+                    handleChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                  <Grid item>
+
+                    {formik.values.paymentMethod === 'partial' && (
+                      <Typography variant="subtitle2" align="justify" color="warning">
+                        Please finalize your booking with a partial payment of {calculateTotal(formik.values)} KSH.
+                        The remaining balance is due four days before the tour.
+
+                      </Typography>
+                    )}
+
+                  </Grid>
+
+                </Grid>
+              ) : (
+                <Grid container spacing={2}>
+                  <Grid item sm={12}>
+                    <Typography variant="subtitle1" align='justify' sx={{ mt: 1 }}>Tickets</Typography>
+                  </Grid>
+                  <Input
+                    half
+                    name="tickets.adultTickets"
+                    label="Adult (18+ years)"
+                    type="number"
+                    variant="outlined"
+                    value={formik.values.tickets.adultTickets}
+                    handleChange={formik.handleChange}
+
+                    onBlur={formik.handleBlur}
+                    error={Boolean(
+                      getIn(formik.touched, 'tickets.adultTickets') &&
+                      getIn(formik.errors, 'tickets.adultTickets')
+                    )}
+                    helperText={
+                      getIn(formik.touched, 'tickets.adultTickets') &&
+                      getIn(formik.errors, 'tickets.adultTickets')
+                    }
+                  />
+                  <Input
+                    half
+                    name="tickets.childTickets"
+                    label="Child (0-12 years)"
+                    type="number"
+                    variant="outlined"
+                    value={formik.values.tickets.childTickets}
+                    handleChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={Boolean(
+                      getIn(formik.touched, 'tickets.childTickets') &&
+                      getIn(formik.errors, 'tickets.childTickets')
+                    )}
+                    helperText={
+                      getIn(formik.touched, 'tickets.childTickets') &&
+                      getIn(formik.errors, 'tickets.childTickets')
+                    }
+                  />
+                  <Input
+                    fullWidth
+                    name="total"
+                    label="Total"
+                    variant="outlined"
+                    value={calculateTotal(formik.values)}
+                    readOnly
+                  />
+                </Grid>
+              )}
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Typography variant="h6" sx={{ mb: 2 }}>
+                    Terms and Conditions
+                    <IconButton
+                      color="primary"
+                      onClick={handleExpandClick}
+                      aria-expanded={expanded}
+                      aria-label="show more"
+                    >
+                      <ExpandMoreIcon />
+                    </IconButton>
+                  </Typography>
+                  <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <Typography variant="body1">
+                      By submitting this form, you agree to the following terms and conditions:
+                    </Typography>
+                    <List>
+                      <ListItem>
+                        <ListItemText
+                          primaryTypographyProps={{ variant: 'body1', fontWeight: 'bold' }}
+                          primary="Payment Policy"
+                        />
+                      </ListItem>
+                      <List>
+                        <ListItem>
+                          <ListItemText
+                            primary="All bookings must be paid in full at least 14 days before the tour date."
+                          />
+                        </ListItem>
+                        <ListItem>
+                          <ListItemText
+                            primary="Payment is non-refundable after this deadline."
+                          />
+                        </ListItem>
+                        {/* Add more points as needed */}
+                      </List>
+                    </List>
+                    <List>
+                      <ListItem>
+                        <ListItemText
+                          primaryTypographyProps={{ variant: 'body1', fontWeight: 'bold', mb: 1 }}
+                          primary="Cancellation Policy"
+                        />
+                      </ListItem>
+                      <List>
+                        <ListItem>
+                          <ListItemText
+                            primary="Cancellations made 15 days or more before the tour date are eligible for a partial refund."
+                          />
+                        </ListItem>
+                        <ListItem>
+                          <ListItemText
+                            primary="No refunds for cancellations made within 14 days of the tour date."
+                          />
+                        </ListItem>
+                        {/* Add more points as needed */}
+                      </List>
+                    </List>
+                  </Collapse>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={formik.values.termsAndConditions}
+                        onChange={formik.handleChange}
+                        name="termsAndConditions"
+                        color="primary"
+                      />
+                    }
+                    label={
+                      <Typography variant="body2">
+                        I have read and agree to the{' '}
+                        <span style={{ color: 'blue', textDecoration: 'underline' }}>
+                          terms and conditions
+                        </span>
+                      </Typography>
+                    }
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              disabled={!formik.values.termsAndConditions}
+            >
+              Submit
             </Button>
-          </Grid>
-        </Grid>
-      </form>
-    </Container>
+          </form>
+        )}
+      </Formik>
+    </Paper>
   );
-};
-
-const calculateTotal = (values) => {
-  const {
-    adultTickets,
-    youthTickets,
-    childTickets,
-    additionalServices: { perBooking, perPerson },
-  } = values;
-
-  const total = adultTickets * 43 + youthTickets * 29 + childTickets * 0 + perBooking + perPerson;
-
-  return total;
 };
 
 export default BookingForm;

@@ -7,7 +7,7 @@ import Main from './Main';
 import { DrawerContextProvider } from "../../contexts/drawer-context";
 import { Box } from '@mui/material';
 
-function Layout() {
+function Layout({ children }) {
 
   return (
     <DrawerContextProvider>
@@ -24,11 +24,12 @@ function Layout() {
         <Box
           sx={{
             display: "flex",
-            flex: 1,
+            // flex: 1,
           }}
         >
           <Drawer />
           <Main />
+
         </Box>
         {/* <Footer /> */}
       </Box>
