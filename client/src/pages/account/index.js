@@ -1,9 +1,12 @@
+import React from 'react';
 import { Container,  Typography, List } from '@mui/material';
 import Children from '../../Layouts/account/layout';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 
 
 function Index() {
+    let { id } = useParams();
+// to fix this issue
     const navLinkStyles = ({ isActive }) => (
 
         isActive
@@ -31,7 +34,8 @@ function Index() {
     const navLists = [
         {
             name: "General",
-            to: "/overview/account/general",
+            to: `/overview/account/general`,
+            // to: `/overview/account`,
         },
         {
             name: "Billing",

@@ -4,7 +4,6 @@ import displayPhoto from "../../Images/display-photo.jpg";
 import LoyaltyProgram from './loyaltyProgram';
 import {DeleteClient} from './deleteClient';
 const CustomerPage = () => {
-  // Custom style object for customer detail sections
   const detailSectionStyle = {
     display: 'flex',
     flexDirection: 'column',

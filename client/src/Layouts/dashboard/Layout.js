@@ -4,15 +4,11 @@ import Header from "./Header";
 import Toolbar from "@mui/material/Toolbar";
 import Footer from "./Footer";
 import Main from './Main';
-import Notification from "../../Components/Notification"
 import { DrawerContextProvider } from "../../contexts/drawer-context";
 import { Box } from '@mui/material';
 
-function Layout() {
-  const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' });
+function Layout({ children }) {
 
-  // return (
-  //   
   return (
     <DrawerContextProvider>
       <Box
@@ -28,11 +24,12 @@ function Layout() {
         <Box
           sx={{
             display: "flex",
-            flex: 1,
+            // flex: 1,
           }}
         >
-          <Drawer notify={notify} setNotify={setNotify} />
+          <Drawer />
           <Main />
+
         </Box>
         {/* <Footer /> */}
       </Box>

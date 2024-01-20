@@ -1,15 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LocalFileRepository } from "./localfileRepository";
-import { QueryRunner } from 'typeorm';
+import { QueryRunner, Repository } from 'typeorm';
 import LocalFile from "../local-file/entity/localFile.entity"
 
 
 @Injectable()
 export class LocalFilesService {
     constructor(
-        @InjectRepository(LocalFileRepository)
-        private LocalFileRepository: LocalFileRepository
+        @InjectRepository(LocalFile)
+        private LocalFileRepository: Repository<LocalFile>,
+        
     ) { }
     async uploadDatabaseFile(dataBuffer: Buffer, filename: string) {
         const newFile = await this.LocalFileRepository.create({

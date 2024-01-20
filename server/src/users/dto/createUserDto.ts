@@ -1,6 +1,6 @@
-import { IsEmail, IsString, IsNotEmpty, Matches, IsOptional, IsEnum } from 'class-validator';
+import { IsEmail, IsString, IsArray, IsEnum } from 'class-validator';
+import Permission from "../.././utils/types/permission.type"
 
-import { UserRole } from "./roles.interface"
 export class CreateUserDto {
    @IsString()
    firstName: string;
@@ -20,6 +20,6 @@ export class CreateUserDto {
    @IsString()
    resetLink: string;
 
-   @IsEnum(UserRole)
-   role?: UserRole;
+   @IsEnum(Permission, { each: true })
+   permissions?: Permission[];
 }

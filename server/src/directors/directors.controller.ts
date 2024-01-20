@@ -6,7 +6,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { Multer } from "multer";
 import RequestWithUser from "../auth/requestWithUser.interface";
-import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
+import { JwtAuthenticationGuard  } from "../auth/guards/jwt-auth.guard";
 
 
 
@@ -38,7 +38,7 @@ export class DirectorsController {
     }
 
     // @Post('avatar')
-    // @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthenticationGuard )
     // @UseInterceptors(FileInterceptor('file'))
     // async addAvatar(@Req() request: RequestWithUser, @UploadedFile() file: Multer.File) {
     //   return this.directorservice.addAvatar(request.user.id, file.buffer, file.originalname);

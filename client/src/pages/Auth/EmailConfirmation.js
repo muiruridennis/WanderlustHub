@@ -21,7 +21,9 @@ function EmailConfirmation() {
   if (isLoading) {
     return <Circularprogress />;
   }
-
+  const close = () => {
+    setOpenPopup(false);
+  };
   return (
     <Box sx={{
       bgcolor: "#7DB9B6",
@@ -65,7 +67,7 @@ function EmailConfirmation() {
         autoClose={5000}
         theme="colored"
       />
-      <Popup openPopup={openPopup} setOpenPopup={setOpenPopup} title="Email Confirmation Failed">
+      <Popup openPopup={openPopup}  title="Email Confirmation Failed" close={close}>
         <div>
 
           <Typography variant='body1' align='center' sx={{ color: "red" }}> {`Opps!! ${error}`}</Typography>

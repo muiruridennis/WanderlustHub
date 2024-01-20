@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 import Overview from './Layouts/dashboard/Layout';
-// import Overview from './Layouts/dashboard/new/layout';
 import AuthLayout from './Layouts/Auth/layout';
 import Account from './Layouts/account/layout';
 import Kanban from './Layouts/kanban/layout';
@@ -8,7 +7,7 @@ import Client from './Layouts/client/layout';
 import MiniLayout from './pages/Users/UserDetails';
 
 import {
-  Tours, Index, ToursDetails, Chekout, PaymentConfirmation
+  Tours, Index, ToursDetails, Chekout, PaymentConfirmation, TourPackageDetails
 } from "./pages"
 
 function App() {
@@ -19,6 +18,7 @@ function App() {
         <Route path="auth/*" name='Auth' element={<AuthLayout />} />
         <Route path="tours/" element={<Tours />} />
         <Route path="tours/:tourId" element={<ToursDetails />} />
+        <Route path="tour-details/:packageId" element={<TourPackageDetails />} />
 
         <Route path="tours/checkout/:tourId" element={<Chekout />} />
         <Route path="tours/paymentConfirmation" element={<PaymentConfirmation />} />

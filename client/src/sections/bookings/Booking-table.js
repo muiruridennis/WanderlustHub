@@ -20,6 +20,7 @@ import {
 } from '@mui/material';
 import moment from 'moment';
 import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { BookingsSearch } from "./Booking-search";
 import { useParams, useNavigate, Link } from 'react-router-dom';
@@ -37,7 +38,8 @@ export const BookingsTable = ({
   setFilterCriteria,
   setOpenPopup,
   setCurrentId,
-  setTourCost
+  setTourCost,
+  setCurrentTourId,
 }) => {
 
   const tourColors = ['#AFD3E2', '#FCC8D1', '#ACBCFF', '#FCE9F1', '#ECF8F9'];
@@ -76,6 +78,11 @@ export const BookingsTable = ({
     setCurrentId(booking?.id)
 
   };
+  const handleAddBooking = (bookingTourId) => {
+    setOpenPopup(true);
+    setCurrentTourId(bookingTourId)
+  };
+
   return (
     <>
       {items.map(({ tourId, length, bookings }, index) => {
@@ -111,7 +118,7 @@ export const BookingsTable = ({
               {tour?.name}
             </Typography>
             <Stack spacing={8}>
-              <Stack direction="row" spacing={3}>
+              <Stack direction="row" spacing={5} sx={{ position: "relative" }}>
                 <BookingsSearch
                   handleSearchChange={(event) => handleSearchChange(event, tourId)}
                   searchQuery={searchQueries[tourId] || ''}
@@ -134,6 +141,14 @@ export const BookingsTable = ({
                     {/* Add more filter options as needed */}
                   </Select>
                 </FormControl>
+                <Button
+                  variant='contained'
+                  color='success'
+                  onClick={() => handleAddBooking(tourId)}
+                  sx={{ position: "absolute", right: 3 }}
+                >
+                  <AddIcon /> Add
+                </Button>
               </Stack>
             </Stack>
             <TableContainer >

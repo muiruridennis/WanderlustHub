@@ -1,9 +1,8 @@
 import {
-    PrimaryGeneratedColumn, Entity,
-    ManyToMany, JoinTable, CreateDateColumn, OneToOne, JoinColumn,
-    Column, ManyToOne, UpdateDateColumn
+    PrimaryGeneratedColumn, Entity, CreateDateColumn, OneToOne, JoinColumn,
+    Column,
 } from "typeorm";
-import Booking from "../../booking/entity/booking.entity"
+import Payment from "../../payment/entity/payment.entity";
 
 @Entity()
 export default class Mpesa {
@@ -30,8 +29,7 @@ export default class Mpesa {
     @Column()
     checkoutRequestID: string;
 
-    @OneToOne(
-        () => Booking,
-    )
-    booking?: Booking
+    @OneToOne(() => Payment, payment => payment.mpesa)
+    @JoinColumn()
+    payment: Payment;
 } 

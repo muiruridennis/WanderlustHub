@@ -41,5 +41,5 @@ export class TourController {
         let topFive = await this.tourService.topFive()
         return topFive
     }
-  
+
 }

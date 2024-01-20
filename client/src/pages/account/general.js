@@ -1,14 +1,50 @@
-import { Box, Container, Stack, Typography, Unstable_Grid2 as Grid } from '@mui/material';
-import { AccountProfile } from '../../sections/account/account-profile';
-import { AccountProfileDetails } from '../../sections/account/account-profile-details';
+import React, { useEffect, useState } from 'react';
+import { Box, Container, Stack, Typography, Grid } from '@mui/material';
+import { useDispatch, useSelector } from "react-redux"
+import { AccountProfile } from '../../sections/usersAccount/account-profile';
+import { AccountProfileDetails } from '../../sections/usersAccount/account-profile-details';
 import { DeleteAccount } from '../../sections/settings/delete-account';
+import { getUthenticatedUser } from "../../Actions/auth"
+import profile from '../../Images/client.jpg';
+import Circularprogress from '../../Components/CircularProgress';
+import ErrorComponent from '../../Components/errorComponent';
+const Account = () => {
+    const [editing, setEditing] = useState(false);
+    const dispatch = useDispatch()
+    const handleRetry = () => {
+        dispatch(getUthenticatedUser());
+    };
 
-const Account = () => (
-    <>
-        <Box
-            component="main"  
-        >
-            
+    useEffect(() => {
+        dispatch(getUthenticatedUser());
+    }, [])
+
+    useEffect(() => {
+        handleRetry()
+    }, [])
+
+    const { error, isLoading, user } = useSelector((state) => state.auth);
+    console.log(user)
+    const handleEditToggle = () => {
+        setEditing((prevEditing) => !prevEditing);
+    }
+    if (isLoading) {
+        return <Circularprogress />;
+    }
+
+    if (error) {
+        return <ErrorComponent
+            error={error}
+            onRetry={handleRetry}
+        />;
+    }
+    if (!user) {
+        return <div>User data not available. Please log in.</div>;
+    }
+
+    return (
+        <>
+            <Box component="main"   >
                 <Stack spacing={3}>
                     <div>
                         <Grid
@@ -16,20 +52,23 @@ const Account = () => (
                             spacing={3}
                         >
                             <Grid
+                            item
                                 xs={12}
                                 md={6}
                                 lg={4}
                             >
-                                <AccountProfile />
+                                <AccountProfile editing={editing} handleEditToggle={handleEditToggle} currentUser={user} />
                             </Grid>
                             <Grid
+                            item
                                 xs={12}
                                 md={6}
                                 lg={8}
                             >
-                                <AccountProfileDetails />
+                                {/* <AccountProfileDetails currentUser={user} /> */}
                             </Grid>
                             <Grid
+                            item
                                 xs={12}
                                 md={12}
                                 lg={12}
@@ -39,7 +78,10 @@ const Account = () => (
                         </Grid>
                     </div>
                 </Stack>
-        </Box>
-    </>
-);
+            </Box>
+        </>
+    );
+}
 export default Account;
+
+

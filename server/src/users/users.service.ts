@@ -1,25 +1,35 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from "./dto/createUserDto";
 import { LoginDto } from "./dto/loginDto";
 import { ChangePasswordDto } from "./dto/changePassword.dto";
+import CreateProfileDto from "./dto/createProfileDto"
+import AddressDTO from "./dto/createAddressDto"
 import * as bcrypt from 'bcrypt';
 import { LocalFilesService } from "../local-file/local-file.service";
-import {  Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
 import User from './entity/user.entity';
+import Address from "./entity/address.entity";
+import { Profile } from "./entity/profile.entity";
+import NotificationPreference from './entity/notificationPreference.entity';
+import { plainToClassFromExist } from 'class-transformer';
 
 
 @Injectable()
 export class UsersService {
     private readonly saltRounds = 10;
     constructor(
-        @InjectRepository(User)
-        private usersRepository: Repository<User>,
-        // private localFilesService: LocalFilesService,
+        @InjectRepository(User) private userRepository: Repository<User>,
+        @InjectRepository(NotificationPreference) private notificationPreferenceRepository: Repository<NotificationPreference>,
+        @InjectRepository(Address) private addressRepository: Repository<Address>, // Inject the Address repository
+        @InjectRepository(Profile) private profileRepository: Repository<Profile>,
+        private localFilesService: LocalFilesService,
+        private connection: DataSource,
+
     ) { }
 
     async findByLogin({ email, password }: LoginDto) {
-        const user = await this.usersRepository.findOne({ where: { email } });
+        const user = await this.userRepository.findOne({ where: { email } });
 
         if (!user) {
             throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
@@ -37,7 +47,9 @@ export class UsersService {
     }
 
     async getAllUsers() {
-        const users = await this.usersRepository.find();
+        const users = await this.userRepository.find({
+            relations: ["notificationPreferences"]
+        });
         users.forEach(user =>
             user.password = undefined
             // user.currentHashedRefreshToken = undefined;
@@ -46,9 +58,8 @@ export class UsersService {
     };
 
     async getById(id: number) {
-        const user = await this.usersRepository.findOneBy({ id })
+        const user = await this.userRepository.findOneBy({ id })
         if (user) {
-            user.password = undefined;
             return user;
         }
         throw new HttpException(
@@ -58,7 +69,7 @@ export class UsersService {
     }
 
     async getByEmail(email: string) {
-        const user = await this.usersRepository.findOneBy({ email });
+        const user = await this.userRepository.findOneBy({ email });
         if (user) {
             return user;
         }
@@ -71,17 +82,23 @@ export class UsersService {
 
     async createNewUser(userData: CreateUserDto) {
         const { firstName, lastName } = userData
-        const newUser = await this.usersRepository.create({
+        const newUser = await this.userRepository.create({
             ...userData,
-            name: `${firstName} ${lastName}`
+            name: `${firstName} ${lastName}`,
+            
         });
-        await this.usersRepository.save(newUser);
+
+        await this.userRepository.save(newUser);
+        const defaultPreferences = await this.notificationPreferenceRepository.create({ user: newUser });
+        await this.notificationPreferenceRepository.save(defaultPreferences);
+
         return newUser;
     }
+
     //To be implemented in Auth controller 
     async setCurrentRefreshToken(refreshToken: string, userId: number) {
         const currentHashedRefreshToken = await bcrypt.hash(refreshToken, 10);
-        await this.usersRepository.update(userId, {
+        await this.userRepository.update(userId, {
             currentHashedRefreshToken
         });
     };
@@ -102,13 +119,29 @@ export class UsersService {
 
     //   removing the refresh token from the database
     async removeRefreshToken(userId: number) {
-        return this.usersRepository.update(userId, {
+        return this.userRepository.update(userId, {
             currentHashedRefreshToken: null
         });
     };
+    
+    async updateNotificationPreferences(userId: number, updates: any) {
+        const user = await this.getById(userId);
+        if (!user.notificationPreferences) {
+            throw new HttpException(`NotificationPreference not found`, HttpStatus.NOT_FOUND);
+        }
+        const notificationPreference = user.notificationPreferences;
+
+        // Map properties from updates to notificationPreference
+        plainToClassFromExist(notificationPreference, updates);
+
+        await this.notificationPreferenceRepository.save(notificationPreference);
+
+        return { message: "User's notification preferences updated successfully", user };
+    }
+
 
     async markEmailAsConfirmed(email: string) {
-        return this.usersRepository.update(
+        return this.userRepository.update(
             { email },
             {
                 isEmailConfirmed: true,
@@ -116,7 +149,7 @@ export class UsersService {
         );
     }
     async setResetLink(email: string, token: string) {
-        return this.usersRepository.update(
+        return this.userRepository.update(
             { email },
             {
                 resetLink: token,
@@ -124,7 +157,7 @@ export class UsersService {
         );
     }
     async resetPassword(email: string, newPassword: string) {
-        await this.usersRepository.update(
+        await this.userRepository.update(
             { email },
             {
                 password: newPassword,
@@ -135,34 +168,34 @@ export class UsersService {
     }
 
     markPhoneNumberAsConfirmed(userId: number) {
-        return this.usersRepository.update({ id: userId }, {
+        return this.userRepository.update({ id: userId }, {
             isPhoneNumberConfirmed: true
         });
     }
 
     async remove(id: number) {
-        const user = await this.usersRepository.findOne(
+        const user = await this.userRepository.findOne(
             {
                 where: { id }
             });
         if (!user) {
             throw new HttpException(`user with id ${id} does not exist`, HttpStatus.NOT_FOUND);
         }
-        await this.usersRepository.delete(id);
+        await this.userRepository.delete(id);
         return { Message: "user deleted successfully" };
     }
 
 
     async createWithGoogle(email: string, name: string) {
         // const stripeCustomer = await this.stripeService.createCustomer(name, email);
-        const newUser = await this.usersRepository.create({
+        const newUser = await this.userRepository.create({
             email,
             name,
             isRegisteredWithGoogle: true,
             // stripeCustomerId: stripeCustomer.id,
         });
 
-        await this.usersRepository.save(newUser);
+        await this.userRepository.save(newUser);
         return newUser;
     }
 
@@ -171,52 +204,64 @@ export class UsersService {
         return await bcrypt.hash(password, salt);
     }
 
-async getByResetLink(resetLink: string){
-    const user = await this.usersRepository.findOneBy({ resetLink });
-    if (user) {
-        return user;
+    async getByResetLink(resetLink: string) {
+        const user = await this.userRepository.findOneBy({ resetLink });
+        if (user) {
+            return user;
+        }
+        throw new HttpException(
+            'User does not exist',
+            HttpStatus.NOT_FOUND
+        );
     }
-    throw new HttpException(
-        'User does not exist',
-        HttpStatus.NOT_FOUND
-    );
-}
 
-    // async addAvatar(userId: number, imageBuffer: Buffer, filename: string) {
-    //     const avatar = await this.localFilesService.uploadDatabaseFile(imageBuffer, filename);
-    //     await this.usersRepository.update(userId, {
-    //         avatarId: avatar.id
-    //     });
-    //     return avatar;
-    // }
-    // async addAvatar(userId: number, imageBuffer: Buffer, filename: string) {
-    //     const queryRunner = this.dataSource.createQueryRunner();
+    async addAvatar(profileId: number, imageBuffer: Buffer, filename: string) {
+        const queryRunner = this.connection.createQueryRunner();
 
-    //     await queryRunner.connect(); // performs connection
-    //     await queryRunner.startTransaction();
+        await queryRunner.connect(); // performs connection
+        await queryRunner.startTransaction();
 
-    //     try {
-    //         const user = await queryRunner.manager.findOneBy(User,{where: {id: userId}});
-    //         const currentAvatarId = user.avatarId;
-    //         const avatar = await this.localFilesService.uploadDatabaseFileWithQueryRunner(imageBuffer, filename, queryRunner);
+        try {
+            const profile = await queryRunner.manager.findOne(Profile, { where: { id: profileId } });
+            const currentAvatarId = profile.avatarId;
+            const avatar = await this.localFilesService.uploadDatabaseFileWithQueryRunner(imageBuffer, filename, queryRunner);
 
-    //         await queryRunner.manager.update(User, userId, {
-    //             avatarId: avatar.id
-    //         });
+            await queryRunner.manager.update(Profile, profileId, {
+                avatarId: avatar.id
+            });
 
-    //         if (currentAvatarId) {
-    //             await this.localFilesService.deleteFileWithQueryRunner(currentAvatarId, queryRunner);
-    //         }
+            if (currentAvatarId) {
+                await this.localFilesService.deleteFileWithQueryRunner(currentAvatarId, queryRunner);
+            }
 
-    //         await queryRunner.commitTransaction();
+            await queryRunner.commitTransaction();
 
-    //         return avatar;
-    //     } catch {
-    //         await queryRunner.rollbackTransaction();
-    //         throw new InternalServerErrorException();
-    //     } finally {
-    //         await queryRunner.release();  // release connection
-    //     }
-    // }
+            return avatar;
+        } catch {
+            await queryRunner.rollbackTransaction();
+            throw new InternalServerErrorException();
+        } finally {
+            await queryRunner.release();  // release connection
+        }
+    }
+
+    async createUserProfile(userId: number, profileData: CreateProfileDto) {
+        const user = await this.getById(userId);
+        const newProfile = this.profileRepository.create(profileData);
+
+        user.profile = newProfile;
+
+        await this.userRepository.save(user);
+
+        return newProfile;
+    }
+    async createUserAddress(userId: number, addressData: AddressDTO){
+        const user = await this.getById(userId);
+        const newAddress = this.addressRepository.create(addressData);
+        user.address = newAddress;
+            await this.userRepository.save(user);
+    
+        return newAddress;
+      }
 
 }

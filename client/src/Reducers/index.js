@@ -10,6 +10,7 @@ import avatar from "./avatar";
 import mpesa from "./mpesa";
 import Kanban from "./kanban";
 import Bookings from "./bookings";
+import CustomEvents from "./calendar";
 
 export default combineReducers(
     {
@@ -22,5 +23,6 @@ export default combineReducers(
         avatar,
         mpesa,
         Kanban,
-        Bookings
+        Bookings,
+        CustomEvents,
     });

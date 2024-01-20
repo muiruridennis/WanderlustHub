@@ -1,0 +1,21 @@
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[9092],{90141:function(e,t,n){(window.__NEXT_P=window.__NEXT_P||[]).push(["/docs/guides/nextjs",function(){return n(7364)}])},52196:function(e,t,n){"use strict";n.d(t,{a:function(){return l}});var s=n(85893),i=n(76239);function l(e){let{title:t,description:n,children:l}=e;return(0,s.jsxs)(i.i,{children:[(0,s.jsx)("header",{id:"header",className:"mb-10 md:flex md:items-start",children:(0,s.jsxs)("div",{className:"flex-auto max-w-4xl",children:[(0,s.jsx)("p",{className:"mb-4 text-sm leading-6 font-semibold text-sky-500 dark:text-sky-400",children:"Installation"}),(0,s.jsx)("h1",{className:"text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight dark:text-slate-200",children:t}),(0,s.jsx)("p",{className:"mt-4 text-lg text-slate-700 dark:text-slate-400",children:n})]})}),(0,s.jsx)("section",{className:"mb-16 relative",children:l})]})}},7364:function(e,t,n){"use strict";n.r(t),n.d(t,{__N_SSG:function(){return o},default:function(){return r}});var s=n(85893),i=n(72788),l=n(52196),a=n(39897);let d=[{title:"Create your project",body:()=>(0,s.jsxs)("p",{children:["Start by creating a new Next.js project if you don’t have one set up already. The most common approach is to use"," ",(0,s.jsx)("a",{href:"https://nextjs.org/docs/api-reference/create-next-app",children:"Create Next App"}),"."]}),code:{name:"Terminal",lang:"terminal",code:"npx create-next-app@latest my-project --typescript --eslint\ncd my-project"}},{title:"Install Tailwind CSS",body:()=>(0,s.jsxs)("p",{children:["Install ",(0,s.jsx)("code",{children:"tailwindcss"})," and its peer dependencies via npm, and then run the init command to generate both ",(0,s.jsx)("code",{children:"tailwind.config.js"})," and ",(0,s.jsx)("code",{children:"postcss.config.js"}),"."]}),code:{name:"Terminal",lang:"terminal",code:"npm install -D tailwindcss postcss autoprefixer\nnpx tailwindcss init -p"}},{title:"Configure your template paths",body:()=>(0,s.jsxs)("p",{children:["Add the paths to all of your template files in your ",(0,s.jsx)("code",{children:"tailwind.config.js"})," file."]}),code:{name:"tailwind.config.js",lang:"js",code:`  /** @type {import('tailwindcss').Config} */
+  module.exports = {
+>   content: [
+>     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+>     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+>     "./components/**/*.{js,ts,jsx,tsx,mdx}",
+>
+>     // Or if using \`src\` directory:
+>     "./src/**/*.{js,ts,jsx,tsx,mdx}",
+>   ],
+    theme: {
+      extend: {},
+    },
+    plugins: [],
+  }`}},{title:"Add the Tailwind directives to your CSS",body:()=>(0,s.jsxs)("p",{children:["Add the ",(0,s.jsx)("code",{children:"@tailwind"})," directives for each of Tailwind’s layers to your"," ",(0,s.jsx)("code",{children:"globals.css"})," file."]}),code:{name:"globals.css",lang:"css",code:"@tailwind base;\n@tailwind components;\n@tailwind utilities;"}},{title:"Start your build process",body:()=>(0,s.jsxs)("p",{children:["Run your build process with ",(0,s.jsx)("code",{children:"npm run dev"}),"."]}),code:{name:"Terminal",lang:"terminal",code:"npm run dev"}},{title:"Start using Tailwind in your project",body:()=>(0,s.jsx)("p",{children:"Start using Tailwind’s utility classes to style your content."}),code:{name:"index.tsx",lang:"jsx",code:`  export default function Home() {
+    return (
+>     <h1 className="text-3xl font-bold underline">
+>       Hello world!
+>     </h1>
+    )
+  }`}}];var o=!0;function r(e){let{code:t}=e;return(0,s.jsx)(l.a,{title:"Install Tailwind CSS with Next.js",description:"Setting up Tailwind CSS in a Next.js project.",children:(0,s.jsx)(a.R,{steps:d,code:t})})}r.layoutProps={meta:{title:"Install Tailwind CSS with Next.js",description:"Setting up Tailwind CSS in a Next.js v10+ project.",section:"Installation"},Layout:i.L,allowOverflow:!1}}},function(e){e.O(0,[9495,7308,7667,9774,2888,179],function(){return e(e.s=90141)}),_N_E=e.O()}]);

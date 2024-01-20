@@ -4,7 +4,6 @@ import {
 } from "../Constants/actionTypes";
 import { ROUTES } from "../Constants/routes"
 import * as api from '../Api/index.js';
-import Logout from "@mui/icons-material/Logout";
 
 export const signin = (formData, navigate) => async dispatch => {
 
@@ -99,10 +98,10 @@ export const logOut = () => async (dispatch) => {
     }
 };
 
-export const fetchLoggedUser = () => async (dispatch) => {
+export const getUthenticatedUser = () => async (dispatch) => {
     try {
         dispatch({ type: START_LOADING })
-        const { data } = await api.fetchLoggedUser();
+        const { data } = await api.getUthenticatedUser();
         dispatch({ type: LOGGED_USER, payload: data });
         dispatch({ type: END_LOADING });
     } catch (error) {

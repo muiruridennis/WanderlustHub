@@ -5,9 +5,7 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
-import { ClientsModule } from './client/clients.module';
 import { TourModule } from './tour/tour.module';
-import { PermissionsModule } from './permissions/permissions.module';
 import { PaymentModule } from './payment/payment.module';
 import { DirectorsModule } from './directors/directors.module';
 import { LocalFileModule } from './local-file/local-file.module';
@@ -22,13 +20,14 @@ import { GoogleAuthenticationModule } from './googleAuthentication/googleAuthent
 import { ReviewsModule } from './reviews/reviews.module';
 import { MpesaModule } from './mpesa/mpesa.module';
 import { KanbanModule } from './kanban/kanban.module';
+import { CalendarModule } from './calendar/calendar.module';
+import { NotificationModule } from './notification/notification.module';
 import * as Joi from 'joi';
+
 
 @Module({
   imports: [
-    UsersModule,
-    DatabaseModule,
-    AuthModule,
+
     ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       validationSchema: Joi.object({
@@ -62,13 +61,19 @@ import * as Joi from 'joi';
         C_TO_B_BUSINESS_CODE: Joi.string().required(),
         MPESA_PHONE_NUM: Joi.string().required(),
       })
-    }), 
-    ClientsModule, TourModule, PermissionsModule, PaymentModule,
-     DirectorsModule, 
-     LocalFileModule, DestinationsModule, BookModule, 
-     EmailConfirmationModule, EmailSchedulingModule, FeatureFlagsModule, SmsModule, GoogleAuthenticationModule, ReviewsModule, MpesaModule, KanbanModule, 
+    }),
+    UsersModule,
+    DatabaseModule,
+    AuthModule,
+    TourModule, PaymentModule,
+    DirectorsModule, LocalFileModule, DestinationsModule, BookModule,
+    EmailConfirmationModule, EmailSchedulingModule, FeatureFlagsModule,
+    SmsModule, GoogleAuthenticationModule, ReviewsModule, MpesaModule,
+    KanbanModule, CalendarModule,
+    // EventModule,
+    NotificationModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,],
 })
 export class AppModule { }

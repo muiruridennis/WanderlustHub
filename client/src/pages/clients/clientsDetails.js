@@ -20,15 +20,6 @@ function ClientsDetails() {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const { isLoading, client } = useSelector((state) => state.clients);
-  // const navLinkStyles = {
-  //   color: location.pathname === `/${id}` ? 'rgb(99, 102, 241)' : '#000000',
-  //   textDecoration: isActive ? 'underline' : 'none',
-  //   display: "inline-flex",
-  //   alignItems: "center",
-  //   padding: "1rem 0",
-  //   marginRight: "2rem"
-  // };
-
 
   const handleNavigate = () => {
     navigate(-1)

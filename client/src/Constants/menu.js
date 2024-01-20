@@ -28,26 +28,13 @@ import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
     literal: 'Bookings',
     Icon: ShoppingCartIcon,
   },
+  
   {
-    route: ROUTES.customers,
-    literal: 'Customers',
-    Icon: PeopleIcon,
-  },
-  {
-    route: ROUTES.inventory,
-    literal: 'Inventory',
-    Icon: AttachMoneyIcon,
-  },
-  {
-    route: ROUTES.expenses,
-    literal: 'Expenses',
+    route: ROUTES.finances,
+    literal: 'Finances',
     Icon: MoneyIcon,
   },
-  {
-    route: ROUTES.payments,
-    literal: 'Payments',
-    Icon: AttachMoneyIcon,
-  },
+
   {
     route: ROUTES.calendar,
     literal: 'Calendar',
@@ -73,12 +60,7 @@ import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
   literal: 'Clients',
   Icon: PeopleIcon,
 },
-  {
-    route: ROUTES.tours,
-    literal: 'Tour Management',
-    Icon: ExploreIcon,
-  },
-
+  
   {
     route: ROUTES.reports,
     literal: 'Reports',

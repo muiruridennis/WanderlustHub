@@ -188,12 +188,8 @@ const Header = () => {
         sx={{
           backdropFilter: 'blur(6px)',
           backgroundColor: "#332FD0",
-          // backgroundColor: (theme) => alpha(theme.palette.background.default, 0.8),
-
           color: "secondary.contrastText",
-          // position: "fixed",
-          top: 0,
-          zIndex: (theme) => theme.zIndex.drawer + 1, // Increase the zIndex value
+          zIndex: (theme) => theme.zIndex.drawer , // Increase the zIndex value
         }}
       >
         <Toolbar>
@@ -204,9 +200,9 @@ const Header = () => {
           >
             {isOpen ? <ChevronLeftIcon /> : <MenuIcon />}
           </IconButton>
-          <Typography variant="h6" sx={{ ml: 3, mr: 2, color: "yellow", display: isSmallScreen ? "none" : "block" }}>
+          {/* <Typography variant="h6" sx={{ ml: 3, mr: 2, color: "yellow", display: isSmallScreen ? "none" : "block" }}>
             Take-us Safaris
-          </Typography>
+          </Typography> */}
 
           {/* <Search>
             <SearchIconWrapper>

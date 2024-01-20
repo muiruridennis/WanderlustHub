@@ -2,25 +2,36 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import { useDrawerContext } from "../../contexts/drawer-context";
 import { styled } from "@mui/material/styles";
 import { MenuItemsList, AppEssentials } from "./MenuList";
-import MuiDrawer from "@mui/material/Drawer";
+import Drawer from "@mui/material/Drawer";
 
-const StyledDrawer = styled(MuiDrawer, {
+const StyledDrawer = styled(Drawer, {
   shouldForwardProp: (prop) => prop !== "isOpen",
 })(({ isOpen, theme }) => ({
   width: isOpen ? 240 : theme.spacing(7),
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
+  position: "static",
+  top: 0, 
+  transition: isOpen
+    ? theme.transitions.create("width", {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      })
+    : theme.transitions.create("width", {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
   "& .MuiDrawer-paper": {
     background: "#D8DCD6",
+    position: "static",
     overflowX: "hidden",
-    marginTop: theme.spacing(7),
+  },
+  [theme.breakpoints.down("sm")]: {
+    position: "fixed",
+    top: 0,
   },
 }));
 
 const CustomDrawer = () => {
-  const { isOpen, toggleIsOpen } = useDrawerContext();
+  const { isOpen, setIsOpen } = useDrawerContext();
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -29,12 +40,13 @@ const CustomDrawer = () => {
     <StyledDrawer
       variant={isLargeScreen ? "permanent" : "temporary"}
       open={!isLargeScreen && isOpen ? true : false}
-      onClose={() => toggleIsOpen(!isOpen)}
+      onClose={() => setIsOpen(!isOpen)}
       isOpen={isOpen}
     >
       <MenuItemsList />
       <AppEssentials  />
     </StyledDrawer>
+    
   );
 };
 

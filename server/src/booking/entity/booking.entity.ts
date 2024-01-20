@@ -1,12 +1,13 @@
 import {
     PrimaryGeneratedColumn, Entity,
-    ManyToMany, JoinTable, CreateDateColumn, OneToOne, JoinColumn,
+    JoinTable, CreateDateColumn, OneToMany, Timestamp,
     Column, ManyToOne, UpdateDateColumn
 } from "typeorm";
 import Tour from "../../tour/entity/tour.entity";
-import { Status } from "../status";
+import { Status, BookingType } from "../enums";
 import User from "../../users/entity/user.entity"
-import Mpesa from "../../mpesa/entity/mpesa.entity";
+import Payment from "../../payment/entity/payment.entity";
+
 
 @Entity()
 class Booking {
@@ -16,30 +17,26 @@ class Booking {
     @Column({ type: 'enum', enum: Status, default: Status.PENDING })
     status: Status;
 
-    // @Column({ nullable: true })
-    // phoneNumber: string;
+    @Column({ type: 'enum', enum: BookingType, default: BookingType.CLIENT })
+    bookingType: BookingType;
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: 'timestamp' })
     bookedAtDate: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({ type: 'timestamp' })
     updatedDate: Date;
 
-    @OneToOne(() => Mpesa,
-        {
-            nullable: true,
-            eager: true,
-            cascade: true,
-        }
-    )
-    @JoinColumn()
-    payment: Mpesa
+    @OneToMany(() => Payment, (payment) => payment.booking)
+    payments: Payment[];
+
+    @Column()
+    remainingBalance: number;
 
     @ManyToOne(() => User, (user: User) => user.bookings)
     public user: User;
 
     @ManyToOne(() => Tour, (tour: Tour) => tour.bookings)
-    @JoinTable()
     public tour: Tour;
 }
 export default Booking;
+

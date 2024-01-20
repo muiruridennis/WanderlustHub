@@ -9,7 +9,7 @@ import {
     BadRequestException,
   } from '@nestjs/common';
   import SmsService from './sms.service';
-  import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+  import { JwtAuthenticationGuard  } from '../auth/guards/jwt-auth.guard';
   import RequestWithUser from '../auth/requestWithUser.interface'
   import CheckVerificationCodeDto from './checkVerificationCode.dto';
   import Sms from './sms.dto'
@@ -20,7 +20,7 @@ import {
     constructor(private readonly smsService: SmsService) {}
   
     @Post('initiate-verification')
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthenticationGuard )
     async initiatePhoneNumberVerification(@Req() request: RequestWithUser) {
       if (request.user.isPhoneNumberConfirmed) {
         throw new BadRequestException('Phone number already confirmed');
@@ -31,7 +31,7 @@ import {
     }
   
     @Post('check-verification-code')
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthenticationGuard )
     async checkVerificationCode(
       @Req() request: RequestWithUser,
       @Body() verificationData: CheckVerificationCodeDto,

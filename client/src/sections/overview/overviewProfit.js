@@ -2,10 +2,20 @@ import PaidIcon from '@mui/icons-material/Paid';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
 
 export const OverviewTotalProfit = (props) => {
-    const { value, sx } = props;
+    const { value } = props;
 
     return (
-        <Card sx={sx}>
+        <Card
+            sx={{
+                cursor: 'pointer',
+                height: '100%',
+                transition: 'transform 0.3s ease',
+                '&:hover': {
+                    transform: 'scale(1.05)',
+                    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+                },
+            }}
+        >
             <CardContent>
                 <Stack
                     alignItems="flex-start"

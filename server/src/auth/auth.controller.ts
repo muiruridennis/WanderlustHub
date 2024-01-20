@@ -7,7 +7,7 @@ import { RegisterUserstDTO } from "./dto/register-user.dto";
 import { ResetPasswordDto } from "./dto/resetPassword.dto";
 import { EmailConfirmationService } from "../email-confirmation/email-confirmation.service"
 import { AuthService } from "./auth.service";
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { JwtAuthenticationGuard } from './guards/jwt-auth.guard';
 import RequestWithUser from "./requestWithUser.interface";
 import { LocalAuthenticationGuard } from './guards/localAuthentication.guard';
 import { UsersService } from '../users/users.service'
@@ -17,9 +17,6 @@ import { ForgotPasswordDto } from './dto/forgotPassword.dto';
 
 
 @Controller('auth')
-@SerializeOptions({
-    strategy: 'excludeAll'
-  })
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
     constructor(
@@ -55,7 +52,7 @@ export class AuthController {
         return user;
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthenticationGuard)
     @Post('logout')
     @HttpCode(200)
     async logOut(@Req() request: RequestWithUser, @Res() response: Response) {
@@ -64,16 +61,12 @@ export class AuthController {
         response.send({ msg: "logged out successfully" })
     }
 
-
-
-    @UseGuards(JwtAuthGuard)
-    @Get("currentuser")
+    @UseGuards(JwtAuthenticationGuard)
+    @Get("/currentuser")
     authenticate(@Req() request: RequestWithUser) {
-        const currentUser = request.user;
-        currentUser.password = undefined;
-        return currentUser;
+        return request.user;
     }
-    // /refresh endpoint
+
     @UseGuards(JwtRefreshGuard)
     @Get('refresh')
     refresh(@Req() request: RequestWithUser) {
@@ -86,11 +79,11 @@ export class AuthController {
     @Post('/forgotPassword')
     async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
         await this.authService.forgotPassword(forgotPasswordDto);
-      
+
     }
     @Patch('/resetPassword')
-    async resetPassword(  @Body() resetDetails: ResetPasswordDto ) {
-        return this.authService.resetPassord( resetDetails);
+    async resetPassword(@Body() resetDetails: ResetPasswordDto) {
+        return this.authService.resetPassord(resetDetails);
     }
 };
 
@@ -98,10 +91,10 @@ export class AuthController {
 
 
 // Refresh Token Flow:
-// Refresh Token is a random string key that will be created along with the JWT access token and return to the 
-//valid client on successful logging in. Now for all subsequent requests will use the access token, 
+// Refresh Token is a random string key that will be created along with the JWT access token and return to the
+//valid client on successful logging in. Now for all subsequent requests will use the access token,
 //but the access token is a short-lived token whereas the refresh token lives more time than the access token.
 // On the expiration of the access token, the user instead of authenticating himself again passing his user name
-// and password, the user can send the refresh token.The server on receiving a refresh token first validates 
+// and password, the user can send the refresh token.The server on receiving a refresh token first validates
 //against the storage(database, cache, etc).For a valid refresh token server will create a new access token and
 // refresh token(like when authenticate using user name and password) return it to the user.

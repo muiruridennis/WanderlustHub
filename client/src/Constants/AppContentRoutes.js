@@ -25,17 +25,29 @@ import {
   TaskOverview,
   TaskComments,
   TaskChecklists,
-  CustomersPage,
+  // CustomersPage,
   ClientsInfo,
   GeneralInfo,
   ClientsBookings,
-  ClientsActivities
+  ClientsActivities,
+  MonetaryAnalysis,
+  Finances,
+  Expenses,
+  Income,
+  NetProfit,
+  Vendor,
+  VendorDetails,
+  VendorGeneralInfo,
+  VendorPaymentHistory,
+  VendorInvoices,
+  TourPackageDetails
+
 } from "../pages";
 
 export const mainRoutes = [
   { path: '/', index: "index", name: 'Overview', element: Overview },
   // { path: 'clients', name: 'Clients', element: ClientsPage },
-  { path: 'clients', name: 'Clients', element: CustomersPage },
+  { path: 'clients', name: 'Clients', element: ClientsPage },
   { path: 'clientsDetails/:id/*', name: 'ClientsDetails', element: ClientsInfo },
   { path: 'inventory', name: 'Inventory', element: InventoryPage },
   { path: 'bookings', name: 'Bookings', element: BookingPage },
@@ -44,8 +56,14 @@ export const mainRoutes = [
   { path: 'users', name: 'Users', element: UsersPage },
   { path: 'mpesaTransaction', name: 'Mpesa', element: Mpesa },
   { path: 'calendar', name: 'Calendar', element: CalendarApp },
-  { path: 'users/:clientId/*', name: 'Users', element: UserDetails },
+  { path: 'users/:userId/*', name: 'Users', element: UserDetails },
   { path: 'kanban/*', name: 'Kanban', element: Kanban },
+  { path: 'finances', name: 'finances', element: Finances },
+  { path: 'finances/expenses', name: 'expenses', element: Expenses },
+  { path: 'finances/income', name: 'income', element: Income },
+  { path: 'finances/netprofit', name: 'netProfit', element: NetProfit },
+  { path: 'finances/vendor', name: 'vendor', element: Vendor },
+  { path: 'finances/vendor/:id/*', name: 'Vendors Details', element: VendorDetails },
 ]
 
 export const minorRoutes = [
@@ -61,6 +79,10 @@ export const authRoutes = [
   { path: 'resetPassword/:resetLink', name: 'ResetPassword', element: ResetPassword },
   { path: 'confirmEmail/:confirmationToken', name: 'ConfirmEmail', element: ConfirmEmail },
 ]
+export const tourRoutes = [
+  { path: 'packages/:packageId', index: "index", name: 'TourPackageDetails', element: TourPackageDetails },
+
+]
 export const accountRoutes = [
   { path: 'general', index: "index", name: 'General', element: GeneralAccount },
   { path: 'billings', name: 'Billings', element: Billings },
@@ -71,6 +93,11 @@ export const clientsRoutes = [
   { path: '/', index: 'index', name: 'overview', element: GeneralInfo },
   { path: 'bookings', name: 'Bookings', element: ClientsBookings },
   { path: 'activities', name: 'Activities', element: ClientsActivities },
+];
+export const vendorsRoutes = [
+  { path: '/', index: 'index', name: 'generalInfo', element: VendorGeneralInfo },
+  { path: 'paymentHistory', name: 'paymentHistory', element: VendorPaymentHistory },
+  { path: 'invoices', name: 'invoices', element: VendorInvoices },
 ];
 
 

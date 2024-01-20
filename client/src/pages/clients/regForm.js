@@ -1,61 +1,51 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Button, 
-  Paper, 
-  Container, 
-  TextField, 
-  Box 
-} from '@mui/material';
+import { Button, Tooltip, Paper, TextField, Grid, Typography, Container, Stack, Switch, FormControlLabel, IconButton } from '@mui/material';
+import { Formik, getIn } from 'formik';
+import * as Yup from 'yup';
 import { useDispatch, useSelector } from "react-redux";
-import { createClient, updateClient } from "../../Actions/clients"
-import { useTheme, useMediaQuery } from "@mui/material";
+import { createClient, updateClient } from "../../Actions/clients";
+import Input from "../../Components/TextFieldInput"
 
-function RegForm(props) {
-  const { currentId, setOpenPopup, setNotify, setCurrentId, clients } = props;
-  const initialState = {
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required('Name is required'),
+  email: Yup.string()
+    .required('Contact information is required')
+    .email('Invalid email format'),
+  address: Yup.object().shape({
+    country: Yup.string().required('Country is required'),
+    city: Yup.string().required('City is required'),
+    street: Yup.string().required('Street is required'),
+  }),
+
+});
+
+function ClientRegForm(props) {
+  const { currentId, setOpenPopup, setNotify, setCurrentId, clients, close } = props;
+  const initialValues = {
     name: "",
     email: "",
     address: {
-      city: '',
       country: '',
-      state: '',
+      city: '',
       street: ''
     },
-    phone: "",
+    phoneNumber: "",
+    profile:{
+      points:"",   }
   };
 
-  const [clientData, setClientData] = useState(initialState);
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const [clientData, setClientData] = useState(initialValues);
   const dispatch = useDispatch();
-      // const client = useSelector((state) => (currentId ? state.clients.clients.find((client) => client.id === currentId) : null));
+  // const client = useSelector((state) => (currentId ? state.clients.clients.find((client) => client.id === currentId) : null));
 
   const client = currentId ? clients.find((client) => client.id === currentId) : null;
   useEffect(() => {
     if (client) setClientData(client);
   }, [client]);
 
-  const style = {
-    textField: {
-      margin: theme.spacing(1),
-      width: !isSmallScreen ? "47%" : "auto"
-    },
-    buttons: {
-      marginBottom: "8px",
-      marginTop: "8px",
-      marginRight: theme.spacing(2),
-      textTransform: "none"
-    }
-  };
-
   const clear = () => {
     setCurrentId(null);
-    setClientData(initialState);
-  };
-
-  const close = () => {
-    setOpenPopup(false);
-    clear();
+    setClientData(initialValues);
   };
 
   const handleSubmit = async (e) => {
@@ -84,106 +74,147 @@ function RegForm(props) {
   };
 
   return (
-    <Container component="main" maxWidth="md">
-      <Paper elevation={2}>
-        <form 
-          autoComplete="off" 
-          noValidate
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
+    <Container component="main" maxWidth="lg">
+      <Paper sx={{ maxWidth: 400, margin: 'auto', padding: '16px' }} elevation={0}>
+        <Formik
+          initialValues={clientData}
+          enableReinitialize={true} // Enable reinitialization
+
+          validationSchema={validationSchema}
+          onSubmit={(values) => {
+            console.log(values)
           }}
+
         >
-          <Box>
-            <TextField 
-              sx={style.textField}
-              name="name" 
-              variant="outlined"
-              label="Name" 
-              value={clientData.name}
-              onChange={(e) => setClientData({ ...clientData, name: e.target.value })}
-              required
-            />
-            <TextField 
-              sx={style.textField}
-              name="email" 
-              variant="outlined"
-              label="Email Address"
-              value={clientData.email}
-              onChange={(e) => setClientData({ ...clientData, email: e.target.value })}
-              required={false} 
-            />
-            <TextField
-              sx={style.textField}
-              name="address.country"
-              variant="outlined"
-              label="Country"
-              value={clientData.address.country}
-              onChange={(e) => setClientData({ ...clientData, address: { ...clientData.address, country: e.target.value } })}
-              required
-            />
-            <TextField
-              sx={style.textField}
-              name="address.state"
-              variant="outlined"
-              label="State"
-              value={clientData.address.state}
-              onChange={(e) => setClientData({ ...clientData, address: { ...clientData.address, state: e.target.value } })}
-              required
-            />
-            <TextField
-              sx={style.textField}
-              name="address.city"
-              variant="outlined"
-              label="City"
-              value={clientData.address.city}
-              onChange={(e) => setClientData({ ...clientData, address: { ...clientData.address, city: e.target.value } })}
-              required
-            />
-            <TextField
-              sx={style.textField}
-              name="address.street"
-              variant="outlined"
-              label="Street"
-              value={clientData.address.street}
-              onChange={(e) => setClientData({ ...clientData, address: { ...clientData.address, street: e.target.value } })}
-              required
-            />
-            <TextField 
-              sx={style.textField}
-              name="phone"
-              variant="outlined"
-              label="Phone Number"
-              value={clientData.phone} 
-              onChange={(e) => setClientData({ ...clientData, phone: e.target.value })}
-              required
-            />
-          </Box>
-          <Box>
-            <Button
-              sx={style.buttons}
-              variant="contained"
-              onClick={handleSubmit}
-              color="primary"
-              size="large"
-              type="submit"
+          {formik => (
+            <form
+              form onSubmit={formik.handleSubmit}
+              noValidate
             >
-              {currentId === null || currentId === undefined ? "Add Client" : "Update Client"}
-            </Button>
-            <Button
-              variant="text"
-              color="inherit"
-              size="large"
-              sx={{ textTransform: "none" }}
-              onClick={close}
-            >
-              Cancel
-            </Button>
-          </Box>
-        </form>
+              <Grid container spacing={2}>
+
+                <Input
+                  name="name"
+                  label="Name"
+                  value={formik.values.name}
+                  handleChange={formik.handleChange}
+                  fullWidth
+                  required
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.name && Boolean(formik.errors.name)}
+                  helperText={formik.touched.name && formik.errors.name}
+                />
+                <Input
+                  name="email"
+                  label="Email Address"
+                  value={formik.values.email}
+                  handleChange={formik.handleChange}
+                  fullWidth
+                  required
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.email && Boolean(formik.errors.email)}
+                  helperText={formik.touched.email && formik.errors.email}
+                />
+                <Input
+                  half
+                  name="address.country"
+                  label="Country"
+                  type="text"
+                  multiline
+                  value={formik.values.address.country}
+                  handleChange={formik.handleChange}
+                  fullWidth
+                  required
+                  onBlur={formik.handleBlur}
+                  error={Boolean(
+                    getIn(formik.touched, 'address.country') &&
+                    getIn(formik.errors, 'address.country')
+                  )}
+                  helperText={
+                    getIn(formik.touched, 'address.country') &&
+                    getIn(formik.errors, 'address.country')
+                  }
+                />
+
+
+                <Input
+                  half
+                  name="address.city"
+                  label="City"
+                  type="text"
+                  multiline
+                  value={formik.values.address.city}
+                  handleChange={formik.handleChange}
+                  fullWidth
+                  required
+                  onBlur={formik.handleBlur}
+                  error={Boolean(
+                    getIn(formik.touched, 'address.city') &&
+                    getIn(formik.errors, 'address.city')
+                  )}
+                  helperText={
+                    getIn(formik.touched, 'address.city') &&
+                    getIn(formik.errors, 'address.city')
+                  }
+                />
+                <Input
+                  half
+                  name="address.street"
+                  label=" Street"
+                  type="text"
+                  multiline
+                  value={formik.values.address.street}
+                  handleChange={formik.handleChange}
+                  fullWidth
+                  required
+                  onBlur={formik.handleBlur}
+                  error={Boolean(
+                    getIn(formik.touched, 'address.street') &&
+                    getIn(formik.errors, 'address.street')
+                  )}
+                  helperText={
+                    getIn(formik.touched, 'address.street') &&
+                    getIn(formik.errors, 'address.street')
+                  }
+                />
+                <Input
+                  name="phoneNumber"
+                  label="Phone Number "
+                  value={formik.values.phoneNumber}
+                  handleChange={formik.handleChange}
+                  fullWidth
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+                  helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+                />
+                <Grid item xs={12} lg={12}>
+                  <Stack direction="row" spacing={3}>
+
+                    <Button
+                      variant="text"
+                      color="inherit"
+                      fullWidth
+                      onClick={close}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                    >
+                      {currentId === null || currentId === undefined ? "Add Client" : "Update Client"}
+                    </Button>
+                  </Stack>
+                </Grid>
+              </Grid>
+            </form>
+          )}
+        </Formik>
       </Paper>
-    </Container>
+    </Container >
   );
 }
 
-export default RegForm;
+export default ClientRegForm;

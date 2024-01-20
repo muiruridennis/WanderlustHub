@@ -1,111 +1,98 @@
-import { Card } from '@mui/material';
-import React from 'react'
-import {
-    PieChart,
-    Pie,
-    Legend,
-    Cell,
-    ResponsiveContainer,
-    Label
-} from 'recharts';
+// import React from 'react';
+// import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
+// import { Paper, Typography } from '@mui/material';
 
-const data01 = [
-    { name: "Expenses", value:70 },
-    { name: "Profits", value: 23 },
-    { name: "Loses", value: 1 }
+// const revenueData = [
+//   { name: 'Tour 1', revenue: 2500, profit: 800 },
+//   { name: 'Tour 2', revenue: 1800, profit: 600 },
+//   { name: 'Tour 3', revenue: 3200, profit: 1000 },
+//   // Add more data for other tours or packages
+// ];
+
+// const RevenueProfitAnalysis = () => {
+//   return (
+//     <Paper elevation={3} sx={{padding:3}}>
+//       <Typography variant="h6" sx={{ marginBottom: 2 }}>
+//         Revenue and Profit Analysis
+//       </Typography>
+//       <ResponsiveContainer width="100%" height={300}>
+//         <PieChart>
+//           <Pie
+//             data={revenueData}
+//             dataKey="revenue"
+//             nameKey="name"
+//             cx="50%"
+//             cy="50%"
+//             outerRadius={80}
+//             fill="#22A699"
+//           >
+//             {revenueData.map((entry, index) => (
+//               <Cell key={`cell-${index}`} fill={getColor(index)} />
+//             ))}
+//           </Pie>
+//           <Legend />
+//         </PieChart>
+//       </ResponsiveContainer>
+//     </Paper>
+//   );
+// };
+
+// const getColor = (index) => {
+//   const colors = ['#22A699', '#3E97D1', '#F06C9B', '#FFD166', '#6A0572'];
+//   return colors[index % colors.length];
+// };
+
+// export default RevenueProfitAnalysis;
+import React from 'react';
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
+import { Paper, Typography } from '@mui/material';
+
+const revenueData = [
+  { name: 'Tour 1', revenue: 2500, profit: 800 },
+  { name: 'Tour 2', revenue: 1800, profit: 600 },
+  { name: 'Tour 3', revenue: 3200, profit: 1000 },
+  // Add more data for other tours or packages
 ];
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-const Bullet = ({ backgroundColor, size }) => {
-    return (
-      <div
-        className="CirecleBullet"
-        style={{
-          backgroundColor,
-          width: size,
-          height: size
-        }}
-      ></div>
-    );
-  };
-  
-  const CustomizedLegend = (props) => {
-    const { payload } = props;
-    return (
-      <ul className="LegendList">
-        {payload.map((entry, index) => (
-          <li key={`item-${index}`}>
-            <div className="BulletLabel">
-              <Bullet backgroundColor={entry.payload.fill} size="10px" />
-              <div className="BulletLabelText">{entry.value}</div>
-            </div>
-            <div style={{ marginLeft: "20px" }}>{entry.payload.value}</div>
-          </li>
-        ))}
-      </ul>
-    );
-  };
-  
-  const CustomLabel = ({ viewBox, labelText, value }) => {
-    const { cx, cy } = viewBox;
-    return (
-      <g>
-        <text
-          x={cx}
-          y={cy}
-          className="recharts-text recharts-label"
-          textAnchor="middle"
-          dominantBaseline="central"
-          alignmentBaseline="middle"
-          fontSize="15"
-        >
-          {labelText}
-        </text>
-        <text
-          x={cx}
-          y={cy + 20}
-          className="recharts-text recharts-label"
-          textAnchor="middle"
-          dominantBaseline="central"
-          alignmentBaseline="middle"
-          fill="#0088FE"
-          fontSize="26"
-          fontWeight="600"
-        >
-          {value}
-        </text>
-      </g>
-    );
-  };
-function ClienytsByGender({ sx }) {
-    return (
-        <Card sx={sx}>
-            <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                    <Pie
-                        data={data01}
-                        dataKey="value"
-                        cx={200}
-                        cy={200}
-                        innerRadius={80}
-                        outerRadius={100}
-                    >
-                        {data01.map((entry, index) => (
-                            <Cell
-                                key={`cell-${index}`}
-                                fill={COLORS[index % COLORS.length]}
-                            />
-                        ))}
-                        <Label
-                            content={<CustomLabel labelText="Finance" value={1} />}
-                            position="center"
-                        />
-                    </Pie>
-                    <Legend content={<CustomizedLegend />} />
-                </PieChart>
-            </ResponsiveContainer>
-        </Card>
-    )
-}
+const RevenueProfitAnalysis = () => {
+  // Calculate total revenue and profit
+  const totalRevenue = revenueData.reduce((total, data) => total + data.revenue, 0);
+  const totalProfit = revenueData.reduce((total, data) => total + data.profit, 0);
 
-export default ClienytsByGender
+  return (
+    <Paper elevation={3} sx={{ padding: 3 }}>
+      <Typography variant="h6" sx={{ marginBottom: 2 }}>
+        Revenue and Profit Analysis
+      </Typography>
+      <ResponsiveContainer width="100%" height={300}>
+        <PieChart animationBegin={500} animationDuration={1000}>
+          <Pie
+            data={revenueData}
+            dataKey="revenue"
+            nameKey="name"
+            cx="50%"
+            cy="50%"
+            outerRadius={80}
+            fill="#22A699"
+            label={({ percent }) => `${(percent * 100).toFixed(2)}%`} // Display percentage label
+          >
+            {revenueData.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={getColor(index)} />
+            ))}
+          </Pie>
+          <Legend />
+          <Tooltip formatter={(value) => `$${value}`} /> // Format tooltip values as dollars
+        </PieChart>
+      </ResponsiveContainer>
+    </Paper>
+  );
+};
+
+const getColor = (index) => {
+  const colors = ['#22A699', '#3E97D1', '#F06C9B', '#FFD166', '#6A0572'];
+  return colors[index % colors.length];
+};
+
+export default RevenueProfitAnalysis;
+
+

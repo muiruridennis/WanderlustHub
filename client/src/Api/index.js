@@ -15,7 +15,7 @@ API.interceptors.response.use(
     return response;
   },
   async (error) => {
-    console.log("INTERCEPTOR RES - ERROR", error.response.data);
+    // console.log("INTERCEPTOR RES - ERROR", error.response.data);
     const originalReq = error.config;
 
     // Check if the response is a 401 Unauthorized error
@@ -60,7 +60,7 @@ export const signUp = (formData) => API.post("/auth/register", formData);
 export const signIn = (formData) => API.post("/auth/login", formData);
 // export const googleOauth = () => API.post("google-authentication", );
 export const logOut = () => API.post("/auth/logout");
-export const fetchLoggedUser = () => API.get("/auth/currentuser");
+export const getUthenticatedUser = () => API.get("/auth/currentuser");
 export const fetchUsers = () => API.get("/auth/users");
 export const recoverPassword = (email) => API.post("/auth/forgotPassword", email);
 export const resetPassword = (resetData) => API.patch("/auth/resetPassword", resetData);
@@ -123,4 +123,9 @@ export const fetchBooking = (id) => API.get(`/bookings/booking/${id}`);
 export const updateBooking = (id, bookingData) => API.patch(`/bookings/update/${id}`, bookingData);
 export const deleteBooking = (id) => API.delete(`/bookings/delete/${id}`);
 
-
+// Custom Events
+export const createCustomEvent = (customEventData) => API.post("/calendar/events", customEventData);
+export const getAllCustomEvents = () => API.get("/calendar/events");
+export const deleteCustomEvent = (id) => API.delete(`${"/calendar/events"}/${id}`);
+export const getCustomEventById = (id) => API.get(`${"/calendar/events"}/${id}`);
+export const updateCustomEvent = (id, eventUpdates) => API.put(`${"/calendar/events"}/${id}`, eventUpdates);

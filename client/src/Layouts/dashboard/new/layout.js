@@ -25,8 +25,7 @@ const LayoutContainer = styled('div')({
   width: '100%'
 });
 
-export const Layout = (props) => {
-  const { children } = props;
+export const Layout = () => {
 
   return (
     <>
@@ -34,7 +33,6 @@ export const Layout = (props) => {
       <SideNav />
       <LayoutRoot>
         <LayoutContainer>
-          {/* {children} */}
           <Main/>
           <Footer />
         </LayoutContainer>

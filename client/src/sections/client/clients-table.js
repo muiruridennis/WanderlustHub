@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { format } from 'date-fns';
 import {
   Avatar,
   Box,
@@ -20,7 +18,7 @@ import { Scrollbar } from '../../Components/scrollbar.js';
 import { getInitials } from '../../Utils/get-initials.js';
 import EditIcon from '@mui/icons-material/Edit';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 export const ClientsTable = (props) => {
@@ -42,7 +40,6 @@ export const ClientsTable = (props) => {
 
   const selectedSome = selected.length > 0 && selected.length < items.length;
   const selectedAll = items.length > 0 && selected.length === items.length;
-  const navigate = useNavigate();
 
   const handleOpenModal = clientId => {
     setCurrentId(clientId)
@@ -158,7 +155,6 @@ export const ClientsTable = (props) => {
             </TableBody>
           </Table>
         </Box>
-        {/* </Scrollbar> */}
         <TablePagination
           component="div"
           count={count}

@@ -11,11 +11,12 @@ import {
     UseInterceptors,
   } from '@nestjs/common';
   import FeatureFlagsService from './feature-flags.service';
-  import {JwtAuthGuard} from '../auth/guards/jwt-auth.guard';
+  import {JwtAuthenticationGuard } from '../auth/guards/jwt-auth.guard';
   import CreateFeatureFlagDto from './dto/createFeatureFlag.dto';
   import FindOneParams from '../utils/findOneParams';
   import UpdateFeatureFlagDto from './dto/updateFeatureFlag.dto';
-  
+  import PermissionGuard from "../users/permission.guard"
+import Permission from 'src/utils/types/permission.type';
   @Controller('feature-flags')
   @UseInterceptors(ClassSerializerInterceptor)
   export default class FeatureFlagsController {
@@ -26,14 +27,14 @@ import {
       return this.featureFlagsService.getAll();
     }
   
-    @Post('create')
-    @UseGuards(JwtAuthGuard)
+    @Post()
+    @UseGuards(PermissionGuard(Permission.isSuperAdmin))
     async create(@Body() featureFlag: CreateFeatureFlagDto) {
       return this.featureFlagsService.create(featureFlag);
     }
   
     @Patch(':id')
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthenticationGuard )
     async updateCategory(
       @Param() { id }: FindOneParams,
       @Body() category: UpdateFeatureFlagDto,
@@ -42,7 +43,7 @@ import {
     }
   
     @Delete(':id')
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthenticationGuard )
     async deleteCategory(@Param() { id }: FindOneParams) {
       return this.featureFlagsService.delete(id);
     }

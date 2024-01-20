@@ -18,7 +18,6 @@ import {
   InputAdornment,
   IconButton
 } from '@mui/material'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useFormik } from 'formik';
@@ -138,8 +137,8 @@ function Security() {
                 <Typography variant='body1' align="left" >Text Message</Typography>
                 <Typography variant='body2' align="left" >Use your mobile phone to receive security codes via SMS.</Typography>
                 <CardActions sx={{ justifyContent: 'flex-start', marginTop: 3 }}>
-                  <Button variant="outlined">
-                    Set up <ArrowForwardIcon sx={{ marginLeft: 1 }} />
+                  <Button variant="contained">
+                    Activate 
                   </Button>
                 </CardActions>
 

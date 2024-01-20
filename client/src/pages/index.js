@@ -1,6 +1,6 @@
 import Overview from "./Overview";
 import ClientsPage from "./clients/clients";
-import CustomersPage from "./clients/customer";
+// import CustomersPage from "./clients/customer";
 import ClientsInfo from "./clients/clientsDetails";
 import GeneralInfo from "./clients/generalInfo";
 import  ClientsBookings from "./clients/bookings.js";
@@ -35,10 +35,21 @@ import Kanban from "./Kanban/Kanban.js";
 import TaskComments from "./Kanban/popUp/taskComment";
 import TaskChecklists from "./Kanban/popUp/taskChecklist";
 import TaskOverview from "./Kanban/popUp/SingleTask";
+import MonetaryAnalysis from "./Finances/monetaryAnalysis";
+import Finances from "./Finances/finances";
+import Expenses from "./Finances/expenses/expenses";
+import Income from "./Finances/income/income";
+import NetProfit from "./Finances/netProfit/netProfit";
+import Vendor from "./Finances/vendor/vendor";
+import VendorDetails from "./Finances/vendor/vendor'sDetails";
+import VendorGeneralInfo from "./Finances/vendor/generalInfo";
+import VendorPaymentHistory from "./Finances/vendor/vendorPaymentHistory.js";
+import VendorInvoices from "./Finances/vendor/vendorInvoices.js";
+import TourPackageDetails from "./LandingPage/packageDetails/tourPackageDetails"
 
 export {
     Overview, ClientsPage, Personal, Transactions, Referrals, Activities, InventoryPage, AuthPage, ToursDetails, Chekout, GeneralAccount, Settings, Billings, Security, Notifications,
     BookingPage, ConfirmEmail, RecoverPassword, ResetPassword, UsersPage, CalendarApp, UserDetails, Mpesa, Tours, Index, PaymentConfirmation, MainAccount, Kanban,
-     TaskComments, TaskChecklists, TaskOverview, CustomersPage, ClientsInfo, GeneralInfo,  ClientsBookings,
-     ClientsActivities
+     TaskComments, TaskChecklists, TaskOverview,  ClientsInfo, GeneralInfo,  ClientsBookings,TourPackageDetails,
+     ClientsActivities, MonetaryAnalysis, Finances, Expenses, Income, NetProfit, Vendor, VendorDetails,VendorGeneralInfo,VendorPaymentHistory, VendorInvoices
 };

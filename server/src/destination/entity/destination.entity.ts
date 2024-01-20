@@ -1,23 +1,39 @@
-import { PrimaryGeneratedColumn, Column, Entity, JoinColumn, OneToOne, ManyToMany, JoinTable} from "typeorm"
+import { PrimaryGeneratedColumn, Column, Entity, JoinColumn, OneToOne, ManyToMany, OneToMany } from "typeorm"
 import Tour from "../../tour/entity/tour.entity";
+import LocalFile from "../../local-file/entity/localFile.entity"
 
 @Entity()
 class Destination {
     @PrimaryGeneratedColumn()
     id?: number;
 
-    @Column({ nullable: true})
-    desinationName: string;
+    @Column()
+    name: string;
 
-    // @OneToOne(() => Address, {
-    //     eager: true,
-    //     cascade: true,
-    // })
-    // @JoinColumn()
-    // public address: Address;
+    @Column({ type: 'text' })
+    description: string;
 
-    // @ManyToMany(() => Tour, tour => tour.destinations)
-    // tours: Tour[];
+    @Column({ type: 'decimal', precision: 3, scale: 1, nullable: true })
+    rating: number;
 
+    @Column()
+    contact: string;
+
+
+    @OneToMany(() => Tour, (tour) => tour.destination)
+    tours: Tour[];
+
+   
+    @JoinColumn({ name: 'imageId' })
+    @OneToOne(
+        () => LocalFile,
+        {
+            nullable: true
+        }
+    )
+    public image?: LocalFile;
+
+    @Column({ nullable: true })
+    public imageId?: number;
 }
 export default Destination;
