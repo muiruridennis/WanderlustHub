@@ -1,23 +1,17 @@
 import { ROUTES } from './routes';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import EventSeatIcon from '@mui/icons-material/EventSeat';
 import PeopleIcon from '@mui/icons-material/People';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import BookIcon from '@mui/icons-material/Book';
-import AirportShuttleIcon from '@mui/icons-material/AirportShuttle';
 import MoneyIcon from '@mui/icons-material/Money';
 import AssessmentIcon from '@mui/icons-material/Assessment';
-import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ChatIcon from '@mui/icons-material/Chat';
-import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
 import PersonIcon from '@mui/icons-material/Person';
-import ExploreIcon from '@mui/icons-material/Explore';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
 
- const DRAWER_LIST = [
+const listItems = [
   {
     route: ROUTES.main,
     literal: 'Overview',
@@ -26,15 +20,55 @@ import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
   {
     route: ROUTES.bookings,
     literal: 'Bookings',
-    Icon: ShoppingCartIcon,
+    Icon: EventSeatIcon,
   },
-  
   {
-    route: ROUTES.finances,
     literal: 'Finances',
     Icon: MoneyIcon,
+    subItems: [
+      {
+        route: ROUTES.finances,
+        literal: 'Overview',
+      },
+      {
+        route: `${ROUTES.finances}/income`,
+        literal: 'Income',
+      },
+      {
+        route: `${ROUTES.finances}/expenses`,
+        literal: 'Expenses',
+      },
+      {
+        route: `${ROUTES.finances}/transactions`,
+        literal: 'Transactions',
+      },
+      {
+        route: `${ROUTES.finances}/reports`,
+        literal: 'Reports',
+      },
+      {
+        route: `${ROUTES.finances}/budgeting`,
+        literal: 'Budgeting',
+      },
+      {
+        route: `${ROUTES.finances}/invoices`,
+        literal: 'Invoices',
+      },
+      {
+        route: `${ROUTES.finances}/payments`,
+        literal: 'Payments',
+      },
+      {
+        route: `${ROUTES.finances}/tax-information`,
+        literal: 'Tax Information',
+      },
+      {
+        route: `${ROUTES.finances}/financial-settings`,
+        literal: 'Financial Settings',
+      },
+    ],
   },
-
+  
   {
     route: ROUTES.calendar,
     literal: 'Calendar',
@@ -56,11 +90,10 @@ import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
     Icon: PeopleIcon,
   },
   {
-  route: ROUTES.clients,
-  literal: 'Clients',
-  Icon: PeopleIcon,
-},
-  
+    route: ROUTES.clients,
+    literal: 'Clients',
+    Icon: PeopleIcon,
+  },
   {
     route: ROUTES.reports,
     literal: 'Reports',
@@ -72,9 +105,24 @@ import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
     Icon: PersonIcon,
   },
   {
-    route: ROUTES.settings,
     literal: 'Settings',
     Icon: SettingsApplicationsIcon,
+    subItems: [
+      {
+        route: ROUTES.settings,
+        literal: 'Settings',
+      },
+      {
+        route: ROUTES.userManagement,
+        literal: 'User Management',
+      },
+    ],
+  },
+  {
+    route: ROUTES.logout,
+    literal: 'Logout',
+    Icon: ExitToAppIcon,
   },
 ];
-export default DRAWER_LIST
+
+export default listItems;

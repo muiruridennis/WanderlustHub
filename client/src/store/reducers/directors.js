@@ -1,4 +1,4 @@
-import { CREATE_DIRECTOR, FETCH_DIRECTORS, START_LOADING, END_LOADING, DELETE_DIRECTOR, UPDATE_DIRECTOR } from "../Constants/actionTypes";
+import { CREATE_DIRECTOR, FETCH_DIRECTORS, START_LOADING, END_LOADING, DELETE_DIRECTOR, UPDATE_DIRECTOR } from "../../Constants/actionTypes";
 
 const initialState = { directors: [], isLoading: false }
 
@@ -18,7 +18,7 @@ export default function (state = initialState, action) {
             };
         case DELETE_DIRECTOR:
             let directorsAfterDelete = state.directors.filter((director) => {
-                return director.id != action.payload
+                return director.id !== action.payload
             })
             return {
                 ...state,

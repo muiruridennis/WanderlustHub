@@ -1,4 +1,4 @@
-import { ADD_CLIENT_TO_TOUR, DELETE_FROM_LIST } from "../Constants/actionTypes";
+import { ADD_CLIENT_TO_TOUR, DELETE_FROM_LIST } from "../../Constants/actionTypes";
 const initialState = { clientList: [], id: 1 };
 
 export default (state = initialState, action) => {

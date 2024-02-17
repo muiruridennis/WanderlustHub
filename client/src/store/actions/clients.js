@@ -1,7 +1,7 @@
 import { CREATE_CLIENT, FETCH_CLIENTS, 
     START_LOADING, END_LOADING, DELETE_CLIENT,FETCH_CLIENTS_BY_SEARCH,
-     UPDATE_CLIENT, FETCH_CLIENT, START_SEARCHING, END_SEARCHING } from "../Constants/actionTypes";
-import * as api from '../Api/index.js';
+     UPDATE_CLIENT, FETCH_CLIENT, START_SEARCHING, END_SEARCHING } from "../../Constants/actionTypes";
+import * as api from '../../api/index.js';
 
 export const createClient = (clientdata) => async (dispatch) => {
     try {

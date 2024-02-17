@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux"
 import KanbanPopup from "./popUp/KanbanPopup"
 import avatar from "../../Images/avatar.jpg";
 import Dialogue from "./popUp/index";
-import { deleteTask, select } from "../../Actions/kanban";
+import { deleteTask, select } from "../../store/actions/kanban";
 
 const Task = ({ task }) => {
     const dispatch = useDispatch();

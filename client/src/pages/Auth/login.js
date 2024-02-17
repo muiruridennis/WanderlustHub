@@ -24,7 +24,7 @@ import Logo from '../../Components/logo';
 import useGoogleAuthentication from './useGoogleAuthentication';
 
 import Input from '../../Components/TextFieldInput';
-import { signup, signin } from '../../Actions/auth';
+import { signup, signin } from '../../store/actions/auth';
 import { signupSchema, signinSchema } from './validation';
 
 import 'react-toastify/dist/ReactToastify.css';

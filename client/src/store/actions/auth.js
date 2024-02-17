@@ -1,9 +1,9 @@
 import {
     AUTH, LOGOUT, LOGGED_USER, IS_FAILURE, ERROR, START_LOADING,
     END_LOADING, RECOVER_PASSWORD, RESET_PASSWORD, CONFIRM_EMAIL, RESEND_CONFIRM_EMAIL
-} from "../Constants/actionTypes";
-import { ROUTES } from "../Constants/routes"
-import * as api from '../Api/index.js';
+} from "../../Constants/actionTypes";
+import { ROUTES } from "../../Constants/routes"
+import * as api from '../../api/index.js';
 
 export const signin = (formData, navigate) => async dispatch => {
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addTask } from "../../Actions/kanban";
+import { addTask } from "../../store/actions/kanban";
 import avatar from "../../Images/avatar.jpg";
 import AddIcon from "@mui/icons-material/Add";
 import AttachFileIcon from '@mui/icons-material/AttachFile';
@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from 'yup'
-import { createTask } from "../../Actions/kanban";
+import { createTask } from "../../store/actions/kanban";
 
 
 function Form({ setIsFormOpen, isFormOpen, status }) {

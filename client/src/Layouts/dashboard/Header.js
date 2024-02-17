@@ -26,7 +26,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import Avatar from '@mui/material/Avatar';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { useSelector, useDispatch } from "react-redux";
-import { fetchLoggedUser } from "../../Actions/auth";
+import { fetchLoggedUser } from "../../store/actions/auth";
 import DisplayPhoto from "../../Images/display-photo.jpg"
 
 const Search = styled('div')(({ theme }) => ({

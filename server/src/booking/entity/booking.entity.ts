@@ -3,8 +3,8 @@ import {
     JoinTable, CreateDateColumn, OneToMany, Timestamp,
     Column, ManyToOne, UpdateDateColumn
 } from "typeorm";
-import Tour from "../../tour/entity/tour.entity";
 import { Status, BookingType } from "../enums";
+import Tour from "../../tour/entity/tour.entity";
 import User from "../../users/entity/user.entity"
 import Payment from "../../payment/entity/payment.entity";
 

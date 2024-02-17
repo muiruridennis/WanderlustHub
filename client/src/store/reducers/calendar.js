@@ -8,7 +8,7 @@ import {
     GET_ALL_CUSTOM_EVENTS,
     UPDATE_CUSTOM_EVENT,
     DELETE_CUSTOM_EVENT
-} from "../Constants/actionTypes";
+} from "../../Constants/actionTypes";
 
 const initialState = {
     customEvents: [],

@@ -8,8 +8,8 @@ import {
     FETCH_BOOKING,
     START_SEARCHING,
     END_SEARCHING,
-} from "../Constants/actionTypes";
-import * as api from "../Api/index.js";
+} from "../../Constants/actionTypes";
+import * as api from "../../api/index.js";
 
 export const createBooking = (bookingData) => async (dispatch) => {
     try {

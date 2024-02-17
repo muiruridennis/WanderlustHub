@@ -1,6 +1,7 @@
 import { PrimaryGeneratedColumn, Column, Entity, JoinColumn, OneToOne, ManyToOne, CreateDateColumn } from "typeorm"
 import Booking from '../../booking/entity/booking.entity'; // Adjust the import path as needed
-import Mpesa from "../../mpesa/entity/mpesa.entity";
+import { PaymentMethod } from "../paymentMethod.enum";
+import Mpesa from '../../mpesa/entity/mpesa.entity'
 
 @Entity()
 class Payment {
@@ -10,24 +11,19 @@ class Payment {
     @Column()
     amount: number;
 
-    @CreateDateColumn({ type: 'timestamp',})
-    paymentDate: Date;
+    @CreateDateColumn({ type: 'timestamp', })
+    createdAt: Date;
 
-    @Column()
-    paymentMethod: string; // Payment method (e.g., credit card, PayPal, bank transfer)
+    @Column({ type: 'enum', enum: PaymentMethod, default: PaymentMethod.MPESA })
+    paymentMethod: PaymentMethod;
 
     @ManyToOne(() => Booking, booking => booking.payments, {
         onDelete: 'CASCADE', // Optional: Delete associated payment when booking is deleted
-        eager: true,
-        cascade: true,
+
     })
     booking: Booking;
 
-    @OneToOne(() => Mpesa, mpesa => mpesa.payment, {
-        eager: true,
-        cascade: true,
-    })
-    @JoinColumn()
+    @OneToOne(() => Mpesa, mpesa => mpesa.payment)
     mpesa: Mpesa;
 }
 export default Payment;

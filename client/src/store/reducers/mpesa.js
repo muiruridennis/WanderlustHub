@@ -1,7 +1,7 @@
 import {
     START_LOADING, END_LOADING, STK_PUSH,
     ERROR, END_SEARCHING
-} from "../Constants/actionTypes";
+} from "../../Constants/actionTypes";
 
 const initialStates = { mpesa: [], isTransacting: true, mpesaError: null };
 

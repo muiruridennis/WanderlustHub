@@ -4,7 +4,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import BookOnlineIcon from '@mui/icons-material/BookOnline';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography, Box } from '@mui/material';
 import { useSelector, useDispatch } from "react-redux";
-import { fetchBookings } from "../../Actions/bookings"
+import { fetchBookings } from "../../store/actions/bookings"
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 

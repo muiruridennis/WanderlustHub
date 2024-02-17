@@ -4,7 +4,7 @@ import {
     UPDATE_CLIENT, FETCH_CLIENT, FETCH_CLIENTS_BY_SEARCH,
     START_SEARCHING, END_SEARCHING
 }
-    from "../Constants/actionTypes";
+    from "../../Constants/actionTypes";
 
 const initialState = { clients: [], isLoading: false,  isSearching: true }
 
@@ -36,7 +36,7 @@ export default function (state = initialState, action) {
             };
         case DELETE_CLIENT:
             let clientsAfterDelete = state.clients.filter((client) => {
-                return client.id != action.payload
+                return client.id !== action.payload
             })
             return {
                 ...state,

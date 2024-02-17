@@ -1,5 +1,5 @@
-import {  START_LOADING, END_LOADING, DELETE_TOUR, UPDATE_TOUR, CREATE_TOUR, FETCH_TOURS, ERROR, FETCH_TOUR } from "../Constants/actionTypes";
-import * as api from '../Api/index.js';
+import {  START_LOADING, END_LOADING, DELETE_TOUR, UPDATE_TOUR, CREATE_TOUR, FETCH_TOURS, ERROR, FETCH_TOUR } from "../../Constants/actionTypes";
+import * as api from '../../api/index.js';
 
 export const createTour = (tourData) => async (dispatch) => {
     try {

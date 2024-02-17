@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Button, Container, Paper, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { confirmEmail } from "../../Actions/auth"
+import { confirmEmail, resendConfirmEmail } from "../../store/actions/auth"
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Popup from "../../Components/Popup";
-import { resendConfirmEmail } from '../../Actions/auth';
 import Circularprogress from "../../Components/CircularProgress"
 
 

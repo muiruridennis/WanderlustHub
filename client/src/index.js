@@ -6,7 +6,7 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import rootReducer from "./Reducers"
+import rootReducer from "./store/reducers"
 import { BrowserRouter } from "react-router-dom";
 import { createTheme } from './theme';
 import App from './App';

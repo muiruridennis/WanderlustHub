@@ -24,8 +24,8 @@ import {
     DRAG,
     CHECK,
     MESSAGE
-} from "../Constants/actionTypes";
-import * as api from '../Api/index.js';
+} from "../../Constants/actionTypes";
+import * as api from '../../api/index.js';
 
 export const createTask = (taskData) => async (dispatch) => {
     try {

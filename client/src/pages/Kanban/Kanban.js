@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Container, Grid, Box } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import CSSTransition from "react-addons-css-transition-group";
-import { fetchAllTasks, dragged } from "../../Actions/kanban";
+import { fetchAllTasks, dragged } from "../../store/actions/kanban";
 import {
   filtratedTasksBacklog,
   filtratedTasksProgress,

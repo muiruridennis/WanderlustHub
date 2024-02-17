@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useParams, useNavigate, NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { getClient } from "../../Actions/clients";
+import { getClient } from "../../store/actions/clients";
 import CircularProgress from '../../Components/CircularProgress'
 import { Box, Button, Paper, Typography, Divider, Container } from '@mui/material';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';

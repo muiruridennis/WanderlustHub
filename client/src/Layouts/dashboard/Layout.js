@@ -24,7 +24,7 @@ function Layout({ children }) {
         <Box
           sx={{
             display: "flex",
-            // flex: 1,
+            flex: 1,
           }}
         >
           <Drawer />

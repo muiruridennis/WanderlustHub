@@ -9,7 +9,7 @@ import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import * as Yup from "yup";
 
 import Circularprogress from "../../Components/CircularProgress";
-import { resetPassword } from "../../Actions/auth"
+import { resetPassword } from "../../store/actions/auth"
 
 const passwordResetSchema = Yup.object().shape({
     password: Yup.string()

@@ -1,4 +1,4 @@
-import {START_LOADING, END_LOADING, FETCH_USERS} from "../Constants/actionTypes";
+import {START_LOADING, END_LOADING, FETCH_USERS} from "../../Constants/actionTypes";
 
 const initialState = { users: [], isLoading: false }
 

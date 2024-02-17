@@ -28,8 +28,7 @@ export default class Mpesa {
 
     @Column()
     checkoutRequestID: string;
-
     @OneToOne(() => Payment, payment => payment.mpesa)
-    @JoinColumn()
     payment: Payment;
+  
 } 

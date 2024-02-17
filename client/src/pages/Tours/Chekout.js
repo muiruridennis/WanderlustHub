@@ -5,12 +5,11 @@ import { Grid, Typography, Button, Box, Container } from '@mui/material';
 import Circularprogress from "../../Components/CircularProgress";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css';
-import { stkPush } from "../.././Actions/mpesa"
-import { getTour } from '../../Actions/tour';
+import { stkPush } from "../.././store/actions/mpesa"
+import { getTour } from '../../store/actions/tour';
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-
 
 
 function Chekout() {

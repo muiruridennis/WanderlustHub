@@ -12,17 +12,20 @@ import Tour from '.././tour/entity/tour.entity';
 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Mpesa, Tour]), ConfigModule, BookModule,TourModule], 
+  imports: [TypeOrmModule.forFeature([Mpesa, Tour]), ConfigModule, BookModule, TourModule],
   controllers: [MpesaController],
   providers: [MpesaService, TourService]
 })
-export class MpesaModule implements NestModule {
+export class MpesaModule 
+implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(MpesaMiddleware)
       .exclude(
-        { path: 'date', method: RequestMethod.POST }
+        {
+          path: 'date', method: RequestMethod.POST,
+        }
       )
-      .forRoutes(MpesaController);
+      .forRoutes(MpesaController)
   }
 }

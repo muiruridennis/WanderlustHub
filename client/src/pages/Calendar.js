@@ -17,7 +17,7 @@ import Popup from "../Components/Popup"
 import Input from "../Components/TextFieldInput"
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getAllCustomEvents, createCustomEvent, deleteCustomEvent, updateCustomEvent } from "../Actions/calendar"
+import { getAllCustomEvents, createCustomEvent, deleteCustomEvent, updateCustomEvent } from "../store/actions/calendar"
 import CircularProgress from "../Components/CircularProgress"
 
 const locales = {

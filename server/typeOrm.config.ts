@@ -1,7 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
 import { DataSource } from "typeorm";
-import { $npmConfigName1701595883987} from "./migrations/1701595883987-$npm_config_name"
+import { $npmConfigName1707887129451} from "./migrations/1707887129451-$npm_config_name"
 
 config();
 
@@ -14,7 +14,7 @@ export default new DataSource({
     password: configService.get('POSTGRES_PASSWORD'),
     database: configService.get('POSTGRES_DB'),
     entities: [__dirname + '/../**/*.entity.ts', __dirname + '/../**/*.entity.js'],
-    migrations: [$npmConfigName1701595883987],
+    migrations: [$npmConfigName1707887129451],
     extra: {
         charset: 'utf8mb4_unicode_ci',
     },

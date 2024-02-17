@@ -78,13 +78,13 @@ export class BookingService {
         })
         await this.bookingRepository.save(booking)
 
-        const payment = await this.paymentRepository.create({
-            amount: body.amount, // Assuming you have a field 'amountPaid' in your CreateBookingDto
-            paymentMethod: body.paymentMethod, // Set the payment method (adjust as needed)
-            booking, // Associate the payment with the booking
-        });
+        // const payment = await this.paymentRepository.create({
+        //     amount: body.amount, // Assuming you have a field 'amountPaid' in your CreateBookingDto
+        //     paymentMethod: body.paymentMethod, // Set the payment method (adjust as needed)
+        //     booking, // Associate the payment with the booking
+        // });
 
-        await this.paymentRepository.save(payment)
+        // await this.paymentRepository.save(payment)
         // Check if the booking is fully paid:
         if (booking.remainingBalance <= 0) {
             console.log('Booking marked complete');

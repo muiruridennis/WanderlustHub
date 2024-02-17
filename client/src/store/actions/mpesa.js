@@ -1,8 +1,8 @@
 import {
     START_LOADING, END_LOADING, STK_PUSH,
     ERROR, 
-} from "../Constants/actionTypes";
-import * as api from '../Api/index.js';
+} from "../../Constants/actionTypes";
+import * as api from '../../api/index.js';
 
 export const stkPush = (stkPushData) => async (dispatch) => {
     try {

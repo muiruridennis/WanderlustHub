@@ -20,7 +20,6 @@ class NotificationPreference {
     notificationType: NotificationType;
 
     @OneToOne(() => User, (user) => user.notificationPreferences)
-    @JoinColumn()
     user: User;
 }
 

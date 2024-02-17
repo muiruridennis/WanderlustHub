@@ -58,7 +58,7 @@ export const mainRoutes = [
   { path: 'calendar', name: 'Calendar', element: CalendarApp },
   { path: 'users/:userId/*', name: 'Users', element: UserDetails },
   { path: 'kanban/*', name: 'Kanban', element: Kanban },
-  { path: 'finances', name: 'finances', element: Finances },
+  { path: 'finances/', name: 'finances', element: Finances },
   { path: 'finances/expenses', name: 'expenses', element: Expenses },
   { path: 'finances/income', name: 'income', element: Income },
   { path: 'finances/netprofit', name: 'netProfit', element: NetProfit },

@@ -1,4 +1,4 @@
-import { START_LOADING, END_LOADING, DELETE_TOUR, UPDATE_TOUR, CREATE_TOUR, FETCH_TOURS, ERROR, FETCH_TOUR } from "../Constants/actionTypes";
+import { START_LOADING, END_LOADING, DELETE_TOUR, UPDATE_TOUR, CREATE_TOUR, FETCH_TOURS, ERROR, FETCH_TOUR } from "../../Constants/actionTypes";
 const initialState = { tours: [], isLoading: false, error: null, }
 
 export default function (state = initialState, action) {
@@ -15,7 +15,7 @@ export default function (state = initialState, action) {
             return { ...state, tour: action.payload };
         case DELETE_TOUR:
             let toursAfterDelete = state.tours.filter((tour) => {
-                return tour.id != action.payload
+                return tour.id !== action.payload
             })
             return { ...state, tours: toursAfterDelete, }
         case UPDATE_TOUR:

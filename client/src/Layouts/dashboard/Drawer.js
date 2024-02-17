@@ -1,8 +1,8 @@
-import { useMediaQuery, useTheme } from "@mui/material";
+import Drawer from "@mui/material/Drawer";
 import { useDrawerContext } from "../../contexts/drawer-context";
 import { styled } from "@mui/material/styles";
-import { MenuItemsList, AppEssentials } from "./MenuList";
-import Drawer from "@mui/material/Drawer";
+import { MenuItemsList } from "./MenuList";
+import  useResponsive from "../../hooks/useResponsive";
 
 const StyledDrawer = styled(Drawer, {
   shouldForwardProp: (prop) => prop !== "isOpen",
@@ -32,8 +32,7 @@ const StyledDrawer = styled(Drawer, {
 
 const CustomDrawer = () => {
   const { isOpen, setIsOpen } = useDrawerContext();
-  const theme = useTheme();
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up("sm"));
+  const { isLargeScreen } = useResponsive();
 
 
   return (
@@ -44,7 +43,6 @@ const CustomDrawer = () => {
       isOpen={isOpen}
     >
       <MenuItemsList />
-      <AppEssentials  />
     </StyledDrawer>
     
   );

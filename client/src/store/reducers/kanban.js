@@ -22,7 +22,7 @@ import {
     DRAG,
     CHECK,
     MESSAGE
-} from "../Constants/actionTypes";
+} from "../../Constants/actionTypes";
 
 const initialState = {
     // to fix about checkList from here!!!! Happy coding 

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { AccountProfile } from '../../sections/usersAccount/account-profile';
 import { AccountProfileDetails } from '../../sections/usersAccount/account-profile-details';
 import { DeleteAccount } from '../../sections/settings/delete-account';
-import { getUthenticatedUser } from "../../Actions/auth"
+import { getUthenticatedUser } from "../../store/actions/auth"
 import profile from '../../Images/client.jpg';
 import Circularprogress from '../../Components/CircularProgress';
 import ErrorComponent from '../../Components/errorComponent';

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Form from "./Form";
 import { useSelector, useDispatch } from 'react-redux';
-import { checkWhoIsOpen } from "../../Actions/kanban";
+import { checkWhoIsOpen } from "../../store/actions/kanban";
 import RemoveCircle from '@mui/icons-material/RemoveCircleOutline';
 import { Stack, Typography, Button, Box } from '@mui/material';
 import AddIcon from "@mui/icons-material/Add";

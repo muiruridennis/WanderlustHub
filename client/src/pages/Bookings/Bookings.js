@@ -7,7 +7,7 @@ import { applyBookingsPagination } from '../../Utils/applyBooking-pagination.js'
 import Popup from "../../Components/Popup";
 import Circularprogress from "../../Components/CircularProgress";
 import BookingForm from "./bookingForm";
-import { fetchBookings } from "../../Actions/bookings"
+import { fetchBookings } from "../../store/actions/bookings"
 
 
 function Bookings() {

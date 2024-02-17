@@ -9,8 +9,8 @@ import {
     UPDATE_CUSTOM_EVENT,
     DELETE_CUSTOM_EVENT
 
-} from "../Constants/actionTypes";
-import * as api from '../Api/index.js';
+} from "../../Constants/actionTypes";
+import * as api from '../../api/index.js';
 
 const setMessage = (dispatch, message, duration = 3000) => {
     dispatch({ type: MESSAGE, payload: message });

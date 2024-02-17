@@ -6,7 +6,7 @@ import {
     DELETE_BOOKING,
     UPDATE_BOOKING,
     FETCH_BOOKING,
-  } from "../Constants/actionTypes";
+  } from "../../Constants/actionTypes";
   
   const initialState = {
     bookingsData: [],

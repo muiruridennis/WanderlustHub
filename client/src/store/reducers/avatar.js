@@ -1,4 +1,4 @@
-import {FETCH_AVATAR, START_LOADING, END_LOADING } from "../Constants/actionTypes";
+import {FETCH_AVATAR, START_LOADING, END_LOADING } from "../../Constants/actionTypes";
 
 const initialState = {avatars: [], isLoading: false };
 export default function (state = initialState, action) {
