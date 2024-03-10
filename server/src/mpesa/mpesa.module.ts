@@ -4,20 +4,30 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { MpesaService } from './mpesa.service';
 import { ConfigModule } from '@nestjs/config';
 import { MpesaMiddleware } from './mpesa.middleware';
-import { BookModule } from '../booking/booking.module';
 import Mpesa from "./entity/mpesa.entity"
 import { TourModule } from "../tour/tour.module";
-import { TourService } from "../tour/tour.service";
-import Tour from '.././tour/entity/tour.entity';
+import { PaymentModule } from '../payment/payment.module';
+import { BookModule } from '../booking/booking.module';
+import { NotificationModule } from '../notification/notification.module';
+import { UsersModule } from '../users/users.module';
 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Mpesa, Tour]), ConfigModule, BookModule, TourModule],
+  imports: [
+    TypeOrmModule.forFeature([Mpesa]),
+    ConfigModule,
+    BookModule,
+    TourModule,
+    PaymentModule,
+    BookModule,
+    NotificationModule,
+    UsersModule
+  ],
   controllers: [MpesaController],
-  providers: [MpesaService, TourService]
+  providers: [MpesaService]
 })
-export class MpesaModule 
-implements NestModule {
+export class MpesaModule
+  implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(MpesaMiddleware)

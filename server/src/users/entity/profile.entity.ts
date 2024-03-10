@@ -3,7 +3,7 @@ import LocalFile from "../../local-file/entity/localFile.entity";
 import User from "./user.entity";
 import { Gender, Status, Group } from "../-enum";
 @Entity()
-export class Profile {
+ class Profile {
   @PrimaryGeneratedColumn()
   id: number
 
@@ -37,3 +37,4 @@ export class Profile {
   @OneToOne(() => User, (user: User) => user.profile)
   user: User;
 }
+export default Profile;

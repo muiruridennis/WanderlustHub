@@ -13,38 +13,23 @@ import { request } from 'http';
 export class MpesaController {
     constructor(private mpesaService: MpesaService) { }
 
-    // @UseGuards(JwtAuthenticationGuard )
-    @Get("all")
-    async getAll() {
-        return await this.mpesaService.getAll();
-    }
-
-    // @UseGuards(JwtAuthenticationGuard)
+    @UseGuards(JwtAuthenticationGuard)
     @Post('stkpush')
-    async lipaNaMpesaStkPush(
-        @Body() stkPushData: StkPushDTO,
-        @Req() request: RequestWithToken,
-        // @Req() req: RequestWithUser
-    ) {
+    async initiateSTKPush(@Body() stkPushData: StkPushDTO, @Req() request: RequestWithToken, @Req() req: RequestWithUser) {
         const { token } = request
-        // const { user } = req
-        return await this.mpesaService.lipaNaMpesaStkPush(
-            stkPushData,
-            token,
-            // user
-        )
+        const { user } = req;
+        return await this.mpesaService.initiateSTKPush(stkPushData, token, user)
     }
 
     @HttpCode(200)
-    @Post('callback')
+    @Post('callback/:tourId/:userId/:bookingId?')
     async handleMpesaCallback(@Req() request: Request, @Req() tokenRequest: RequestWithToken) {
-        const { token } = tokenRequest
-        const callbackData = await this.mpesaService.handleMpesaCallback(request, token);
-
-        // Call stkQuery with token and checkoutRequestID
+        const { token } = tokenRequest;
+        const { tourId, userId, bookingId } = request.params;
+        const callbackData = await this.mpesaService.handleMpesaCallback(request, token, tourId, userId, bookingId || null); // Pass null if bookingId is not provided
         return await this.mpesaService.stkQuery(callbackData.token, callbackData.checkoutRequestID);
-
     }
+
 
     @Post('customerToBusiness')
     async customerToBusiness(@Req() request: RequestWithToken) {

@@ -1,13 +1,14 @@
-import { IsInt, Min, IsOptional, IsNumberString  } from 'class-validator';
+import { IsString, IsOptional } from 'class-validator';
 
 export class BookingPaginationDto {
-    @IsInt()
-    @Min(1)
     @IsOptional()
-    page?: number;
+    @IsString()
+    page?: string;
 
-    @IsInt()
-    @Min(1)
     @IsOptional()
-    perPage?: number;
+    @IsString()
+    perPage?: string;
 }
+
+
+

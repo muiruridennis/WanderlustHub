@@ -4,8 +4,8 @@ export class CreateBookingDto {
   @IsNumber()
   tourId: number; 
  
-  @IsString()
-  paymentMethod: string;
+  // @IsString()
+  // paymentMethod: string;
 
   @IsNumber()
   amount: number;

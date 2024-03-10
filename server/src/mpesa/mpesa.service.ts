@@ -8,6 +8,14 @@ import { response } from 'express';
 import StkPushDTO from './dto/stkPush.dto';
 import Mpesa from "./entity/mpesa.entity"
 import { PhoneNumberUtil } from './phone-number.util';
+import { TourService } from "../tour/tour.service";
+import User from "../users/entity/user.entity";
+import { PaymentService } from '../payment/payment.service';
+import { CreatePaymentDto } from '../payment/dto/createpaymentDto';
+import { BookingService } from '../booking/booking.service';
+import { PaymentMethod } from '../payment/paymentMethod.enum';
+import { UsersService } from '../users/users.service';
+
 
 @Injectable()
 export class MpesaService {
@@ -15,11 +23,12 @@ export class MpesaService {
         @InjectRepository(Mpesa)
         private readonly mpesaRepository: Repository<Mpesa>,
         private configService: ConfigService,
-    ) { }
+        private readonly tourService: TourService,
+        private readonly paymentService: PaymentService,
+        private readonly bookingService: BookingService,
+        private readonly usersService: UsersService
 
-    getAll() {
-        return "hey all";
-    }
+    ) { }
 
     private async generateStkPassword(timestamp: string): Promise<string> {
         const businessShortCode = this.configService.get('MPESA_BUSINESS_SHORT_CODE');
@@ -31,21 +40,21 @@ export class MpesaService {
         return moment().format("YYYYMMDDHHmmss");
     }
 
-    async lipaNaMpesaStkPush(
-        stkPushData: StkPushDTO,
-        token: string,
-        //  user: User
-    ) {
-        const { phoneNumber, tourId, amount } = stkPushData
+    async initiateSTKPush(stkPushData: StkPushDTO, token: string, user: User) {
+        const { phoneNumber, amount, tourId, bookingId } = stkPushData;
         const formattedPhoneNumber = PhoneNumberUtil.formatPhoneNumber(phoneNumber);
         const timeStamp = await this.generateTimestamp();
         const stkPassword = await this.generateStkPassword(timeStamp);
         const businessShortCode = this.configService.get('MPESA_BUSINESS_SHORT_CODE');
+        const userId = user?.id;
         let headers = {
             'Content-Type': 'application/json',
             "Authorization": `Bearer ${token}`
-        }
-        const url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest'
+        };
+        const url = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
+        const callbackURL = bookingId ?
+            `https://xpwf9k2s-3000.uks1.devtunnels.ms/payments/callback/${tourId}/${userId}/${bookingId}` :
+            `https://xpwf9k2s-3000.uks1.devtunnels.ms/payments/callback/${tourId}/${userId}`;
         const requestBody = {
             "BusinessShortCode": businessShortCode,
             "Password": stkPassword,
@@ -55,33 +64,31 @@ export class MpesaService {
             "PartyA": formattedPhoneNumber,
             "PartyB": businessShortCode,
             "PhoneNumber": formattedPhoneNumber,
-            "CallBackURL": "https://xpwf9k2s-3000.uks1.devtunnels.ms/payments/callback",
+            "CallBackURL": callbackURL,
             "AccountReference": "Wanderlust Exproler",
-            "TransactionDesc": "Payment of tour booking"
-        }
+            "TransactionDesc": "Payment of tour booking",
+        };
         try {
-            const { data } = await axios.post(url, requestBody, { headers })
+            const { data } = await axios.post(url, requestBody, { headers });
             if (data.ResponseCode === "0") {
-                // return ("😀 Request is successful done ✔✔. Please enter mpesa pin to complete the transaction")
-                return data
+                return {
+                    message: "😀 Request is successful done ✔✔. Please enter mpesa pin to complete the transaction",
+                };
             }
         } catch (error) {
             if (response.status(400)) {
-                throw new BadRequestException("Invalid input")
+                throw new BadRequestException("Invalid input");
             }
-            throw new HttpException("Can not process your request", HttpStatus.NOT_ACCEPTABLE)
+            throw new HttpException("Can not process your request", HttpStatus.NOT_ACCEPTABLE);
         }
-
-
     }
 
-    async handleMpesaCallback(request: any, token: string) {
+
+    async handleMpesaCallback(request: any, token: string, tourId, userId, bookingId) {
         const resultCode = request.body.Body.stkCallback.ResultCode;
 
         if (resultCode === 0) {
-            // extract the transaction details from the callback body
             const callbackMetadata = request.body.Body.stkCallback.CallbackMetadata.Item;
-
             const mpesaTransaction = {
                 transactionDate: callbackMetadata[3].Value,
                 payingPhoneNumber: callbackMetadata[4].Value,
@@ -90,14 +97,21 @@ export class MpesaService {
                 merchantRequestId: request.body.Body.stkCallback.MerchantRequestID,
                 checkoutRequestID: request.body.Body.stkCallback.CheckoutRequestID,
             };
-            // save a transaction to the database
-            // implement the transaction queery
-            console.log(mpesaTransaction)
-            // send a success response to Safaricom
+
+            const amount = mpesaTransaction.paidAmount;
+
+            const user = await this.usersService.getById(userId);
+            if (bookingId) {
+                await this.bookingService.repayRemainingBalance(bookingId, amount);
+            } else {
+                await this.createBookingAndPayment(user, tourId, mpesaTransaction);
+            }
+
             return {
-                token, // Return token received from middleware
+                token,
                 checkoutRequestID: mpesaTransaction.checkoutRequestID,
             };
+
         } else {
             return {
                 ResponseCode: `${resultCode}`,
@@ -106,7 +120,20 @@ export class MpesaService {
         }
     }
 
-    async stkQuery(token: string, checkoutRequestID: string) {
+    async createBookingAndPayment(user: User, tourId: number, mpesaTransaction: any) {
+        const booking = await this.bookingService.createBooking({ tourId, amount: mpesaTransaction.paidAmount }, user);
+
+        const createPaymentDto = {
+            amount: parseFloat(mpesaTransaction.paidAmount),
+            paymentMethod: PaymentMethod.MPESA,
+            booking,
+        };
+        await this.paymentService.createPayment(createPaymentDto);
+    }
+
+
+
+    async stkQuery(token: string, checkoutRequestID: string,) {
         const timeStamp = await this.generateTimestamp();
         const stkPassword = await this.generateStkPassword(timeStamp);
         const businessShortCode = this.configService.get('MPESA_BUSINESS_SHORT_CODE');
@@ -238,6 +265,7 @@ export class MpesaService {
         }
 
     }
+
     async getAccountBalance(token: string) {
         const auth = `Bearer ${token}`;
         const url = 'https://sandbox.safaricom.co.ke/mpesa/accountbalance/v1/query';
@@ -273,19 +301,19 @@ export class MpesaService {
             'Authorization': `Bearer ${token}`,
         };
 
-        const requestBody = {    
-            "Initiator":"TestInit610",    
-            "SecurityCredential": "[encrypted password]",    
-            "CommandID":"TransactionReversal",    
-            "TransactionID": "[original trans_id]",    
-            "Amount":"[trans_amount]",    
-            "ReceiverParty":"600610",    
-            "RecieverIdentifierType":"11",    
-            "ResultURL":"https://ip:port/",    
-            "QueueTimeOutURL":"https://ip:port/",    
-            "Remarks":"Test",    
-            "Occasion":"work"
-         }
+        const requestBody = {
+            "Initiator": "TestInit610",
+            "SecurityCredential": "[encrypted password]",
+            "CommandID": "TransactionReversal",
+            "TransactionID": "[original trans_id]",
+            "Amount": "[trans_amount]",
+            "ReceiverParty": "600610",
+            "RecieverIdentifierType": "11",
+            "ResultURL": "https://ip:port/",
+            "QueueTimeOutURL": "https://ip:port/",
+            "Remarks": "Test",
+            "Occasion": "work"
+        }
 
         try {
             const response = await axios.post(url, requestBody, { headers });

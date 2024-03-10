@@ -7,7 +7,7 @@ import Task from "../../kanban/entity/task.entity";
 import CustomEvent from '../../calendar/entity/calendar.entity';
 import NotificationPreference from "./notificationPreference.entity";
 import Address from "./address.entity";
-import { Profile } from './profile.entity';
+import  Profile  from './profile.entity';
 import Permission from "../.././utils/types/permission.type"
 
 
