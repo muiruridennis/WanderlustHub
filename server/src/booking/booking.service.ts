@@ -23,10 +23,19 @@ export class BookingService {
         private notificationService: NotificationService,
     ) { }
 
-    async findAllBookings(paginationDto: BookingPaginationDto): Promise<BookingResponseDto[]> {
-        const { page = 1, perPage = 10 } = paginationDto;
+    parseParamToInt(param: string | undefined, defaultValue: number): number {
+        if (!param) {
+            return defaultValue;
+        }
+        const parsedValue = parseInt(param, 10);
+        return isNaN(parsedValue) ? defaultValue : parsedValue;
+    }
 
-        const skip = (page - 1) * perPage;
+    async findAllBookings(page: string | undefined, perPage: string | undefined): Promise<BookingResponseDto[]> {
+        const parsedPage = await this.parseParamToInt(page, 1); // Default to 1 if page is not provided
+        const parsedPerPage = await this.parseParamToInt(perPage, 10); // Default to 10 if perPage is not provided
+
+        const skip = (parsedPage - 1) * parsedPerPage;
 
         const bookings = await this.bookingRepository
             .createQueryBuilder('booking')
@@ -45,7 +54,7 @@ export class BookingService {
                 'payments.amount'
             ])
             .skip(skip)
-            .take(perPage)
+            .take(parsedPerPage)
             .getMany();
 
         return bookings.map(booking => ({
@@ -67,9 +76,10 @@ export class BookingService {
         }));
     }
 
-    async createBooking(body: CreateBookingDto, user: User) {
+
+    async createBooking(body: CreateBookingDto, user: User,) {
         const tour = await this.tourService.getById(body?.tourId);
-        const remainingBalance = tour.price - (body.amount ); // Use 0 if 'amount' is undefined
+        const remainingBalance = tour.price - (body.amount); // Use 0 if 'amount' is undefined
 
         const booking = await this.bookingRepository.create({
             remainingBalance,
@@ -78,13 +88,6 @@ export class BookingService {
         })
         await this.bookingRepository.save(booking)
 
-        // const payment = await this.paymentRepository.create({
-        //     amount: body.amount, // Assuming you have a field 'amountPaid' in your CreateBookingDto
-        //     paymentMethod: body.paymentMethod, // Set the payment method (adjust as needed)
-        //     booking, // Associate the payment with the booking
-        // });
-
-        // await this.paymentRepository.save(payment)
         // Check if the booking is fully paid:
         if (booking.remainingBalance <= 0) {
             console.log('Booking marked complete');
@@ -94,7 +97,35 @@ export class BookingService {
         this.notificationService.notifyAdminsAboutNewBooking(booking);
         return booking
     }
-
+    async repayRemainingBalance(bookingId: number, paidAmount: number) {
+        const booking = await this.findBookingById(bookingId);
+        if (!booking) {
+            throw new NotFoundException(`Booking with ID ${bookingId} not found`);
+        }
+    
+        // Calculate remaining balance after repayment
+        let remainingBalance = booking.remainingBalance - paidAmount;
+    
+        // If the remaining balance becomes negative, set it to zero
+        if (remainingBalance < 0) {
+            remainingBalance = 0;
+        }
+    
+        // Create payment entity for repayment
+        const repaymentPayment = await this.paymentRepository.create({
+            amount: paidAmount,
+            // paymentMethod: PaymentMethod.MPESA, // Assuming MPESA as the payment method for repayment
+            booking,
+        });
+    
+        // Save repayment payment
+        await this.paymentRepository.save(repaymentPayment);
+    
+        // Update remaining balance of the booking
+        booking.remainingBalance = remainingBalance;
+        await this.bookingRepository.save(booking);
+    }
+    
     async findBookingById(id: number) {
         const booking = await this.bookingRepository.findOne(
             {

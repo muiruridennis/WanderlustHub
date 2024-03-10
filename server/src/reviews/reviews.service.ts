@@ -13,6 +13,7 @@ export class ReviewsService {
         @InjectRepository(Review)
         private readonly reviewRepository: Repository<Review>,
         private readonly tourService: TourService
+        
     ) { }
 
     async getById(id: number) {

@@ -10,7 +10,7 @@ import { LocalFilesService } from "../local-file/local-file.service";
 import { Repository, DataSource } from 'typeorm';
 import User from './entity/user.entity';
 import Address from "./entity/address.entity";
-import { Profile } from "./entity/profile.entity";
+import Profile from "./entity/profile.entity";
 import NotificationPreference from './entity/notificationPreference.entity';
 import { plainToClassFromExist } from 'class-transformer';
 
@@ -19,10 +19,14 @@ import { plainToClassFromExist } from 'class-transformer';
 export class UsersService {
     private readonly saltRounds = 10;
     constructor(
-        @InjectRepository(User) private userRepository: Repository<User>,
-        @InjectRepository(NotificationPreference) private notificationPreferenceRepository: Repository<NotificationPreference>,
-        @InjectRepository(Address) private addressRepository: Repository<Address>, // Inject the Address repository
-        @InjectRepository(Profile) private profileRepository: Repository<Profile>,
+        @InjectRepository(User)
+        private userRepository: Repository<User>,
+        @InjectRepository(NotificationPreference)
+        private notificationPreferenceRepository: Repository<NotificationPreference>,
+        @InjectRepository(Address)
+        private addressRepository: Repository<Address>,
+        @InjectRepository(Profile)
+        private profileRepository: Repository<Profile>,
         private localFilesService: LocalFilesService,
         private connection: DataSource,
 
@@ -34,10 +38,7 @@ export class UsersService {
         if (!user) {
             throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
         }
-
-        // compare passwords    
         const isMatch = await bcrypt.compare(password, user.password);
-        // const isMatch = await argon2.verify(password, user.password);
 
         if (!isMatch) {
             throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
@@ -85,13 +86,12 @@ export class UsersService {
         const newUser = await this.userRepository.create({
             ...userData,
             name: `${firstName} ${lastName}`,
-            
+
         });
 
         await this.userRepository.save(newUser);
         const defaultPreferences = await this.notificationPreferenceRepository.create({ user: newUser });
         await this.notificationPreferenceRepository.save(defaultPreferences);
-
         return newUser;
     }
 
@@ -123,7 +123,7 @@ export class UsersService {
             currentHashedRefreshToken: null
         });
     };
-    
+
     async updateNotificationPreferences(userId: number, updates: any) {
         const user = await this.getById(userId);
         if (!user.notificationPreferences) {
@@ -255,13 +255,13 @@ export class UsersService {
 
         return newProfile;
     }
-    async createUserAddress(userId: number, addressData: AddressDTO){
+    async createUserAddress(userId: number, addressData: AddressDTO) {
         const user = await this.getById(userId);
         const newAddress = this.addressRepository.create(addressData);
         user.address = newAddress;
-            await this.userRepository.save(user);
-    
+        await this.userRepository.save(user);
+
         return newAddress;
-      }
+    }
 
 }

@@ -23,7 +23,6 @@ class Payment {
     })
     booking: Booking;
 
-    @OneToOne(() => Mpesa, mpesa => mpesa.payment)
-    mpesa: Mpesa;
+   
 }
 export default Payment;
