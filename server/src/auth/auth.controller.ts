@@ -49,7 +49,7 @@ export class AuthController {
         await this.usersService.setCurrentRefreshToken(refreshToken, user.id);
 
         request.res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
-        return user;
+        return{user, message:"Login successful"} ;
     }
 
     @UseGuards(JwtAuthenticationGuard)
@@ -58,7 +58,7 @@ export class AuthController {
     async logOut(@Req() request: RequestWithUser, @Res() response: Response) {
         await this.usersService.removeRefreshToken(request.user.id);
         request.res.setHeader('Set-Cookie', this.authService.getCookiesForLogOut());
-        response.send({ msg: "logged out successfully" })
+        response.send({ logoutMessage: "logged out successfully" })
     }
 
     @UseGuards(JwtAuthenticationGuard)

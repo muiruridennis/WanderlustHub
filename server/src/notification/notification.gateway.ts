@@ -15,7 +15,7 @@ import { NotificationService } from './notification.service';
 
 @WebSocketGateway({
     cors: {
-        origin: 'http://localhost:8081',
+        origin: 'http://localhost:5173',
     },
 })
 export class NotificationGateway

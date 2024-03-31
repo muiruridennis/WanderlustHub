@@ -128,7 +128,7 @@ export class AuthService {
         await this.usersService.setResetLink(email, token)
         const forgotLink = `${this.configService.get("FRONTEND_URL")}/auth/resetPassword/${token}`;
 
-        return this.emailService.sendMail({
+        await this.emailService.sendMail({
             to: email,
             subject: 'Reset your Password',
             html: `

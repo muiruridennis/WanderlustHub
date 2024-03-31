@@ -2,6 +2,7 @@ export class BookingResponseDto {
   id: number;
   status: string;
   bookedAtDate: Date;
+  remainingBalance: number;
   user: {
     id: number;
     name: string;
@@ -13,6 +14,7 @@ export class BookingResponseDto {
   payments: {
     id: number;
     amountPaid: number;
+    paymentMethod:any
   }[];
 }
 

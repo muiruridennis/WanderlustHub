@@ -28,7 +28,7 @@ import Permission from 'src/utils/types/permission.type';
     }
   
     @Post()
-    @UseGuards(PermissionGuard(Permission.isSuperAdmin))
+    // @UseGuards(PermissionGuard(Permission.isSuperAdmin))
     async create(@Body() featureFlag: CreateFeatureFlagDto) {
       return this.featureFlagsService.create(featureFlag);
     }

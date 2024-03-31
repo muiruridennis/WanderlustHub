@@ -60,6 +60,7 @@ export default class FeatureFlagsService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+
     const updatedFeatureFlag = await this.featureFlagsRepository.findOne({
       where: {
         id,

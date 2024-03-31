@@ -46,12 +46,14 @@ export class BookingService {
                 'booking.id',
                 'booking.status',
                 'booking.bookedAtDate',
+                'booking.remainingBalance',
                 'user.id',
                 'user.name',
                 'tour.id',
                 'tour.name',
                 'payments.id',
-                'payments.amount'
+                'payments.amount',
+                'payments.paymentMethod'
             ])
             .skip(skip)
             .take(parsedPerPage)
@@ -61,6 +63,7 @@ export class BookingService {
             id: booking.id,
             status: booking.status,
             bookedAtDate: booking.bookedAtDate,
+            remainingBalance: booking.remainingBalance,
             user: {
                 id: booking.user.id,
                 name: booking.user.name,
@@ -72,6 +75,7 @@ export class BookingService {
             payments: booking.payments.map(payment => ({
                 id: payment.id,
                 amountPaid: payment.amount,
+                paymentMethod: payment.paymentMethod
             })),
         }));
     }
