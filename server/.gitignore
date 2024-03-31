@@ -3,6 +3,7 @@
 /node_modules
 # environment variables
 .env
+docker.env
 
 # Logs
 logs
