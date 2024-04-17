@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import * as api from '../../../src/api/index.js';
+import * as api from '../api/api';
 
 const initialState = {
     tasks: [],
@@ -280,7 +280,7 @@ const kanbanSlice = createSlice({
             .addCase(fetchAllTaskChecklists.rejected, (state, action) => {
                 state.error = action.error.message;
             })
-            
+
     },
 });
 

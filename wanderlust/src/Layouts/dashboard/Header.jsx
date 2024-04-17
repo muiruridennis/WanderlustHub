@@ -25,9 +25,9 @@ import PersonIcon from '@mui/icons-material/Person';
 
 import Avatar from '@mui/material/Avatar';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { useSelector, useDispatch } from "react-redux";
-import { getCurrentUserData } from "../../store/slices/authSlice";
 import DisplayPhoto from "../../Images/display-photo.jpg"
+import { useGetCurrentUserDataQuery } from "../../api/authApi"
+import Circularprogress from "../../Components/CircularProgress";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -76,16 +76,10 @@ const Header = () => {
   const { isOpen, setIsOpen } = useDrawerContext();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-  const dispatch = useDispatch();
-  const { authData } = useSelector((state) => state.auth);
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  // useEffect(() => {
-  //   dispatch(fetchLoggedUser());
-  // }, [dispatch]);
-  // console.log("authData", authData)
+  const { data: userData, error, isLoading } = useGetCurrentUserDataQuery();
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -182,6 +176,14 @@ const Header = () => {
       </MenuItem>
     </Menu>
   );
+  if (isLoading) {
+    return <Circularprogress />
+  }
+
+  // Handle error state
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
   return (
     <>
       <AppBar
@@ -243,29 +245,30 @@ const Header = () => {
                 onClick={handleProfileMenuOpen}
                 color="inherit"
               >
-                {/* {authData === null || undefined ?
-                <AccountCircle sx={{
-                  width: "36px",
-                  height: "36px",
-                  mr: "35px",
-                  ml: "25px",
-                  borderRadius: "50%"
-                }} /> :
-                <Avatar alt={authData?.avatarId} src={authData?.firstName}
-                  sx={{
-                    bgcolor: "purple",
-                    width: 40,
-                    height: 40,
+                {userData === null || undefined ?
+                  <AccountCircle sx={{
+                    width: "36px",
+                    height: "36px",
                     mr: "35px",
                     ml: "25px",
-                  }}>
-                  {authData?.firstName.charAt(0)}
-                </Avatar>
-              } */}
+                    borderRadius: "50%"
+                  }} /> :
+                  <Avatar alt={userData?.email} src={userData?.name}
+                    sx={{
+                      bgcolor: "purple",
+                      width: 40,
+                      height: 40,
+                      mr: "35px",
+                      ml: "25px",
+                    }}>
+                    {userData?.name.charAt(0)}
+                  </Avatar>
+                }
                 <Avatar
                   src={DisplayPhoto}
                   variant="rounded"
-                />              </IconButton>
+                />
+              </IconButton>
             </Tooltip>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>

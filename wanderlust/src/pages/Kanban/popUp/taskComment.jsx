@@ -15,7 +15,7 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { createTaskComment, fetchTask } from "../../../store/slices/kanbanSlice"
+import { createTaskComment, fetchTask } from "../../../features/kanbanSlice"
 import Circularprogress from "../../../Components/CircularProgress";
 
 function TaskComment({ task }) {

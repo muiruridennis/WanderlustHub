@@ -6,27 +6,30 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 
-import { signOut } from "../../store/slices/authSlice";
 import useResponsive from "../../Utils/hooks/useResponsive";
-
+import { useLogOutMutation } from "../../api/authApi"
+import { toast } from "react-toastify";
 const MenuItem = ({ route, literal, isDropdown, ...props }) => {
   const { Icon, selected, handleDropdownClick, hasSubItems } = props;
   const [open, setOpen] = useState(false);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isSmallScreen, isLargeScreen } = useResponsive();
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
-
+  const [logOut, { data, isLoading, isSuccess, isError }] = useLogOutMutation();
   const handleLogout = async () => {
-    dispatch(signOut());
-    await new Promise(resolve => setTimeout(resolve, 3000)); // Wait for 3 seconds
+    await logOut();
+  }
+  if (isSuccess) {
     navigate('/auth');
-  };
+    toast.success(`${data?.logoutMessage}`)
+  }
+  if (isError) {
+    toast.error("unable to log out ")
+  }
 
   const listItemButton = (
     <ListItemButton

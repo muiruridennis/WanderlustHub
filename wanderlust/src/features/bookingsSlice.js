@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import * as api from '../../../src/api/index.js';
+import * as api from '../api/api';
 
 const initialState = {
   bookingsData: [],

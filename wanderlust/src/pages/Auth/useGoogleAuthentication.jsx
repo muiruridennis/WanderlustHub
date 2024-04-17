@@ -10,7 +10,7 @@ function useGoogleAuthentication() {
         onSuccess: async (response) => {
             if ('access_token' in response) {
                 const accessToken = response.access_token;
-              await  fetch(`${process.env.REACT_APP_API_URL}/google-authentication`, {
+              await  fetch(`${import.meta.env.VITE_SERVER_API_URL}/google-authentication`, {
                     method: 'POST',
                     body: JSON.stringify({
                         token: accessToken

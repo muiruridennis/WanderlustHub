@@ -22,6 +22,10 @@ import { MpesaModule } from './mpesa/mpesa.module';
 import { KanbanModule } from './kanban/kanban.module';
 import { CalendarModule } from './calendar/calendar.module';
 import { NotificationModule } from './notification/notification.module';
+import { TransactionsModule } from './transactions/transactions.module';
+import { BudgetModule } from './budget/budget.module';
+import { InvoicesModule } from './invoices/invoices.module';
+import { ExpensesModule } from './expenses/expenses.module';
 import * as Joi from 'joi';
 
 
@@ -72,6 +76,10 @@ import * as Joi from 'joi';
     KanbanModule, CalendarModule,
     // EventModule,
     NotificationModule,
+    TransactionsModule,
+    BudgetModule,
+    InvoicesModule,
+    ExpensesModule,
   ],
   controllers: [AppController],
   providers: [AppService,],

@@ -5,7 +5,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Task from "./Task";
 import Add from "./Add";
 import { useDispatch, useSelector } from "react-redux";
-import { dragAndDrop, targetTheDropZone, leaveDropZone, drag, dragged } from "../../store/slices/kanbanSlice";
+import { dragAndDrop, targetTheDropZone, leaveDropZone, drag, dragged } from "../../features/kanbanSlice";
 
 function Tasks({ data, status, name }) {
   const [openCards, setOpenCards] = useState(true);

@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import format from "date-fns/format";
 import getDay from "date-fns/getDay";
 import parse from "date-fns/parse";
-import { isBefore } from 'date-fns';
+import { isBefore, parseISO, formatISO, isSameDay } from 'date-fns';
 import startOfWeek from "date-fns/startOfWeek";
 import enUSLocale from 'date-fns/locale/en-US'
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { toast } from 'react-toastify';
 import { LocalizationProvider, MobileDateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { Button, Tooltip, Paper, Grid, Typography, Container, Stack, Switch, FormControlLabel, IconButton } from '@mui/material';
-import { useSelector, useDispatch } from "react-redux";
 import Popup from "../Components/Popup"
 import Input from "../Components/TextFieldInput"
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getAllCustomEvents, createCustomEvent, deleteCustomEvent, updateCustomEvent } from "../store/slices/calendarSlice"
 import CircularProgress from "../Components/CircularProgress"
+import { useCreateCustomEventMutation, useDeleteCustomEventMutation, useGetAllCustomEventsQuery, useUpdateCustomEventMutation } from "../api/customEventsApi";
 
 const locales = {
-    "en-US": enUSLocale, 
+    "en-US": enUSLocale,
 };
 const localizer = dateFnsLocalizer({
     format,
@@ -43,8 +43,10 @@ function CalendarApp() {
     const [openPopup, setOpenPopup] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [error, setError] = React.useState(null);
-    const dispatch = useDispatch();
-    const { customEvents, isLoading, message } = useSelector((state) => state.CustomEvents);
+    const { data: customEvents, isLoading } = useGetAllCustomEventsQuery();
+    const [deleteCustomEvent, { isError: deletingError, isSuccess: deletingSuccess, }] = useDeleteCustomEventMutation();
+    const [updateCustomEvent, { isError: updateError, isSuccess: updatingSucess }] = useUpdateCustomEventMutation();
+    const [createCustomEvent, { isSuccess: createSuccess, isError: createError }] = useCreateCustomEventMutation();
 
     const handleEventClick = (event) => {
         setSelectedEvent({
@@ -68,29 +70,44 @@ function CalendarApp() {
     };
 
     const handleAddEvent = (values) => {
-        dispatch(createCustomEvent(values));
+        createCustomEvent(values);
         setOpenPopup(false);
         setSelectedEvent(null)
-        //dispatch an event to the server to create a notification
     };
-    const handleUpdateEvent = (id, values) => {
-        dispatch(updateCustomEvent(id, values));
+
+    const handleUpdateEvent = ( values) => {
+
+        const formattedValues = {
+            ...values,
+            startDate: formatISO(values.startDate),
+            endDate: formatISO(values.endDate)
+        };
+        updateCustomEvent( formattedValues);
         setOpenPopup(false);
-        setSelectedEvent(null)
-        //dispatch an event to the server to create a notification
+        setSelectedEvent(null);
     };
 
     const handleDeleteEvent = (id) => {
-        dispatch(deleteCustomEvent(id))
+        deleteCustomEvent(id)
         setSelectedEvent(null)
-        setOpenPopup(false); // Close the popup after deletion
+        setOpenPopup(false);
     };
-    useEffect(() => {
-        dispatch(getAllCustomEvents());
-    }, [dispatch]);
     if (isLoading) {
         return <CircularProgress />
     }
+    // if (updateError || deletingError || createError) {
+    //     toast.error("an error occurred while performing the operation")
+    // }
+    // if (updatingSucess || deletingSuccess || createSuccess) {
+    //     toast.success(" operation completed successfully")
+    // }
+    // Parse startDate and endDate strings to Date objects
+    const parsedEvents = customEvents.map(event => ({
+        ...event,
+        startDate: parseISO(event.startDate),
+        endDate: parseISO(event.endDate)
+    }));
+
     return (
         <Container maxWidth="xl" >
             <Typography variant="h5">Calendar</Typography>
@@ -111,7 +128,7 @@ function CalendarApp() {
             </Grid>
             <Calendar
                 localizer={localizer}
-                events={customEvents}
+                events={parsedEvents}
                 startAccessor="startDate"
                 endAccessor="endDate"
                 style={{ height: 500, margin: "50px" }}
@@ -131,7 +148,7 @@ function CalendarApp() {
 
                         validationSchema={validationSchema}
                         onSubmit={(values) => {
-                            selectedEvent ? handleUpdateEvent(selectedEvent.id, values) : handleAddEvent(values);
+                            selectedEvent ? handleUpdateEvent(values) : handleAddEvent(values);
                         }}
 
                     >
@@ -194,25 +211,11 @@ function CalendarApp() {
 
                                                 }}
                                             />
-                                            {/* <MobileDateTimePicker
-                                                label="End Date"
-                                                value={formik.values.endDate}
-                                                shouldDisableDate={(date) => {
-                                                    return !formik.values.startDate || date < formik.values.startDate; // Disable dates before startDate or if startDate is empty
-                                                  }}
-                                                onChange={(newValue) => {
-                                                    formik.setFieldValue('endDate', newValue);
-                                                }}
-                                                sx={{
-                                                    width: '100%',
-                                                }}
-                                            /> */}
+                                        
                                             <MobileDateTimePicker
                                                 label="End Date"
                                                 value={formik.values.endDate}
-                                                shouldDisableDate={(date) => {
-                                                    return !formik.values.startDate || isBefore(date, formik.values.startDate); // Disable dates before startDate or if startDate is empty
-                                                }}
+                                                shouldDisableDate={(date) => isBefore(date, formik.values.startDate)}
                                                 onChange={(newValue) => {
                                                     formik.setFieldValue('endDate', newValue);
                                                 }}
@@ -239,7 +242,7 @@ function CalendarApp() {
                                                 < IconButton
                                                     onClick={() => handleDeleteEvent(selectedEvent.id)}
                                                 >
-                                                    <DeleteIcon />
+                                                    <DeleteIcon color='error' />
                                                 </IconButton>
                                             }
 

@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import { Box, Container, Paper, TextField, Typography, Button, Avatar } from '@mui/material';
 import { Formik, Form, ErrorMessage } from 'formik';
 import { Link, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import ErrorIcon from '@mui/icons-material/Error';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import * as Yup from "yup";
 
 import Circularprogress from "../../Components/CircularProgress";
-import { resetPassword } from "../../store/slices/authSlice"
+import { useResetPasswordMutation } from "../../api/authApi"
 
 const passwordResetSchema = Yup.object().shape({
     password: Yup.string()
@@ -40,8 +39,7 @@ function ResetPassword() {
     const [submitted, setSubmitted] = useState(false)
 
     const { resetLink } = useParams();
-    const dispatch = useDispatch()
-    const { authData, error, isLoading } = useSelector((state) => state.auth);
+    const [resetPassword, {data:authData, error, isLoading}] = useResetPasswordMutation();
     console.log(authData, error, isLoading)
     const initialValues = {
         password: "",
@@ -139,7 +137,7 @@ function ResetPassword() {
                                     validationSchema={passwordResetSchema}
                                     onSubmit={(values) => {
                                         const resetData = { ...values, resetLink }
-                                        dispatch(resetPassword(resetData));
+                                        resetPassword(resetData);
                                         setSubmitted(true);
                                     }}
                                 >{

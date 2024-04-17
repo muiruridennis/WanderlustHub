@@ -36,7 +36,7 @@ const recentActivitiesData = [
 function RecentActivities() {
     return (
         <Box>
-            <Paper  sx={{paddingLeft:1}} elevation={3}>
+            <Paper  sx={{paddingLeft:1, paddingTop:3}} elevation={3}>
                 <Typography variant="h6" sx={{ marginBottom: 2 }}>
                     Recent Activities
                 </Typography>

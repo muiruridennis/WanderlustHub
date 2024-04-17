@@ -2,19 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Button, Container, Paper, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { confirmEmail, resendConfirmEmail } from "../../store/slices/authSlice"
-
+import { confirmEmail, resendConfirmEmail } from "../../features/authSlice"
+import { useConfirmEmailMutation, useResendConfirmEmailMutation } from "../../api/emailApi.js"
 import Popup from "../../Components/Popup";
 import Circularprogress from "../../Components/CircularProgress"
 
 
 function EmailConfirmation() {
-  const dispatch = useDispatch();
   const [openPopup, setOpenPopup] = useState(false);
   const { confirmationToken } = useParams();
-  var { error, isLoading , authData} = useSelector((state) => state.auth);
+  const [confirmEmail, { isLoading, isSuccess }] = useConfirmEmailMutation();
+  const [resendConfirmEmail] = useResendConfirmEmailMutation();
 
-console.log(error, isLoading, authData)
   if (isLoading) {
     return <Circularprogress />;
   }
@@ -42,7 +41,7 @@ console.log(error, isLoading, authData)
           >Please  Verify  your email  </Typography>
           <form onSubmit={(e) => {
             e.preventDefault(e);
-            dispatch(confirmEmail({ token: `${confirmationToken}` }))
+            confirmEmail({ token: `${confirmationToken}` })
             if (error) {
               setOpenPopup(true)
             }
@@ -67,7 +66,7 @@ console.log(error, isLoading, authData)
               variant='contained'
               sx={{ marginTop: 2, textTransform: "none" }}
               onClick={() => {
-                dispatch(resendConfirmEmail)
+                resendConfirmEmail()
 
               }}
             > Resend Confirmation Email</Button>

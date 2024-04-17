@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   Avatar,
@@ -13,7 +12,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 
-import { Formik } from 'formik';
+import { Formik, Form } from 'formik';
 
 import LockOutlined from '@mui/icons-material/LockOutlined';
 
@@ -23,9 +22,10 @@ import Logo from '../../Components/logo';
 import useGoogleAuthentication from './useGoogleAuthentication';
 
 import Input from '../../Components/TextFieldInput';
-import { signUp, signIn } from '../../store/slices/authSlice';
+import { useSignInMutation, useSignUpMutation } from '../../api/authApi';
 import { signupSchema, signinSchema } from './validation';
 
+import { toast } from 'react-toastify';
 
 import google from '../../Images/google.png';
 import coast from '../../Images/coast.jpg';
@@ -41,46 +41,45 @@ function Auth() {
     phoneNumber: "",
   };
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { handleGoogleSuccess } = useGoogleAuthentication();
-
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { authData, isLoading, error} = useSelector((state) => state.auth);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  
+  const { handleGoogleSuccess } = useGoogleAuthentication();
+
+  const [signIn, { data: signInResponse, isLoading: signInLoading, isError: signInError, isSuccess: signInSuccess, error }] = useSignInMutation();
+  const [signUp, { data: signUpResponse, isLoading: signUpLoading, isError: signUpError, isSuccess: signUpSuccess }] = useSignUpMutation();
+
+  useEffect(() => {
+    if (signInSuccess || signUpSuccess) {
+      toast.success(`${signUpResponse?.message || signInResponse?.message || (isSignup ? 'Signup Successful' : 'Signin Successful')}`);
+      navigate('/overview');
+    }
+  }, [signInSuccess, signUpSuccess]);
+
   const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword);
   const swithMode = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup);
     setShowPassword(false);
   }
-  if (isLoading) {
+  if (signInLoading || signUpLoading) {
     return <Circularprogress />;
   }
-  const handleSubmit = async ( values, { setSubmitting }) => {
-    try {
-      const authAction = isSignup ? signUp : signIn;
-      await dispatch(authAction(values));
-  } catch (error) {
-    console.error('Authentication error:', error);
-  } finally {
-    setSubmitting(false);
-  }
-};
 
-if (authData) {
-  navigate('/overview');
-}
-if (error) {
-  return (
-    <Box>
-      <Typography variant="body1" color="error">
-        {error.message}
-      </Typography>
-    </Box>
-  );
-}
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      const mutation = isSignup ? signUp : signIn;
+      await mutation(values);
+    } catch (error) {
+      console.error('Authentication error:', error);
+      // toast.error(`${error?.data?.message || (isSignup ? 'Signup unsuccessful' : 'Signin unsuccessful')}`);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+
+ 
 
   return (
     <Box
@@ -231,14 +230,13 @@ if (error) {
                 {
                   formik => {
                     return (
-                      <form
-                        onSubmit={formik.handleSubmit}
+                      <form onSubmit={formik.handleSubmit}
                         sx={{
                           w: '100%', // Fix IE 11 issue.
                           mt: "10px",
                         }}
                         noValidate
-                        autoComplete="true"
+                      // autoComplete="true"
                       >
                         <Grid container spacing={2}>
                           {
@@ -358,7 +356,6 @@ if (error) {
                             <Button onClick={swithMode} sx={{ textTransform: "none" }} >
                               {isSignup ? "Already have an account? Login " : "Don't have an account? Create now"}
                             </Button>
-
                           </Grid>
 
                         </Grid>

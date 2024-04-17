@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { getTour } from '../../store/slices/toursSlice';
+import { getTour } from '../../features/toursSlice';
 import Circularprogress from "../../Components/CircularProgress"
 import { Box, Button, Container, Grid, Paper, Typography } from '@mui/material';
 import TourImage from "../../Images/tour-2-1.jpg";

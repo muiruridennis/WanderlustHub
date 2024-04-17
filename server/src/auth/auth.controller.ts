@@ -13,7 +13,7 @@ import { LocalAuthenticationGuard } from './guards/localAuthentication.guard';
 import { UsersService } from '../users/users.service'
 import JwtRefreshGuard from "./guards/jwt-refresh.guard ";
 import { Response } from 'express';
-import { ForgotPasswordDto } from './dto/forgotPassword.dto';
+import { RecoverPasswordDto } from './dto/recoverPassword.dto';
 
 
 @Controller('auth')
@@ -49,7 +49,7 @@ export class AuthController {
         await this.usersService.setCurrentRefreshToken(refreshToken, user.id);
 
         request.res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
-        return{user, message:"Login successful"} ;
+        return { user, message: "Login successful" };
     }
 
     @UseGuards(JwtAuthenticationGuard)
@@ -68,7 +68,7 @@ export class AuthController {
     }
 
     @UseGuards(JwtRefreshGuard)
-    @Get('refresh')
+    @Get('refresh-token')
     refresh(@Req() request: RequestWithUser) {
         const accessTokenCookie = this.authService.getCookieWithJwtAccessToken(request.user.id);
 
@@ -76,9 +76,9 @@ export class AuthController {
         return request.user;
     };
 
-    @Post('/forgotPassword')
-    async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
-        await this.authService.forgotPassword(forgotPasswordDto);
+    @Post('/recoverPassword')
+    async recoverPassword(@Body() recoverPasswordDto: RecoverPasswordDto) {
+        await this.authService.recoverPassword(recoverPasswordDto);
 
     }
     @Patch('/resetPassword')

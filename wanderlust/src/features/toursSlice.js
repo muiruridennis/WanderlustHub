@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import * as api from '../../../src/api/index';
+import * as api from '../api/api';
 
 const initialState = { tours: [], isLoading: false, error: null };
 

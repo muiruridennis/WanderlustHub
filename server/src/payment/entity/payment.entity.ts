@@ -1,8 +1,7 @@
 import { PrimaryGeneratedColumn, Column, Entity, JoinColumn, OneToOne, ManyToOne, CreateDateColumn } from "typeorm"
-import Booking from '../../booking/entity/booking.entity'; // Adjust the import path as needed
+import Booking from '../../booking/entity/booking.entity'; 
 import { PaymentMethod } from "../paymentMethod.enum";
-import Mpesa from '../../mpesa/entity/mpesa.entity'
-
+import { Invoice } from "../../invoices/entity/invoices.entity";
 @Entity()
 class Payment {
     @PrimaryGeneratedColumn()
@@ -23,6 +22,8 @@ class Payment {
     })
     booking: Booking;
 
+    @ManyToOne(() => Invoice, invoice => invoice.payments)
+    invoice: Invoice;
    
 }
 export default Payment;

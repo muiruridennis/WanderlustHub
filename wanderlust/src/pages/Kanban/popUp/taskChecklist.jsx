@@ -23,7 +23,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
-import { createTaskChecklist, deleteTaskChecklist, fetchTask } from "../../../store/slices/kanbanSlice";
+import { createTaskChecklist, deleteTaskChecklist, fetchTask } from "../../../features/kanbanSlice";
 import Circularprogress from "../../../Components/CircularProgress";
 
 function TaskChecklist({ task }) {

@@ -4,7 +4,7 @@ import { UsersService } from "../users/users.service";
 import { JwtService } from "@nestjs/jwt";
 import { RegisterUserstDTO } from "./dto/register-user.dto";
 // import { LoginUserDto } from "../users/dto/LoginUserDto"
-import { ForgotPasswordDto } from "./dto/forgotPassword.dto";
+import { RecoverPasswordDto } from "./dto/recoverPassword.dto";
 import { CreateUserDto } from './../users/dto/createUserDto';
 import { ChangePasswordDto } from "./dto/changePassword.dto";
 import { ResetPasswordDto } from "./dto/resetPassword.dto";
@@ -115,8 +115,8 @@ export class AuthService {
         ];
     }
 
-    async forgotPassword(forgotPasswordDto: ForgotPasswordDto) {
-        const { email } = forgotPasswordDto;
+    async recoverPassword(recoverPasswordDto: RecoverPasswordDto) {
+        const { email } = recoverPasswordDto;
         const user = await this.usersService.getByEmail(email);
         const payload = { email }
         const token = await this.jwtService.sign(payload, {

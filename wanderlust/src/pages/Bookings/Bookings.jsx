@@ -1,13 +1,12 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Box, Container, Stack, Typography } from '@mui/material';
-import { useSelector, useDispatch } from "react-redux";
 
 import { BookingsTable } from "../../sections/bookings/Booking-table";
 import { applyBookingsPagination } from '../../Utils/applyBooking-pagination';
 import Popup from "../../Components/Popup";
 import Circularprogress from "../../Components/CircularProgress";
 import BookingForm from "./bookingForm";
-import { fetchBookings } from "../../store/slices/bookingsSlice"
+import { useFetchBookingsQuery } from "../../api/bookingApi"
 
 
 function Bookings() {
@@ -20,11 +19,9 @@ function Bookings() {
   const [openPopup, setOpenPopup] = useState(false);
   const [currentId, setCurrentId] = useState(null);
   const [currentTourId, setCurrentTourId] = useState(null);
-  const dispatch = useDispatch();
 
   const [tourCost, setTourCost] = useState(0);
-  const { isLoading, bookingsData } = useSelector((state) => state.Bookings);
-  console.log("bookingsData: ", bookingsData)
+  const { data: bookingsData, error, isLoading } = useFetchBookingsQuery();
   const bookingsByTourData = Object.entries(
     bookingsData.reduce((acc, booking) => {
       if (!acc[booking.tour?.id]) {
@@ -38,7 +35,25 @@ function Bookings() {
       return acc;
     }, {})
   );
+ 
 
+  // const bookingsByTourData = Object.entries(
+  //   if (bookingsData && boookingsData.length > 0) {
+  //   return (
+  //     bookingsData.reduce((acc, booking) => {
+  //       if (!acc[booking.tour?.id]) {
+  //         acc[booking.tour?.id] = {
+  //           bookings: [],
+  //           length: 0
+  //         };
+  //       }
+  //       acc[booking.tour?.id].bookings.push(booking);
+  //       acc[booking.tour?.id].length++;
+  //       return acc;
+  //     }, {})
+  //   )
+  //   }
+  // );
   function useBookings(bookingsByTourData, pagination, filterCriteria) {
     const getPageForTour = (tourId) => {
       // Set the page to 0 if filter criteria is applied
@@ -71,11 +86,6 @@ function Bookings() {
     }, [bookingsByTourData, pagination, filterCriteria]);
   }
   const { bookings } = useBookings(bookingsByTourData, pagination, filterCriteria);
-
-  useEffect(() => {
-    dispatch(fetchBookings());
-  }, [dispatch]);
-
   const close = () => {
     setOpenPopup(false);
     setCurrentId(null);
@@ -117,13 +127,16 @@ function Bookings() {
     return <Circularprogress />
 
   }
-  // if (bookings && bookings.length <= 0) {
-  //   return (
-  //     <Box sx={{display:'flex', alignItems:"center", justifyContent:"center", height:"100%"}}>
-  //       <Typography align='center' variant='h5'>No bookings made</Typography>
-  //     </Box>
-  //   )
-  // }
+  if (error) {
+    return <div>Error fetching Bookings</div>
+  }
+  if (bookings && bookings.length <= 0) {
+    return (
+      <Box sx={{ display: 'flex', alignItems: "center", justifyContent: "center", height: "100%" }}>
+        <Typography align='center' variant='h5'>No bookings made</Typography>
+      </Box>
+    )
+  }
 
   return (
     <>

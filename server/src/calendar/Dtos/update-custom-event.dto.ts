@@ -1,6 +1,9 @@
+import { Exclude } from 'class-transformer';
 import { IsString, IsDateString, IsOptional } from 'class-validator';
-
 export class UpdateCustomEventDto {
+    @Exclude()
+    id:number;
+
     @IsOptional()
     @IsString()
     title: string;

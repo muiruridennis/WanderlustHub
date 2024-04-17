@@ -9,7 +9,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import * as Yup from "yup";
 
 import Circularprogress from "../../Components/CircularProgress";
-import { recoverPassword } from "../../store/slices/authSlice"
+import { recoverPassword } from "../../features/authSlice"
 
 const passwordResetSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email address').required('Required'),

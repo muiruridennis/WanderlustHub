@@ -3,32 +3,22 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import BookOnlineIcon from '@mui/icons-material/BookOnline';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography, Box } from '@mui/material';
-import { useSelector, useDispatch } from "react-redux";
-import { fetchBookings } from "../../store/slices/bookingsSlice"
 import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
-
+import { useFetchBookingsQuery } from "../../api/bookingApi"
 
 export const OverviewBookingStats = (props) => {
     const { difference, positive = false } = props;
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleCardClick = () => {
         // Redirect the admin to the "Bookings" page when the card is clicked
         navigate('/overview/bookings');
     };
-    useEffect(() => {
-        dispatch(fetchBookings());
-    }, [dispatch]);
-    const { isLoading, bookingsData } = useSelector((state) => state.Bookings);
+    const { data: bookingsData, error, isLoading } = useFetchBookingsQuery();
+    
     if (isLoading) {
-        return (
-            <Box sx={{ display: 'flex', justifyContent: "center", alignItems: "center" }}>
-                <CircularProgress />
-            </Box>
-        );
-
+        return <CircularProgress />
     }
     return (
         <Card onClick={handleCardClick}
@@ -56,7 +46,7 @@ export const OverviewBookingStats = (props) => {
                             Bookings
                         </Typography>
                         <Typography variant="h4">
-                            {`${bookingsData.length}`}
+                            {`${bookingsData?.length}`}
                         </Typography>
                     </Stack>
                     <Avatar

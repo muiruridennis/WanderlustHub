@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Grid, } from "@mui/material"
 import { useDispatch, useSelector } from 'react-redux';
 import Tour from './tour';
-import { fetchTours } from '../../store/slices/toursSlice';
+import { fetchTours } from '../../features/toursSlice';
 import Circularprogress from "../../Components/CircularProgress"
 
 

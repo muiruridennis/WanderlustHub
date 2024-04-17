@@ -33,12 +33,14 @@ export class CalendarService {
         }
         return customEvent;
     }
-    async updateCustomEvent(id: number, updatedCustomEvent: UpdateCustomEventDto) {
-        const existingCustomEvent = await this.getCustomEventById(id);
-        const updatedEvent = Object.assign(existingCustomEvent, updatedCustomEvent);
-        await this.customEventRepository.save(updatedEvent);
-        return { message: "Custom event updated successfully!", updatedEvent }
+
+    async updateCustomEvent(id: number, eventsupdates: UpdateCustomEventDto) {
+        await this.getCustomEventById(id);
+        await this.customEventRepository.update(id, eventsupdates);
+        const updatedCustomEvent = await this.getCustomEventById(id);
+        return { message: "Custom event updated successfully!", updatedCustomEvent };
     }
+
 
     async deleteCustomEvent(id: number) {
         const customEvent = await this.getCustomEventById(id);

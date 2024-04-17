@@ -3,7 +3,7 @@ import { Button, Tooltip, Paper, TextField, Grid, Typography, Container, Stack, 
 import { Formik, getIn } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from "react-redux";
-import { createClient, updateClient } from "../../store/slices/clientsSlice";
+import { createClient, updateClient } from "../../features/clientsSlice";
 import Input from "../../Components/TextFieldInput"
 
 const validationSchema = Yup.object().shape({

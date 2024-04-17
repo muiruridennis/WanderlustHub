@@ -4,12 +4,11 @@ import { Formik, Form, ErrorMessage } from 'formik';
 import ErrorIcon from '@mui/icons-material/Error';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import * as Yup from "yup";
+import { useRecoverPasswordMutation } from "../../api/authApi"
 
 import Circularprogress from "../../Components/CircularProgress";
-import { recoverPassword } from "../../store/slices/authSlice"
 
 const passwordResetSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email address').required('Required'),
@@ -30,9 +29,9 @@ const validationErrors = {
 };
 
 function RecoverPassword() {
-  let { error, isLoading } = useSelector((state) => state.auth);
-  const dispatch = useDispatch()
   const [submitted, setSubmitted] = useState(false);
+  const [recoverPassword, { isLoading, isSuccess, error }] = useRecoverPasswordMutation()
+  console.log("Recover Password error", error)
   const initialValues = {
     email: "",
   };
@@ -69,7 +68,7 @@ function RecoverPassword() {
                       </div>
                       <Typography variant="h6" align="center">Error</Typography>
                       <Typography sx={{ mb: 2 }}>
-                        {`${error}. Please try again later or register for a new account.`}
+                        {`${error?.data?.message}. Please try again later or register for a new account.`}
                       </Typography>
 
                       <Link to="/auth">
@@ -93,7 +92,7 @@ function RecoverPassword() {
                         {/* We emailed you a link to reset your password. Please check The Email and follow the instructions. */}
                         Your request for a password reset has been received. Kindly check your email for further instructions.
                       </Typography>
-                      <Link to="/">
+                      <Link to="/auth">
                         <div
                           style={{ fontSize: "12px", textTransform: "none", display: 'flex' }}
                         >
@@ -134,7 +133,7 @@ function RecoverPassword() {
                   initialValues={initialValues}
                   validationSchema={passwordResetSchema}
                   onSubmit={(values) => {
-                    dispatch(recoverPassword(values));
+                    recoverPassword(values);
                     setSubmitted((prevIsSubmitted) => !prevIsSubmitted);
                   }}
                 >{

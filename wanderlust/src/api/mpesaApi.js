@@ -1,23 +1,24 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import * as api from '../../../src/api/index.js';
 
-const initialState = {
-  mpesa: [],
-  isTransacting: true,
-  mpesaError: null,
-};
-
+// Define async thunk
 export const stkPush = createAsyncThunk(
-  'auth/stkPush',
+  'mpesa/stkPush',
   async (stkPushData) => {
     try {
-      const { data } = await api.stkPush(stkPushData);
-      return data;
+      const response = await api.stkPush(stkPushData);
+      return response.data;
     } catch (error) {
       console.log(error);
+      throw error;
     }
   }
 );
+
+const initialState = {
+  mpesa: [],
+  isTransacting: false,
+  mpesaError: null,
+};
 
 const mpesaSlice = createSlice({
   name: 'mpesa',
@@ -37,6 +38,5 @@ const mpesaSlice = createSlice({
     });
   },
 });
-
 
 export default mpesaSlice.reducer;

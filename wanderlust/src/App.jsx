@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {
   Tours, Index, ToursDetails, Chekout, PaymentConfirmation, TourPackageDetails
 } from "./pages"
+
 function App() {
   return (
     <div className="App">
